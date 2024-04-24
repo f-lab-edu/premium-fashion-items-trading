@@ -15,12 +15,27 @@ KREAM을 모티브로 만든 프리미엄 패션 제품 거래 서비스 입니�
 ## **시스템 구성도**
 ![Pasted image 20240423225608](https://github.com/f-lab-edu/premium-fashion-items-trading/assets/110794550/f9209585-33df-452f-a489-7981008df482)
 
-## 데이터베이스 ERD
+## **데이터베이스 ERD**
 ![2024-04-23 22 42 10](https://github.com/f-lab-edu/premium-fashion-items-trading/assets/110794550/c2cc0eaa-bd27-4d1f-8b55-f2a3e0b84d6c)
 
-## API 명세서
+## **사용기술**
+- Java 17
+- Spring Boot 3.2.4
+- JPA
+- Gradle
+- Junit
+- MySQL
+- Redis
+- Firebase
+- Jenkins
+- Nginx
+- Naver Cloud Platform
+- Grafana
+- Prometheus
 
-### 사용자 API 명세
+## **API 명세서**
+
+### **사용자 API 명세**
 
 | No  | API Name                  | Method | EndPoint              |
 | --- | ------------------------- | ------ | --------------------- |
@@ -48,7 +63,7 @@ KREAM을 모티브로 만든 프리미엄 패션 제품 거래 서비스 입니�
 | 22  | 마이페이지 - 판매 입찰 상세          | GET    | /trade/sell/detail    |
 | 23  | 알림 조회 / Cursor            | GET    | /notification         |
 
-### 관리자 API 명세
+### **관리자 API 명세**
 
 | No  | API Name         | Method | EndPoint             |
 | --- | ---------------- | ------ | -------------------- |
@@ -83,7 +98,7 @@ KREAM을 모티브로 만든 프리미엄 패션 제품 거래 서비스 입니�
 
 ## **서비스 UI 프로토타이핑**
 
-### 사용자 UI
+### **사용자 UI**
 https://ovenapp.io/view/s35YjjnYqjmjmaFUzywLWUOn9ymOIHBN/XC4TV
 
 ### **관리자 UI**

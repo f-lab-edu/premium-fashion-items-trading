@@ -1,3 +1,29 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: pfit
+
+# Session Setting
+  session:
+    store-type: redis
+    redis:
+      namespace: pfit:session
+    timeout: 300
+# Redis Setting
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+# MySql Setting
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # TODO - db url ? ??? ??? ?? ??? ??
+    url: jdbc:mysql://localhost:3306/pfit-v0.1
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 50
+    type: com.zaxxer.hikari.HikariDataSource
+    username: sdc
+    password: '@sdc.com'

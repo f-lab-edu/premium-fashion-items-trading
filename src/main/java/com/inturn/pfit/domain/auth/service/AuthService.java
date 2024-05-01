@@ -2,14 +2,13 @@ package com.inturn.pfit.domain.auth.service;
 
 import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
 import com.inturn.pfit.domain.user.entity.UserEntity;
+import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
-import com.inturn.pfit.global.common.exception.NotFoundException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.common.response.CommonResponseDTO;
-import com.inturn.pfit.global.config.security.define.SessionConst;
-import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
+import com.inturn.pfit.global.support.utils.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,16 +28,15 @@ public class AuthService  {
 
 		UserEntity user = userQueryService.getUserByEmail(dto.email());
 		if(Objects.isNull(user)) {
-			throw new NotFoundException(ECommonErrorCode.NOT_FOUND_EXCEPTION.getError());
+			throw new UsernameNotFoundException("해당 유저는 존재하지 않습니다.");
 		}
 
-		if(passwordEncoder.matches(user.getPassword(), dto.password())) {
-			//TODO Password 불일치 CustomException 생성
-			throw new RuntimeException("패스워드가 일치하지 않습니다.");
+		if(!passwordEncoder.matches(dto.password(), user.getPassword())) {
+			throw new PasswordMismatchException();
 		}
 
-		//UserSession으로 가공해서 넣자.
-		session.setAttribute(SessionConst.LOGIN_USER, new UserSession(user));
-		return CommonResponseDTO.successResponse();
+		//UserSession으로 set
+		SessionUtils.setUserSession(session, user);
+		return new CommonResponseDTO();
 	}
 }

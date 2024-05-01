@@ -3,10 +3,12 @@ package com.inturn.pfit.domain.user.entity;
 
 import com.inturn.pfit.global.common.entity.CommonEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @SuperBuilder
@@ -15,7 +17,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class User extends CommonEntity {
 
-	//TODO - IDENTITY 관련 내용 작성
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
@@ -43,4 +44,15 @@ public class User extends CommonEntity {
 	@Column(nullable = false)
 	private String roleCode;
 
+	public void changeUserInfo(String userPhone, String userName, String profileName, String profileUrl, String alarmYn){
+		this.userPhone = userPhone;
+		this.userName = userName;
+		this.profileName = profileName;
+		this.profileUrl = profileUrl;
+		this.alarmYn = alarmYn;
+	}
+
+	public void changePassword(String password, PasswordEncoder encoder) {
+		this.password = encoder.encode(password);
+	}
 }

@@ -1,13 +1,12 @@
 package com.inturn.pfit.global.common.exception;
 
-import com.inturn.pfit.global.common.ErrorDTO;
 import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
 
 public class NotFoundException extends PfitException{
 
-	public NotFoundException(ErrorDTO errorCode) {
-		super(errorCode);
+	public NotFoundException() {
+		super(ECommonErrorCode.NOT_FOUND_EXCEPTION.getError());
 	}
-	//TODO - 파라미터가 존재하는 유형 확인
+	//TODO - 변수를 넘겨받아 Message를 가공하는 부분도 확인
 
 }

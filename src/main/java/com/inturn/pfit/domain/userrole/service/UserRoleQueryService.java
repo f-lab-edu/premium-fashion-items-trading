@@ -3,9 +3,7 @@ package com.inturn.pfit.domain.userrole.service;
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.domain.userrole.repository.UserRoleRepository;
 import com.inturn.pfit.global.common.exception.NotFoundException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,6 +18,6 @@ public class UserRoleQueryService {
 	 * @return 데이터가 존재할 경우 UserRole 반환
 	 */
 	public UserRole getUserRoleByRoleCode(String roleCode) {
-		return userRoleRepository.findById(roleCode).orElseThrow(() -> new NotFoundException(ECommonErrorCode.NOT_FOUND_EXCEPTION.getError()));
+		return userRoleRepository.findById(roleCode).orElseThrow(() -> new NotFoundException());
 	}
 }

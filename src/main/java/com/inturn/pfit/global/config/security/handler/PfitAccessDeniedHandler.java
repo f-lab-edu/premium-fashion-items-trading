@@ -2,7 +2,7 @@ package com.inturn.pfit.global.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.common.response.CommonResponseDTO;
+import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +22,9 @@ public class PfitAccessDeniedHandler implements AccessDeniedHandler {
 	private final ObjectMapper objectMapper;
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(objectMapper.writeValueAsString(CommonResponseDTO.failResponse(ECommonErrorCode.FORBIDDEN.getError())));
+		response.getWriter().write(objectMapper.writeValueAsString(new CommonResponseDTO(ECommonErrorCode.FORBIDDEN.getError().getDefaultErrorMessage())));
 	}
 }

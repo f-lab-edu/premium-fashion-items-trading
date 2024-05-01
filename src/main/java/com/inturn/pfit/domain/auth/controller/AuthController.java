@@ -1,9 +1,9 @@
 package com.inturn.pfit.domain.auth.controller;
 
 import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
-import com.inturn.pfit.global.common.response.CommonResponseDTO;
+import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.domain.auth.service.AuthService;
-import com.inturn.pfit.global.config.security.define.SessionConst;
+import com.inturn.pfit.global.support.utils.SessionUtils;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class AuthController {
 
 	@PostMapping("/logout")
 	public ResponseEntity<CommonResponseDTO> logout(HttpSession session) {
-		session.removeAttribute(SessionConst.LOGIN_USER);
-		return ResponseEntity.ok(CommonResponseDTO.successResponse());
+		SessionUtils.removeUserSession(session);
+		return ResponseEntity.ok(new CommonResponseDTO());
 	}
 }

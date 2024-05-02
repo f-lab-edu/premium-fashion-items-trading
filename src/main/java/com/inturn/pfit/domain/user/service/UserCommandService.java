@@ -10,8 +10,8 @@ import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.repository.UserRepository;
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
+import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.support.utils.SessionUtils;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserCommandService {
 
 	private final UserRepository userRepository;
-	private final UserQueryService userQueryService;
 	private final PasswordEncoder passwordEncoder;
 
 
@@ -37,23 +36,24 @@ public class UserCommandService {
 		if(!req.isCorrectPassword()) {
 			throw new PasswordMismatchException();
 		}
-		return this.save(UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), req.roleCode(), passwordEncoder));
+		return this.save(UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder));
 	}
 
 	@Transactional
-	public UserResponseDTO changeUserInfo(ChangeUserInfoRequestDTO req, HttpSession session) {
-		var user = userQueryService.getUserById(SessionUtils.getUserSession(session).getUserId());
+	public UserResponseDTO changeUserInfo(ChangeUserInfoRequestDTO req) {
+		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
 		user.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
 		return UserResponseDTO.from(this.save(user));
 	}
 
 	@Transactional
-	public CommonResponseDTO passwordChange(PasswordChangeRequestDTO req, HttpSession session) {
-		var user = userQueryService.getUserById(SessionUtils.getUserSession(session).getUserId());
+	public CommonResponseDTO passwordChange(PasswordChangeRequestDTO req) {
 		if(!req.isCorrectPassword()) {
 			throw new PasswordMismatchException();
 		}
+		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
 		user.changePassword(req.password(), passwordEncoder);
+		this.save(user);
 		return new CommonResponseDTO();
 	}
 

@@ -3,7 +3,6 @@ package com.inturn.pfit.domain.user.entity;
 
 import com.inturn.pfit.global.common.entity.CommonEntity;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,5 +53,6 @@ public class User extends CommonEntity {
 
 	public void changePassword(String password, PasswordEncoder encoder) {
 		this.password = encoder.encode(password);
+
 	}
 }

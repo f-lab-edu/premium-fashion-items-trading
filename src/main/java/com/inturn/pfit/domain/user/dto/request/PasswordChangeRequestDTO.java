@@ -2,8 +2,10 @@ package com.inturn.pfit.domain.user.dto.request;
 
 import com.inturn.pfit.global.support.annotation.Password;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 
+@Builder
 public record PasswordChangeRequestDTO(
 
 		@Password

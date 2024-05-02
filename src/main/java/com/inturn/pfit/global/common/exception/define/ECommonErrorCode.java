@@ -11,6 +11,7 @@ public enum ECommonErrorCode {
 	FORBIDDEN(ErrorCodeDTO.createErrorDTO(HttpStatus.FORBIDDEN.value(), "API 호출 권한이 없습니다.")),
 	UNAUTHORIZED(ErrorCodeDTO.createErrorDTO(HttpStatus.UNAUTHORIZED.value(), "인증 정보가 존재하지 않습니다.")),
 	HTTP_MESSAGE_NOT_READABLE_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST.value(), "요청 데이터가 올바르지 않습니다.")),
+	NOT_FOUND_SESSION_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.NOT_FOUND.value(), "Session 정보가 존재하지 않습니다.")),
 	;
 	private ErrorCodeDTO error;
 

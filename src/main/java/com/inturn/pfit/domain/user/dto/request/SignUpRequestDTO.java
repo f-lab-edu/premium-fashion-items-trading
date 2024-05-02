@@ -4,10 +4,12 @@ package com.inturn.pfit.domain.user.dto.request;
 import com.inturn.pfit.global.support.annotation.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 
+@Builder
 public record SignUpRequestDTO (
 
 		@NotEmpty

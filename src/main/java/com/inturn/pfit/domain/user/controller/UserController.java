@@ -11,7 +11,6 @@ import com.inturn.pfit.domain.user.usecase.SignUpService;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
 import com.inturn.pfit.global.config.security.define.RoleConsts;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -47,22 +46,22 @@ public class UserController {
 	//사용자 조회
 	@Secured(RoleConsts.ROLE_USER)
 	@GetMapping
-	public ResponseEntity<DataResponseDTO<UserResponseDTO>> getUser(HttpSession session) {
-		return ResponseEntity.ok(new DataResponseDTO<>(userQueryService.getUserBySession(session)));
+	public ResponseEntity<DataResponseDTO<UserResponseDTO>> getUser() {
+		return ResponseEntity.ok(new DataResponseDTO<>(userQueryService.getUserBySession()));
 	}
 
 	//사용자 편집
 	@Secured(RoleConsts.ROLE_USER)
 	@PatchMapping("/info")
-	public ResponseEntity<DataResponseDTO<UserResponseDTO>> changeUserInfo(@RequestBody @Valid ChangeUserInfoRequestDTO req, HttpSession session) {
-		return ResponseEntity.ok(new DataResponseDTO<>(userCommandService.changeUserInfo(req, session)));
+	public ResponseEntity<DataResponseDTO<UserResponseDTO>> changeUserInfo(@RequestBody @Valid ChangeUserInfoRequestDTO req) {
+		return ResponseEntity.ok(new DataResponseDTO<>(userCommandService.changeUserInfo(req)));
 	}
 
 	//사용자 패스워드 변경
 	@Secured(RoleConsts.ROLE_USER)
 	@PatchMapping("/password")
-	public ResponseEntity<CommonResponseDTO> changePassword(@RequestBody @Valid PasswordChangeRequestDTO req, HttpSession session) {
-		return ResponseEntity.ok(userCommandService.passwordChange(req, session));
+	public ResponseEntity<CommonResponseDTO> changePassword(@RequestBody @Valid PasswordChangeRequestDTO req) {
+		return ResponseEntity.ok(userCommandService.passwordChange(req));
 	}
 
 }

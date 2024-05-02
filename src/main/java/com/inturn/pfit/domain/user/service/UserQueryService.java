@@ -4,10 +4,9 @@ import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.dto.response.UserResponseDTO;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.repository.UserRepository;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
+import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.support.utils.SessionUtils;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,8 @@ public class UserQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserResponseDTO getUserBySession(HttpSession session) {
-		return UserResponseDTO.from(getUserById(SessionUtils.getUserSession(session).getUserId()));
+	public UserResponseDTO getUserBySession() {
+		return UserResponseDTO.from(this.getUserById(SessionUtils.getUserSession().getUserId()));
 	}
 
 	@Transactional(readOnly = true)

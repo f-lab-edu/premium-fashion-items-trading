@@ -1,10 +1,9 @@
 package com.inturn.pfit.domain.auth.controller;
 
 import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
-import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.domain.auth.service.AuthService;
+import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.support.utils.SessionUtils;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +24,13 @@ public class AuthController {
 	검증에 오류가 발생할 경우 MethodArgumentNotValidException 예외가 발생하고, 400 BadRequest 에러가 발생한다.
 	 */
 	@PostMapping("/login")
-	public ResponseEntity<CommonResponseDTO> login(@RequestBody @Valid LoginRequestDTO user, HttpSession session) {
-		return ResponseEntity.ok(authService.login(user, session));
+	public ResponseEntity<CommonResponseDTO> login(@RequestBody @Valid LoginRequestDTO user) {
+		return ResponseEntity.ok(authService.login(user));
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CommonResponseDTO> logout(HttpSession session) {
-		SessionUtils.removeUserSession(session);
+	public ResponseEntity<CommonResponseDTO> logout() {
+		SessionUtils.removeUserSession();
 		return ResponseEntity.ok(new CommonResponseDTO());
 	}
 }

@@ -2,6 +2,7 @@ package com.inturn.pfit.domain.auth.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Builder;
 
 /*
 클라이언트 요청은 record class 사용
@@ -10,6 +11,7 @@ getter는 filed 명과 같이 생성 - email(O), getEmail(X)
 field와 class는 모두 불변
 */
 
+@Builder
 public record LoginRequestDTO (
 		/* 
 		@NotNull vs @NotEmpty

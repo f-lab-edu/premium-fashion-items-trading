@@ -1,7 +1,6 @@
 package com.inturn.pfit.global.support.utils;
 
 import com.inturn.pfit.domain.user.entity.UserEntity;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
 import com.inturn.pfit.global.config.security.define.SessionConsts;
 import com.inturn.pfit.global.config.security.service.UserSession;

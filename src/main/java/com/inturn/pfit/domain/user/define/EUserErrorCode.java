@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum EUserErrorCode {
 
 	EXIST_USER_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST.value(), "해당 유저는 이미 등록되어 있습니다.")),
-	PASSWORD_MISMATCH(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다."))
+	PASSWORD_MISMATCH_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다."))
 
 	;
 	private ErrorCodeDTO error;

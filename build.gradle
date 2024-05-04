@@ -40,9 +40,12 @@ dependencies {
 
 	//JDBC와 연결하여 로깅할 수 있는 log4jdbc-log4j2 의존성 추가
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	//QueryDsl 의존성 추가
+	implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
 
 
 	compileOnly 'org.projectlombok:lombok'
+
 /*
 	개발에 편리한 도구 제공
 	1. 코드가 변경될 떄 자동으로 애플리케이션을 다시 시작한다.
@@ -55,6 +58,10 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor("com.querydsl:querydsl-apt:5.1.0:jakarta")
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -62,4 +69,18 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+def querydslDir = "out/generated"
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+	options.generatedSourceOutputDirectory.set(file(querydslDir))
+}
+
+clean.doLast {
+	file(querydslDir).deleteDir()
 }

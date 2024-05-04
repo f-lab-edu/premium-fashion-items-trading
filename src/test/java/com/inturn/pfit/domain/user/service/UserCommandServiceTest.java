@@ -138,7 +138,7 @@ class UserCommandServiceTest {
 
 		//then
 		assertNotNull(result);
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
 	}
@@ -310,7 +310,7 @@ class UserCommandServiceTest {
 		//when & then
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.passwordChange(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(any());

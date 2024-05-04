@@ -2,6 +2,7 @@ package com.inturn.pfit.domain.category.entity;
 
 import com.inturn.pfit.global.common.entity.CommonEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -10,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Category extends CommonEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +23,15 @@ public class Category extends CommonEntity {
 	@Column(nullable = false)
 	private Integer categorySort;
 
+	public static Category createCategory(String categoryName, Integer categorySort) {
+		return Category.builder()
+				.categoryName(categoryName)
+				.categorySort(categorySort)
+				.build();
+	}
+
+	public void modifyCategory(String categoryName, Integer categorySort) {
+		this.categoryName = categoryName;
+		this.categorySort = categorySort;
+	}
 }

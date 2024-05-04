@@ -130,7 +130,7 @@ class AuthServiceTest {
 		//when & then
 		PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);

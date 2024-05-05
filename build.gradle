@@ -24,32 +24,23 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-/*
-	Redis를 통한 session 관리
- */
+
+//	Redis를 통한 session 관리
 	implementation 'org.springframework.session:spring-session-data-redis'
 
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-/*
-	Controller로 전달된 객체의 유효성 검증을 위한 validation 추가
-	LocalValidatorFactoryBean이 제약 조건을 검증 처리, spring-boot-starter-validation 의존성을 추가하면 해당 기능이 설정
-*/
+
+//	Controller로 전달된 객체의 유효성 검증을 위한 validation 추가
+//	LocalValidatorFactoryBean이 제약 조건을 검증 처리, spring-boot-starter-validation 의존성을 추가하면 해당 기능이 설정
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-/*
-	lang3은 유틸리티 클래스를 제공하여 개발의 편의성 증대
- */
+
+//	lang3은 유틸리티 클래스를 제공하여 개발의 편의성 증대
 	implementation 'org.apache.commons:commons-lang3'
 
 
 	compileOnly 'org.projectlombok:lombok'
-/*
-	개발에 편리한 도구 제공
-	1. 코드가 변경될 떄 자동으로 애플리케이션을 다시 시작한다.
-		변경된 내용을 감시하여 자동으로 애플리케이션을 다시 시작시킨다.
-		해당 클래스 로더만 다시 로드하고 스프링 애플리케이션 컨텍스트를 다시 시작시킨다.
-	2. Live Reload브라우저로 전송되는 리소스(자바스크립트, CSS)가 변경될 때 브라우저를 새로고침 한다.
- */
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'

@@ -13,10 +13,11 @@ import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,8 +30,8 @@ public class UserCommandService {
 	@Transactional
 	public UserEntity signUp(SignUpRequestDTO req, UserRole role) {
 		//이미 등록된 email의 사용자 인지 확인
-		UserEntity user = userRepository.findByEmail(req.email());
-		if(ObjectUtils.isNotEmpty(user)){
+		Optional<UserEntity> userOpt = userRepository.findByEmail(req.email());
+		if(userOpt.isPresent()){
 			throw new ExistUserException();
 		}
 		if(!req.isCorrectPassword()) {
@@ -42,7 +43,7 @@ public class UserCommandService {
 	@Transactional
 	public UserResponseDTO changeUserInfo(ChangeUserInfoRequestDTO req) {
 		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
-		user.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
+		user.changeUserInfo(req);
 		return UserResponseDTO.from(this.save(user));
 	}
 
@@ -54,7 +55,7 @@ public class UserCommandService {
 		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
 		user.changePassword(req.password(), passwordEncoder);
 		this.save(user);
-		return new CommonResponseDTO();
+		return CommonResponseDTO.ok();
 	}
 
 	@Transactional

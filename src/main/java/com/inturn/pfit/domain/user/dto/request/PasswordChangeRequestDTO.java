@@ -16,7 +16,7 @@ public record PasswordChangeRequestDTO(
 		@NotEmpty
 		String confirmPassword
 ) {
-	public Boolean isCorrectPassword() {
+	public boolean isCorrectPassword() {
 		return StringUtils.equals(password, confirmPassword);
 	}
 }

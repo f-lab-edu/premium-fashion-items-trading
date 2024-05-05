@@ -86,7 +86,7 @@ class UserCommandServiceTest {
 		UserRole role = createUserRole();
 		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
 
-		when(userRepository.findByEmail(req.email())).thenReturn(null);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 		when(userRepository.save(any(UserEntity.class))).thenReturn(userParam);
 
 		//when
@@ -110,7 +110,7 @@ class UserCommandServiceTest {
 		UserRole role = createUserRole();
 		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
 
-		when(userRepository.findByEmail(req.email())).thenReturn(userParam);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.of(userParam));
 
 		//when
 		final ExistUserException result = assertThrows(ExistUserException.class, () -> userCommandService.signUp(req, role));
@@ -131,7 +131,7 @@ class UserCommandServiceTest {
 		SignUpRequestDTO req = createSignUpRequestDTO(password.repeat(2));
 		UserRole role = createUserRole();
 
-		when(userRepository.findByEmail(req.email())).thenReturn(null);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 
 		//when
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.signUp(req, role));
@@ -176,7 +176,7 @@ class UserCommandServiceTest {
 
 		//변경 사용자 정보
 		UserEntity changeUser = getUserEntity();
-		changeUser.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
+		changeUser.changeUserInfo(req);
 
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.of(user));
 		when(userRepository.save(any(UserEntity.class))).thenReturn(changeUser);

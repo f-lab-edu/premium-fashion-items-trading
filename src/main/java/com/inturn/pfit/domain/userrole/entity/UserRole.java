@@ -1,6 +1,6 @@
 package com.inturn.pfit.domain.userrole.entity;
 
-import com.inturn.pfit.global.common.entity.CommonEntity;
+import com.inturn.pfit.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @Entity(name = "user_role")
-public class UserRole extends CommonEntity {
+public class UserRole extends BaseTimeEntity {
 
 	@Id
 	private String roleCode;

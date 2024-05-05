@@ -25,6 +25,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -51,7 +53,7 @@ class AuthServiceTest {
 		email = "abc@naver.com";
 		password = "@Abc.com!1";
 		user = UserEntity.builder()
-				.userId(1l)
+				.userId(1L)
 				.userName("abc")
 				.userPhone("01012345678")
 				.email(email)
@@ -72,7 +74,7 @@ class AuthServiceTest {
 
 		//set mock session
 		setMockSession(new UserSession(user));
-		when(userQueryService.getUserByEmail(email)).thenReturn(user);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.of(user));
 
 		//when
 		CommonResponseDTO res = authService.login(req);
@@ -104,12 +106,12 @@ class AuthServiceTest {
 				.build();
 
 		//set mock session
-		when(userQueryService.getUserByEmail(email)).thenReturn(null);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.empty());
 
 		//when & then
 		UsernameNotFoundException result = assertThrows(UsernameNotFoundException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), ECommonErrorCode.UNAUTHORIZED.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), ECommonErrorCode.UNAUTHORIZED.getErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);
@@ -125,7 +127,7 @@ class AuthServiceTest {
 				.password(password + "misMatch" )
 				.build();
 
-		when(userQueryService.getUserByEmail(email)).thenReturn(user);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.of(user));
 
 		//when & then
 		PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> authService.login(req));

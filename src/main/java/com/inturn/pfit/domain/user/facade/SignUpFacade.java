@@ -1,4 +1,4 @@
-package com.inturn.pfit.domain.user.usecase;
+package com.inturn.pfit.domain.user.facade;
 
 import com.inturn.pfit.domain.user.dto.request.SignUpRequestDTO;
 import com.inturn.pfit.domain.user.dto.response.SignUpResponseDTO;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class SignUpService {
+public class SignUpFacade {
 
 	private final UserRoleQueryService userRoleQueryService;
 

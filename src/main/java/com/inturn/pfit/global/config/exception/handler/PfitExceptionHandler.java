@@ -26,13 +26,13 @@ public class PfitExceptionHandler {
 	//Exception 이 발생하였을 경우
 //	@ExceptionHandler(Exception.class)
 //	public ResponseEntity<CommonResponseDTO> exceptionHandler(Exception e) {
-//		return ResponseEntity.internalServerError().body(new CommonResponseDTO(e.toString()));
+//		return ResponseEntity.internalServerError().body(CommonResponseDTO.fail(e.toString()));
 //	}
 
 	//PftiExcpetion 이 발생되었을경우
 	@ExceptionHandler(PfitException.class)
 	public ResponseEntity<CommonResponseDTO> pfitExceptionHandler(PfitException e) {
-		return ResponseEntity.status(e.getStatus()).body(new CommonResponseDTO(e.getMessage()));
+		return ResponseEntity.status(e.getStatus()).body(CommonResponseDTO.fail(e.getMessage()));
 	}
 
 	//Validate 처리가 되었을 경우
@@ -44,7 +44,7 @@ public class PfitExceptionHandler {
 				errors.put(fieldError.getField(), fieldError.getDefaultMessage());
 			}
 		});
-		return ResponseEntity.badRequest().body(new CommonResponseDTO(errors.toString()));
+		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(errors.toString()));
 	}
 
 	//HandlerMethodValidationException 은 controller method parameter type (예: @RequestParameter, @PathVariable 등)에 따라 validation error를 처리
@@ -54,13 +54,13 @@ public class PfitExceptionHandler {
 		e.getAllValidationResults().forEach(error -> {
 			error.getResolvableErrors().forEach(messageSourceResolvable -> errorList.add(messageSourceResolvable.getDefaultMessage()));
 		});
-		return ResponseEntity.badRequest().body(new CommonResponseDTO(errorList.stream().collect(Collectors.joining(", "))));
+		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(errorList.stream().collect(Collectors.joining(", "))));
 	}
 
 
 	//올바르지 않은 요청이 수신되었을 경우
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<CommonResponseDTO> exceptionHandler(HttpMessageNotReadableException e) {
-		return ResponseEntity.badRequest().body(new CommonResponseDTO(ECommonErrorCode.HTTP_MESSAGE_NOT_READABLE_EXCEPTION.getError().getDefaultErrorMessage()));
+		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(ECommonErrorCode.HTTP_MESSAGE_NOT_READABLE_EXCEPTION.getErrorMessage()));
 	}
 }

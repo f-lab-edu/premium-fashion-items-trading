@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @SuperBuilder
-public class CommonEntity {
+public class BaseTimeEntity {
 
 	private LocalDateTime createdDt;
 

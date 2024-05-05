@@ -42,7 +42,7 @@ public class UserCommandService {
 	@Transactional
 	public UserResponseDTO changeUserInfo(ChangeUserInfoRequestDTO req) {
 		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
-		user.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
+		user.changeUserInfo(req);
 		return UserResponseDTO.from(this.save(user));
 	}
 

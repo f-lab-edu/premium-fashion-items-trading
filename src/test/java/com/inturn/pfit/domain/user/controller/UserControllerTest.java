@@ -195,7 +195,7 @@ class UserControllerTest {
 
 		var user = getUserEntity();
 		var changeUserInfo = getUserEntity();
-		changeUserInfo.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
+		changeUserInfo.changeUserInfo(req);
 		when(userCommandService.changeUserInfo(req)).thenReturn(UserResponseDTO.from(changeUserInfo));
 
 		//when

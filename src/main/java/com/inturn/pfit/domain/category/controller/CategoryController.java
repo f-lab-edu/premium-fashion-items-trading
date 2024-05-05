@@ -58,8 +58,8 @@ public class CategoryController {
 
 	//카테고리 조회 Paging
 	@GetMapping("/paging")
-	public ResponseEntity<Page<CategoryPagingResponseDTO>> getCategoryPagingList(CategoryPagingRequestDTO req, Pageable page) {
-		return ResponseEntity.ok(categoryQueryService.getCategoryPagingList(req, page));
+	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingList(CategoryPagingRequestDTO req, Pageable page) {
+		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategoryPagingList(req, page)));
 	}
 	
 	//TODO category 순번을 변경하는 부분도 추후 확인

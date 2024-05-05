@@ -1,7 +1,7 @@
 package com.inturn.pfit.global.config.security;
 
-import com.inturn.pfit.global.config.security.service.UserSession;
 import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.config.security.service.UserSession;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,6 @@ OncePerRequestFilter를 통해 해당 Filter를 거친 요청이 redirect 또는
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
 		UserSession user = (UserSession) request.getSession().getAttribute(SessionConsts.LOGIN_USER);
 		if(!Objects.isNull(user)) {
 			//Object principal, Object credentials과 차이 확인

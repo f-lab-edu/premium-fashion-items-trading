@@ -176,7 +176,7 @@ class UserCommandServiceTest {
 
 		//변경 사용자 정보
 		UserEntity changeUser = getUserEntity();
-		changeUser.changeUserInfo(req.userPhone(), req.userName(), req.profileName(), req.profileUrl(), req.alarmYn());
+		changeUser.changeUserInfo(req);
 
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.of(user));
 		when(userRepository.save(any(UserEntity.class))).thenReturn(changeUser);

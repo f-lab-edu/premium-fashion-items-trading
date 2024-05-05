@@ -5,21 +5,20 @@ import com.inturn.pfit.domain.category.dto.response.CategoryPagingResponseDTO;
 import com.inturn.pfit.domain.category.entity.QCategory;
 import com.inturn.pfit.global.support.querydsl.PfitQuerydslRepositorySupport;
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport implements CategoryRepositoryDsl{
 
 	QCategory qCategory = QCategory.category;
+
 	public CategoryRepositoryDslImpl() {
 		super(QCategory.class);
 	}
 
 	@Override
 	public Page<CategoryPagingResponseDTO> getPagingList(CategoryPagingRequestDTO req, Pageable pageable) {
-		JPQLQuery<CategoryPagingResponseDTO> query = from(qCategory)
+		return pagingList(from(qCategory)
 				.where(
 						eq(qCategory.categoryId, req.getCategoryId()),
 						eq(qCategory.categoryName, req.getCategoryName()),
@@ -32,8 +31,8 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 						))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
-				.orderBy(getOrderSpecifiers(qCategory, pageable.getSort()));
-
-		return new PageImpl<>(query.fetch(), pageable, query.fetchCount());
+				.orderBy(getOrderSpecifiers(qCategory, pageable.getSort())), pageable);
 	}
+
+
 }

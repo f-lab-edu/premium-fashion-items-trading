@@ -33,7 +33,7 @@ public record SignUpRequestDTO (
 		String roleCode
 ) {
 	//TODO 해당 부분은 entity쪽에 들어가는게 맞음.
-	public Boolean isCorrectPassword() {
+	public boolean isCorrectPassword() {
 		return StringUtils.equals(password, confirmPassword);
 	}
 }

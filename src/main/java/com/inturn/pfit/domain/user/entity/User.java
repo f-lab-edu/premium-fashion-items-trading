@@ -1,6 +1,7 @@
 package com.inturn.pfit.domain.user.entity;
 
 
+import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
 import com.inturn.pfit.global.common.entity.CommonEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -43,12 +44,12 @@ public class User extends CommonEntity {
 	@Column(nullable = false)
 	private String roleCode;
 
-	public void changeUserInfo(String userPhone, String userName, String profileName, String profileUrl, String alarmYn){
-		this.userPhone = userPhone;
-		this.userName = userName;
-		this.profileName = profileName;
-		this.profileUrl = profileUrl;
-		this.alarmYn = alarmYn;
+	public void changeUserInfo(ChangeUserInfoRequestDTO req){
+		this.userPhone = req.userPhone();
+		this.userName = req.userName();
+		this.profileName = req.profileName();
+		this.profileUrl = req.profileUrl();
+		this.alarmYn = req.alarmYn();
 	}
 
 	public void changePassword(String password, PasswordEncoder encoder) {

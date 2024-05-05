@@ -35,7 +35,9 @@ public class SessionUtils {
 		ServletRequestAttributes servletRA = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = servletRA.getRequest().getSession();
 
-		if(ObjectUtils.isEmpty(session))    throw new NotFoundSessionException();
+		if (ObjectUtils.isEmpty(session)) {
+			throw new NotFoundSessionException();
+		}
 		return session;
 	}
 }

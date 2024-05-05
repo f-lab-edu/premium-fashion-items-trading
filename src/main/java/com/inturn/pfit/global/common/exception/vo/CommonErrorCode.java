@@ -1,11 +1,11 @@
-package com.inturn.pfit.global.common.exception.define;
+package com.inturn.pfit.global.common.exception.vo;
 
 import com.inturn.pfit.global.common.dto.ErrorCodeDTO;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public enum ECommonErrorCode {
+public enum CommonErrorCode {
 
 	NOT_FOUND_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.NOT_FOUND, "해당 데이터는 존재하지 않습니다.")),
 	FORBIDDEN(ErrorCodeDTO.createErrorDTO(HttpStatus.FORBIDDEN, "API 호출 권한이 없습니다.")),
@@ -19,7 +19,7 @@ public enum ECommonErrorCode {
 		return this.error.getDefaultErrorMessage();
 	}
 
-	ECommonErrorCode(ErrorCodeDTO error) {
+	CommonErrorCode(ErrorCodeDTO error) {
 		this.error = error;
 	}
 }

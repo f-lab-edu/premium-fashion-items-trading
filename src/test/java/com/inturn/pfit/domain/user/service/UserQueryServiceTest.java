@@ -4,10 +4,10 @@ import com.inturn.pfit.domain.user.dto.response.UserResponseDTO;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.repository.UserRepository;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -118,7 +118,7 @@ class UserQueryServiceTest {
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userQueryService.getUserBySession());
 		assertNotNull(result);
-		assertEquals(result.getMessage(), ECommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(userId);

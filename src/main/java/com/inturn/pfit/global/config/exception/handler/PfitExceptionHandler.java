@@ -2,7 +2,7 @@ package com.inturn.pfit.global.config.exception.handler;
 
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.PfitException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -61,6 +61,6 @@ public class PfitExceptionHandler {
 	//올바르지 않은 요청이 수신되었을 경우
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<CommonResponseDTO> exceptionHandler(HttpMessageNotReadableException e) {
-		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(ECommonErrorCode.HTTP_MESSAGE_NOT_READABLE_EXCEPTION.getErrorMessage()));
+		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(CommonErrorCode.HTTP_MESSAGE_NOT_READABLE_EXCEPTION.getErrorMessage()));
 	}
 }

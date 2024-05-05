@@ -1,15 +1,15 @@
 package com.inturn.pfit.domain.auth.service;
 
 import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
-import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
+import com.inturn.pfit.domain.user.vo.UserErrorCode;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -111,7 +111,7 @@ class AuthServiceTest {
 		//when & then
 		UsernameNotFoundException result = assertThrows(UsernameNotFoundException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), ECommonErrorCode.UNAUTHORIZED.getErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.UNAUTHORIZED.getErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);
@@ -132,7 +132,7 @@ class AuthServiceTest {
 		//when & then
 		PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);

@@ -5,7 +5,7 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,7 +28,7 @@ public class AuthService  {
 
 		Optional<UserEntity> userOpt = userQueryService.getUserByEmail(dto.email());
 		if(userOpt.isEmpty()) {
-			throw new UsernameNotFoundException(ECommonErrorCode.UNAUTHORIZED.getErrorMessage());
+			throw new UsernameNotFoundException(CommonErrorCode.UNAUTHORIZED.getErrorMessage());
 		}
 
 		UserEntity user = userOpt.get();

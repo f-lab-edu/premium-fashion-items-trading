@@ -1,6 +1,5 @@
 package com.inturn.pfit.domain.user.controller;
 
-import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
 import com.inturn.pfit.domain.user.dto.request.PasswordChangeRequestDTO;
 import com.inturn.pfit.domain.user.dto.request.SignUpRequestDTO;
@@ -9,9 +8,10 @@ import com.inturn.pfit.domain.user.dto.response.UserResponseDTO;
 import com.inturn.pfit.domain.user.facade.SignUpFacade;
 import com.inturn.pfit.domain.user.service.UserCommandService;
 import com.inturn.pfit.domain.user.service.UserQueryService;
+import com.inturn.pfit.domain.user.vo.UserErrorCode;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -40,7 +40,7 @@ public class UserController {
 	//사용자 중복 확인
 	@GetMapping("/v1/user/check/{email}")
 	public ResponseEntity<CommonResponseDTO> duplicateUserV1(@PathVariable @NotEmpty @Email String email) {
-		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.ok() : CommonResponseDTO.fail(EUserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()));
+		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.ok() : CommonResponseDTO.fail(UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()));
 	}
 
 	//사용자 조회

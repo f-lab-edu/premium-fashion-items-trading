@@ -6,7 +6,7 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.service.UserCommandService;
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.domain.userrole.service.UserRoleQueryService;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

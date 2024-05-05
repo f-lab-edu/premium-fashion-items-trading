@@ -1,7 +1,7 @@
 package com.inturn.pfit.global.config.security;
 
 import com.inturn.pfit.global.config.security.service.UserSession;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +12,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Objects;
+
+//TODO Java doc으로 확인.
 /*
 OncePerRequestFilter를 통해 해당 Filter를 거친 요청이 redirect 또는 별도의 상황에 의해 재호출되지 않도록 한다.
  */

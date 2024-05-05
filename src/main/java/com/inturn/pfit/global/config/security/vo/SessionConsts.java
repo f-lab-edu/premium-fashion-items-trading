@@ -1,4 +1,4 @@
-package com.inturn.pfit.global.config.security.define;
+package com.inturn.pfit.global.config.security.vo;
 
 import lombok.experimental.UtilityClass;
 

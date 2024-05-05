@@ -1,4 +1,4 @@
-package com.inturn.pfit.domain.user.usecase;
+package com.inturn.pfit.domain.user.facade;
 
 import com.inturn.pfit.domain.user.dto.request.SignUpRequestDTO;
 import com.inturn.pfit.domain.user.dto.response.SignUpResponseDTO;
@@ -6,7 +6,7 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.service.UserCommandService;
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.domain.userrole.service.UserRoleQueryService;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-class SignUpServiceTest {
+class SignUpFacadeTest {
 
 	@InjectMocks
-	SignUpService signUpService;
+	SignUpFacade signUpFacade;
 
 	@Mock
 	UserRoleQueryService userRoleQueryService;
@@ -36,7 +36,7 @@ class SignUpServiceTest {
 		//given
 		SignUpRequestDTO req = createSignUpRequestDTO();
 
-		Long userId = 1l;
+		Long userId = 1L;
 		UserEntity user = getUser(userId, req);
 
 		UserRole role = createUserRole();
@@ -44,7 +44,7 @@ class SignUpServiceTest {
 		when(userCommandService.signUp(req, role)).thenReturn(user);
 
 		//when
-		SignUpResponseDTO res = signUpService.signUp(req);
+		SignUpResponseDTO res = signUpFacade.signUp(req);
 
 		//then
 		assertEquals(res.getUserId(), userId);
@@ -61,7 +61,7 @@ class SignUpServiceTest {
 		when(userRoleQueryService.getUserRoleByRoleCode(RoleConsts.ROLE_USER)).thenReturn(null);
 
 		//when & then
-		final NullPointerException result = assertThrows(NullPointerException.class, () -> signUpService.signUp(req));
+		assertThrows(NullPointerException.class, () -> signUpFacade.signUp(req));
 
 		verify(userRoleQueryService, times(1)).getUserRoleByRoleCode(RoleConsts.ROLE_USER);
 	}

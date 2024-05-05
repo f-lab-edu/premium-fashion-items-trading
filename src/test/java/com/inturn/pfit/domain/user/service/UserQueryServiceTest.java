@@ -1,15 +1,13 @@
 package com.inturn.pfit.domain.user.service;
 
-import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.dto.response.UserResponseDTO;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.repository.UserRepository;
-import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +45,7 @@ class UserQueryServiceTest {
 	@BeforeEach
 	void before(){
 		email = "abc@naver.com";
-		userId = 1l;
+		userId = 1L;
 		user = UserEntity.builder()
 				.email(email)
 				.userId(userId)
@@ -60,13 +58,13 @@ class UserQueryServiceTest {
 	@DisplayName("사용자 중복 확인(duplicateUser) - 성공")
 	void duplicateUser_Success() {
 		//given
-		when(userRepository.findByEmail(email)).thenReturn(null);
+		when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
 
 		//when
-		CommonResponseDTO res = userQueryService.duplicateUser(email);
+		boolean result = userQueryService.duplicateUser(email);
 
 		//then
-		assertEquals(res.getSuccess(), true);
+		assertEquals(result, false);
 
 		//verify
 		verify(userRepository, times(1)).findByEmail(email);
@@ -76,14 +74,13 @@ class UserQueryServiceTest {
 	@DisplayName("사용자 중복 확인(duplicateUser) - 실패 : 기 사용자 존재")
 	void duplicateUser_Fail_ExistUser() {
 		//given
-		when(userRepository.findByEmail(email)).thenReturn(user);
+		when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
 
 		//when
-		CommonResponseDTO res = userQueryService.duplicateUser(email);
+		boolean result = userQueryService.duplicateUser(email);
 
 		//then
-		assertEquals(res.getSuccess(), false);
-		assertEquals(res.getMessage(), EUserErrorCode.EXIST_USER_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result, true);
 
 		//verify
 		verify(userRepository, times(1)).findByEmail(email);
@@ -121,7 +118,7 @@ class UserQueryServiceTest {
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userQueryService.getUserBySession());
 		assertNotNull(result);
-		assertEquals(result.getMessage(), ECommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(userId);

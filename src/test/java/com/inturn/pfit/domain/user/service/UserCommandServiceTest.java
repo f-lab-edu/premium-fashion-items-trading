@@ -1,6 +1,5 @@
 package com.inturn.pfit.domain.user.service;
 
-import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
 import com.inturn.pfit.domain.user.dto.request.PasswordChangeRequestDTO;
 import com.inturn.pfit.domain.user.dto.request.SignUpRequestDTO;
@@ -9,14 +8,15 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.ExistUserException;
 import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.repository.UserRepository;
+import com.inturn.pfit.domain.user.vo.UserErrorCode;
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -86,7 +86,7 @@ class UserCommandServiceTest {
 		UserRole role = createUserRole();
 		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
 
-		when(userRepository.findByEmail(req.email())).thenReturn(null);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 		when(userRepository.save(any(UserEntity.class))).thenReturn(userParam);
 
 		//when
@@ -110,14 +110,14 @@ class UserCommandServiceTest {
 		UserRole role = createUserRole();
 		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
 
-		when(userRepository.findByEmail(req.email())).thenReturn(userParam);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.of(userParam));
 
 		//when
 		final ExistUserException result = assertThrows(ExistUserException.class, () -> userCommandService.signUp(req, role));
 
 		//then
 		assertNotNull(result);
-		assertEquals(result.getMessage(), EUserErrorCode.EXIST_USER_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.EXIST_USER_EXCEPTION.getError().getDefaultErrorMessage());
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
 	}
@@ -131,14 +131,14 @@ class UserCommandServiceTest {
 		SignUpRequestDTO req = createSignUpRequestDTO(password.repeat(2));
 		UserRole role = createUserRole();
 
-		when(userRepository.findByEmail(req.email())).thenReturn(null);
+		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 
 		//when
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.signUp(req, role));
 
 		//then
 		assertNotNull(result);
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
 	}
@@ -204,7 +204,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userCommandService.changeUserInfo(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), ECommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -229,7 +229,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundException result = assertThrows(NotFoundException.class, () -> userCommandService.changeUserInfo(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), ECommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -292,7 +292,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundException result = assertThrows(NotFoundException.class, () -> userCommandService.passwordChange(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), ECommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -310,7 +310,7 @@ class UserCommandServiceTest {
 		//when & then
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.passwordChange(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(any());

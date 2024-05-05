@@ -1,7 +1,6 @@
 package com.inturn.pfit.domain.user.entity;
 
 
-import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
 import com.inturn.pfit.global.common.entity.CommonEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends CommonEntity {
+public class User extends BaseTimeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

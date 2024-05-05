@@ -1,15 +1,15 @@
 package com.inturn.pfit.domain.auth.service;
 
 import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
-import com.inturn.pfit.domain.user.define.EUserErrorCode;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
+import com.inturn.pfit.domain.user.vo.UserErrorCode;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
-import com.inturn.pfit.global.common.exception.define.ECommonErrorCode;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
-import com.inturn.pfit.global.config.security.define.SessionConsts;
+import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import com.inturn.pfit.global.config.security.service.UserSession;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class AuthServiceTest {
 		email = "abc@naver.com";
 		password = "@Abc.com!1";
 		user = UserEntity.builder()
-				.userId(1l)
+				.userId(1L)
 				.userName("abc")
 				.userPhone("01012345678")
 				.email(email)
@@ -72,7 +72,7 @@ class AuthServiceTest {
 
 		//set mock session
 		setMockSession(new UserSession(user));
-		when(userQueryService.getUserByEmail(email)).thenReturn(user);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.of(user));
 
 		//when
 		CommonResponseDTO res = authService.login(req);
@@ -104,12 +104,12 @@ class AuthServiceTest {
 				.build();
 
 		//set mock session
-		when(userQueryService.getUserByEmail(email)).thenReturn(null);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.empty());
 
 		//when & then
 		UsernameNotFoundException result = assertThrows(UsernameNotFoundException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), ECommonErrorCode.UNAUTHORIZED.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.UNAUTHORIZED.getErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);
@@ -125,12 +125,12 @@ class AuthServiceTest {
 				.password(password + "misMatch" )
 				.build();
 
-		when(userQueryService.getUserByEmail(email)).thenReturn(user);
+		when(userQueryService.getUserByEmail(email)).thenReturn(Optional.of(user));
 
 		//when & then
 		PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);

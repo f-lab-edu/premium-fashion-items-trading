@@ -53,6 +53,7 @@ dependencies {
 		해당 클래스 로더만 다시 로드하고 스프링 애플리케이션 컨텍스트를 다시 시작시킨다.
 	2. Live Reload브라우저로 전송되는 리소스(자바스크립트, CSS)가 변경될 때 브라우저를 새로고침 한다.
  */
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	runtimeOnly 'com.mysql:mysql-connector-j'

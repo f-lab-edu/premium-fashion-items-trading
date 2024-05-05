@@ -1,29 +1,53 @@
 spring:
   profiles:
+# profile은 dev, stage, prod 로 분류
     active: dev
+
   application:
     name: pfit
+  sql:
+    init:
+      mode: always
+
+# JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        
+# data.sql로 기초 데이터를 넣을 떄 사용하기 위해
+#    defer-datasource-initialization: true
 
 # Session Setting
   session:
+# store-type : redis 설정 시 @EnableRedisHttpSession을 추가하지 않아도 세션 저장소로 활용 가능
     store-type: redis
     redis:
       namespace: pfit:session
     timeout: 300
-# Redis Setting
+# Redis 설정
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
 
-# MySql Setting
+# MySql 설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # TODO - db url ? ??? ??? ?? ??? ??
-    url: jdbc:mysql://localhost:3306/pfit-v0.1
+    # TODO - db url 및 password는 환경 변수 설정으로 처리
+    url: jdbc:mysql://${MYSQL_URL}:3306/pfit-v0.1
     hikari:
       minimum-idle: 5
       maximum-pool-size: 50
     type: com.zaxxer.hikari.HikariDataSource
-    username: sdc
-    password: '@sdc.com'
+    username: ${MYSQL_NAME}
+    password: ${MYSQL_PW}
+
+server:
+  port: 8080
+  servlet:
+    context-path: /pfit

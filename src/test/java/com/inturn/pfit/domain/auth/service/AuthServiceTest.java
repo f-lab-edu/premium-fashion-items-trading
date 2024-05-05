@@ -25,6 +25,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -130,7 +132,7 @@ class AuthServiceTest {
 		//when & then
 		PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> authService.login(req));
 
-		assertEquals(result.getMessage(), EUserErrorCode.PASSWORD_MISMATCH.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
 
 		//verify
 		verify(userQueryService, times(1)).getUserByEmail(email);

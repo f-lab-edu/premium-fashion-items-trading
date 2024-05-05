@@ -51,7 +51,7 @@ public class CategoryCommandService {
 	public CommonResponseDTO deleteCategory(DeleteCategoryRequestDTO req) {
 		//카테고리 ID로 조회하고 삭제 처리
 		categoryRepository.delete(categoryQueryService.getCategoryById(req.categoryId()));
-		return new CommonResponseDTO();
+		return CommonResponseDTO.ok();
 	}
 
 	@Transactional

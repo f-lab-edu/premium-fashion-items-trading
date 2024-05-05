@@ -11,7 +11,7 @@ import com.inturn.pfit.domain.category.service.CategoryCommandService;
 import com.inturn.pfit.domain.category.service.CategoryQueryService;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
-import com.inturn.pfit.global.config.security.define.RoleConsts;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 @Secured(RoleConsts.ROLE_ADMIN)
 @RestController
-@RequestMapping("/category")
 @RequiredArgsConstructor
 public class CategoryController {
 
@@ -31,34 +30,34 @@ public class CategoryController {
 
 	private final CategoryCommandService categoryCommandService;
 
-	@GetMapping("/{categoryId}")
-	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryById(@PathVariable @NotNull Integer categoryId) {
+	@GetMapping("/v1/category/{categoryId}")
+	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryByIdV1(@PathVariable @NotNull Integer categoryId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategory(categoryId)));
 	}
 
 	//카테고리 등록
-	@PostMapping
-	public ResponseEntity<DataResponseDTO<CreateCategoryResponseDTO>> createCategory(@RequestBody @Valid CreateCategoryRequestDTO req) {
+	@PostMapping("/v1/category")
+	public ResponseEntity<DataResponseDTO<CreateCategoryResponseDTO>> createCategoryV1(@RequestBody @Valid CreateCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.createCategory(req)));
 	}
 
 	//카테고리 편집
-	@PatchMapping
-	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> modifyCategory(@RequestBody @Valid ModifyCategoryRequestDTO req) {
+	@PatchMapping("/v1/category")
+	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> modifyCategoryV1(@RequestBody @Valid ModifyCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.modifyCategory(req)));
 	}
 
 	//카테고리 삭제
-	@DeleteMapping
-	public ResponseEntity<CommonResponseDTO> deleteCategory(@RequestBody @Valid DeleteCategoryRequestDTO req) {
+	@DeleteMapping("/v1/category")
+	public ResponseEntity<CommonResponseDTO> deleteCategoryV1(@RequestBody @Valid DeleteCategoryRequestDTO req) {
 		//TODO - 현재 삭제 메소드는 하위 테이블인 제품에 categoryId를 FK 로 제공하기 떄문에 
 		//제품 개발이 된 후 제품에 categoryId가 존재하는 경우 validate 처리
 		return ResponseEntity.ok(categoryCommandService.deleteCategory(req));
 	}
 
 	//카테고리 조회 Paging
-	@GetMapping("/paging")
-	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingList(CategoryPagingRequestDTO req, Pageable page) {
+	@GetMapping("/v1/category/paging")
+	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingListV1(CategoryPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategoryPagingList(req, page)));
 	}
 	

@@ -40,7 +40,7 @@ public class UserController {
 	//사용자 중복 확인
 	@GetMapping("/v1/user/check/{email}")
 	public ResponseEntity<CommonResponseDTO> duplicateUserV1(@PathVariable @NotEmpty @Email String email) {
-		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.ok() : CommonResponseDTO.fail(UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()));
+		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.fail(UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()): CommonResponseDTO.ok());
 	}
 
 	//사용자 조회

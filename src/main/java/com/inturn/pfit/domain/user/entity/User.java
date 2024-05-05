@@ -1,7 +1,8 @@
 package com.inturn.pfit.domain.user.entity;
 
 
-import com.inturn.pfit.global.common.entity.CommonEntity;
+import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
+import com.inturn.pfit.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

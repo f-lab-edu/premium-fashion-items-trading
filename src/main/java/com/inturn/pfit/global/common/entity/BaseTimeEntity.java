@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommonEntity {
+public class BaseTimeEntity {
 
 
 	//@DateTimeFormat은 스프링 프레임워크에서 날짜와 시간을 나타내는 문자열을 자바의 날짜 및 시간 객체로 변환할 떄 사용, @RequestBoady, @ResponseBody에서는 동작하지 않음.

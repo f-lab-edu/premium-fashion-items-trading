@@ -1,6 +1,6 @@
 package com.inturn.pfit.domain.category.entity;
 
-import com.inturn.pfit.global.common.entity.CommonEntity;
+import com.inturn.pfit.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends CommonEntity {
+public class Category extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer categoryId;

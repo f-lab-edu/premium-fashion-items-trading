@@ -17,6 +17,11 @@ public enum UserErrorCode {
 		return this.error.getDefaultErrorMessage();
 	}
 
+
+	public Integer getStatusValue() {
+		return this.error.getStatusValue();
+	}
+
 	UserErrorCode(ErrorCodeDTO error) {
 		this.error = error;
 	}

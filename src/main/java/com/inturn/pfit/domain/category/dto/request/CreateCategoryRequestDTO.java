@@ -1,5 +1,6 @@
 package com.inturn.pfit.domain.category.dto.request;
 
+import com.inturn.pfit.domain.category.entity.Category;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -16,5 +17,12 @@ public record CreateCategoryRequestDTO(
 		Integer categorySort
 
 ) {
+
+	public Category createCategory() {
+		return Category.builder()
+				.categoryName(categoryName())
+				.categorySort(categorySort())
+				.build();
+	}
 
 }

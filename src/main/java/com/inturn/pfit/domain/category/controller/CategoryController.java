@@ -31,7 +31,7 @@ public class CategoryController {
 	private final CategoryCommandService categoryCommandService;
 
 	@GetMapping("/v1/category/{categoryId}")
-	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryByIdV1(@PathVariable @NotNull Integer categoryId) {
+	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryByIdV1(@PathVariable @Valid @NotNull Integer categoryId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategory(categoryId)));
 	}
 

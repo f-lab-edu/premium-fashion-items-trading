@@ -1,0 +1,17 @@
+spring:
+  config:
+    activate:
+      on-profile: junit
+
+  # Redis 설정
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+  # MySql 설정
+  datasource:
+    # TODO - db url 및 password는 환경 변수 설정으로 처리
+    url: jdbc:log4jdbc:mysql://localhost:3306/pfit-test
+    username: sdc
+    password: '@sdc.com'

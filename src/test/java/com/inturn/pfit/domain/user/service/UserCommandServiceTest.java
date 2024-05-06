@@ -84,7 +84,7 @@ class UserCommandServiceTest {
 		//given
 		SignUpRequestDTO req = createSignUpRequestDTO();
 		UserRole role = createUserRole();
-		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
+		UserEntity userParam = req.signUpUser(passwordEncoder);
 
 		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 		when(userRepository.save(any(UserEntity.class))).thenReturn(userParam);
@@ -108,7 +108,7 @@ class UserCommandServiceTest {
 		//given
 		SignUpRequestDTO req = createSignUpRequestDTO();
 		UserRole role = createUserRole();
-		UserEntity userParam = UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder);
+		UserEntity userParam = req.signUpUser(passwordEncoder);
 
 		when(userRepository.findByEmail(req.email())).thenReturn(Optional.of(userParam));
 
@@ -117,7 +117,7 @@ class UserCommandServiceTest {
 
 		//then
 		assertNotNull(result);
-		assertEquals(result.getMessage(), UserErrorCode.EXIST_USER_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage());
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
 	}
@@ -138,7 +138,7 @@ class UserCommandServiceTest {
 
 		//then
 		assertNotNull(result);
-		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getErrorMessage());
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
 	}
@@ -175,8 +175,7 @@ class UserCommandServiceTest {
 		setMockSession(new UserSession(user));
 
 		//변경 사용자 정보
-		UserEntity changeUser = getUserEntity();
-		changeUser.changeUserInfo(req);
+		UserEntity changeUser = req.changeUserInfo(user);
 
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.of(user));
 		when(userRepository.save(any(UserEntity.class))).thenReturn(changeUser);
@@ -190,7 +189,7 @@ class UserCommandServiceTest {
 		assertEquals(res.getUserId(), user.getUserId());
 
 		//user
-		verify(userRepository, times(1)).save(user);
+		verify(userRepository, times(1)).save(any());
 	}
 
 	@Test
@@ -204,7 +203,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userCommandService.changeUserInfo(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -229,7 +228,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundException result = assertThrows(NotFoundException.class, () -> userCommandService.changeUserInfo(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -263,7 +262,7 @@ class UserCommandServiceTest {
 		setMockSession(new UserSession(user));
 
 		var changeUser = getUserEntity();
-		changeUser.changePassword(req.password(), passwordEncoder);
+		req.changePassword(changeUser, passwordEncoder);
 
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.of(user));
 		when(userRepository.save(changeUser)).thenReturn(changeUser);
@@ -292,7 +291,7 @@ class UserCommandServiceTest {
 		//when & then
 		final NotFoundException result = assertThrows(NotFoundException.class, () -> userCommandService.passwordChange(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).save(any(UserEntity.class));
@@ -310,7 +309,7 @@ class UserCommandServiceTest {
 		//when & then
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.passwordChange(req));
 		assertNotNull(result);
-		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(any());

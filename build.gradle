@@ -42,9 +42,10 @@ dependencies {
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	//QueryDsl 의존성 추가
 	implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+    testImplementation 'org.projectlombok:lombok:1.18.22'
 
 
-	compileOnly 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
 
 /*
 	개발에 편리한 도구 제공

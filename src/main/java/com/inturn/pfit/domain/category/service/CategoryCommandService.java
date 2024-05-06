@@ -25,7 +25,7 @@ public class CategoryCommandService {
 	@Transactional
 	public CreateCategoryResponseDTO createCategory(CreateCategoryRequestDTO req) {
 
-		Category category = Category.createCategory(req.categoryName(), req.categorySort());
+		Category category = req.createCategory();
 
 		//이미 해당 categorySort가 있을 경우 Exception 발생
 		categoryQueryService.isExistCategoryBySort(category.getCategorySort());
@@ -42,9 +42,9 @@ public class CategoryCommandService {
 		//이미 해당 categorySort가 있을 경우 Exception 발생
 		categoryQueryService.isExistCategoryBySort(req.categorySort());
 
-		category.modifyCategory(req.categoryName(), req.categorySort());
+		Category modCategory = req.modifyCategory(category);
 
-		return CategoryResponseDTO.from(this.save(category));
+		return CategoryResponseDTO.from(this.save(modCategory));
 	}
 
 	@Transactional

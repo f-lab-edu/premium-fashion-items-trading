@@ -9,6 +9,6 @@ public class PfitException extends RuntimeException{
 	private Integer status;
 	protected PfitException(ErrorCodeDTO error) {
 		super(error.getDefaultErrorMessage());
-		this.status = error.getStatus().value();
+		this.status = error.getStatusValue();
 	}
 }

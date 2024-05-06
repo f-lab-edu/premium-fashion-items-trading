@@ -19,6 +19,10 @@ public enum CommonErrorCode {
 		return this.error.getDefaultErrorMessage();
 	}
 
+	public Integer getStatusValue() {
+		return this.error.getStatusValue();
+	}
+
 	CommonErrorCode(ErrorCodeDTO error) {
 		this.error = error;
 	}

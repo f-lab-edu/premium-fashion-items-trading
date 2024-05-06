@@ -196,8 +196,8 @@ class UserControllerTest {
 
 		var user = getUserEntity();
 		var changeUserInfo = getUserEntity();
-		changeUserInfo.changeUserInfo(req);
-		when(userCommandService.changeUserInfo(req)).thenReturn(UserResponseDTO.from(changeUserInfo));
+		UserEntity modUser = req.changeUserInfo(user);
+		when(userCommandService.changeUserInfo(req)).thenReturn(UserResponseDTO.from(modUser));
 
 		//when
 		ResultActions actions = mockMvc.perform(patch("/v1/user/info")
@@ -246,7 +246,7 @@ class UserControllerTest {
 	@DisplayName("사용자 중복 확인(duplicateUser) - 성공")
 	void duplicateUser_Success() throws Exception{
 		//given
-		when(userQueryService.duplicateUser(email)).thenReturn(true);
+		when(userQueryService.duplicateUser(email)).thenReturn(false);
 
 		//when
 		ResultActions actions = mockMvc.perform(get("/v1/user/check/%s".formatted(email)));

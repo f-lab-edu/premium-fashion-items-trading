@@ -118,7 +118,7 @@ class UserQueryServiceTest {
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userQueryService.getUserBySession());
 		assertNotNull(result);
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(userId);

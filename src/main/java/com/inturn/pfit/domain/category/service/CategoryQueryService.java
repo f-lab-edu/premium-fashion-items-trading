@@ -35,7 +35,7 @@ public class CategoryQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public void isExistCategoryBySort (Integer categorySort) {
+	public void isExistCategoryBySort(Integer categorySort) {
 		categoryRepository.findByCategorySort(categorySort).ifPresent(o -> {
 			throw new ExistCategorySortException();
 		});

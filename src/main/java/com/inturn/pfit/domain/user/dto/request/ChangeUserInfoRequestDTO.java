@@ -1,5 +1,6 @@
 package com.inturn.pfit.domain.user.dto.request;
 
+import com.inturn.pfit.domain.user.entity.UserEntity;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 
@@ -17,5 +18,8 @@ public record ChangeUserInfoRequestDTO(
 
 		String alarmYn
 ){
-
+	public UserEntity changeUserInfo(UserEntity user) {
+		user.changeUserInfo(this);
+		return user;
+	}
 }

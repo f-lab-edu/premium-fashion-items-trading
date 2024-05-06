@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
 public class User extends BaseTimeEntity {
 
 	@Id
@@ -54,6 +56,5 @@ public class User extends BaseTimeEntity {
 
 	public void changePassword(String password, PasswordEncoder encoder) {
 		this.password = encoder.encode(password);
-
 	}
 }

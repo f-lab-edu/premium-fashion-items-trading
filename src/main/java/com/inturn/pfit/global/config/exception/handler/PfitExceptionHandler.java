@@ -6,6 +6,7 @@ import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,10 +25,10 @@ public class PfitExceptionHandler {
 
 	//TODO - 아래 로직을 주석해제하고 ExceptionHandling 할 경우 403(FORBIDDEN)발생 시 아래 메소드에서 500 에러가 발생됨. 이유를 확인해보자.
 	//Exception 이 발생하였을 경우
-//	@ExceptionHandler(Exception.class)
-//	public ResponseEntity<CommonResponseDTO> exceptionHandler(Exception e) {
-//		return ResponseEntity.internalServerError().body(CommonResponseDTO.fail(e.toString()));
-//	}
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<CommonResponseDTO> exceptionHandler(Exception e) {
+		return ResponseEntity.internalServerError().body(CommonResponseDTO.fail(e.toString()));
+	}
 
 	//PftiExcpetion 이 발생되었을경우
 	@ExceptionHandler(PfitException.class)
@@ -63,4 +64,11 @@ public class PfitExceptionHandler {
 	public ResponseEntity<CommonResponseDTO> exceptionHandler(HttpMessageNotReadableException e) {
 		return ResponseEntity.badRequest().body(CommonResponseDTO.fail(CommonErrorCode.HTTP_MESSAGE_NOT_READABLE_EXCEPTION.getErrorMessage()));
 	}
+
+	//올바르지 않은 요청이 수신되었을 경우
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<CommonResponseDTO> accessDeniedExceptionHandler(AccessDeniedException e) {
+		return ResponseEntity.status(CommonErrorCode.FORBIDDEN.getStatusValue()).body(CommonResponseDTO.fail(CommonErrorCode.FORBIDDEN.getErrorMessage()));
+	}
+
 }

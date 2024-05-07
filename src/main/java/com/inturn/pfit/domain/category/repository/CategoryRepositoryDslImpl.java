@@ -24,7 +24,7 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 						eq(qCategory.categoryName, req.getCategoryName()),
 						eq(qCategory.categorySort, req.getCategorySort())
 				)
-				.select(Projections.constructor(CategoryPagingResponseDTO.class,
+				.select(Projections.fields(CategoryPagingResponseDTO.class,
 						qCategory.categoryId,
 						qCategory.categoryName,
 						qCategory.categorySort

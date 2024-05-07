@@ -20,7 +20,7 @@ public record ModifyCategoryRequestDTO(
 		//맞는지 검증은 별도로 ?
 		return Category.builder()
 				.categoryId(categoryId)
-				.categoryName(categoryName())
+				.categoryName(categoryName)
 				.categorySort(categorySort)
 				.build();
 	}

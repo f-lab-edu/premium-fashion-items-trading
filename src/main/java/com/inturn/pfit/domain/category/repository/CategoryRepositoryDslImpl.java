@@ -20,9 +20,9 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 	public Page<CategoryPagingResponseDTO> getPagingList(CategoryPagingRequestDTO req, Pageable pageable) {
 		return pagingList(from(qCategory)
 				.where(
-						eq(qCategory.categoryId, req.getCategoryId()),
-						eq(qCategory.categoryName, req.getCategoryName()),
-						eq(qCategory.categorySort, req.getCategorySort())
+						eq(qCategory.categoryId, req.categoryId()),
+						like(qCategory.categoryName, req.categoryName()),
+						eq(qCategory.categorySort, req.categorySort())
 				)
 				.select(Projections.fields(CategoryPagingResponseDTO.class,
 						qCategory.categoryId,

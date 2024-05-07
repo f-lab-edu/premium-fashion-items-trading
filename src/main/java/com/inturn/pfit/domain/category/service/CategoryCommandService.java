@@ -58,4 +58,5 @@ public class CategoryCommandService {
 	public Category save(Category entity) {
 		return categoryRepository.save(entity);
 	}
+
 }

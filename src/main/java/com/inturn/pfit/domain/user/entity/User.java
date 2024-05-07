@@ -1,7 +1,6 @@
 package com.inturn.pfit.domain.user.entity;
 
 
-import com.inturn.pfit.domain.user.dto.request.ChangeUserInfoRequestDTO;
 import com.inturn.pfit.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
 @SuperBuilder
@@ -45,16 +43,4 @@ public class User extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private String roleCode;
-
-	public void changeUserInfo(ChangeUserInfoRequestDTO req){
-		this.userPhone = req.userPhone();
-		this.userName = req.userName();
-		this.profileName = req.profileName();
-		this.profileUrl = req.profileUrl();
-		this.alarmYn = req.alarmYn();
-	}
-
-	public void changePassword(String password, PasswordEncoder encoder) {
-		this.password = encoder.encode(password);
-	}
 }

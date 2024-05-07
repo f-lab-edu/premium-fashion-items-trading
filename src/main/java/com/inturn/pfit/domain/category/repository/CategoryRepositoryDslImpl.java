@@ -24,7 +24,7 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 						eq(qCategory.categoryName, req.getCategoryName()),
 						eq(qCategory.categorySort, req.getCategorySort())
 				)
-				.select(Projections.bean(CategoryPagingResponseDTO.class,
+				.select(Projections.fields(CategoryPagingResponseDTO.class,
 						qCategory.categoryId,
 						qCategory.categoryName,
 						qCategory.categorySort
@@ -33,6 +33,4 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 				.limit(pageable.getPageSize())
 				.orderBy(getOrderSpecifiers(qCategory, pageable.getSort())), pageable);
 	}
-
-
 }

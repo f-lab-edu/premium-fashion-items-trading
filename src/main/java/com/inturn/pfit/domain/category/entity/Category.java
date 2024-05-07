@@ -24,16 +24,4 @@ public class Category extends BaseTimeEntity {
 
 	@Column(nullable = false)
 	private Integer categorySort;
-
-	public static Category createCategory(String categoryName, Integer categorySort) {
-		return Category.builder()
-				.categoryName(categoryName)
-				.categorySort(categorySort)
-				.build();
-	}
-
-	public void modifyCategory(String categoryName, Integer categorySort) {
-		this.categoryName = categoryName;
-		this.categorySort = categorySort;
-	}
 }

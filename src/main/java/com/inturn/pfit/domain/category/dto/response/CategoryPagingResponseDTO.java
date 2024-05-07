@@ -1,20 +1,16 @@
 package com.inturn.pfit.domain.category.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryPagingResponseDTO {
-
-
-	Integer categoryId;
-	String categoryName;
-	Integer categorySort;
-
-
+	private Integer categoryId;
+	private String categoryName;
+	private Integer categorySort;
 }

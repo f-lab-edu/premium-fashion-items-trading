@@ -3,6 +3,7 @@ package com.inturn.pfit.domain.user.dto.request;
 import com.inturn.pfit.domain.user.entity.UserEntity;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
+import org.apache.commons.lang3.StringUtils;
 
 @Builder
 public record ChangeUserInfoRequestDTO(
@@ -19,7 +20,19 @@ public record ChangeUserInfoRequestDTO(
 		String alarmYn
 ){
 	public UserEntity changeUserInfo(UserEntity user) {
-		user.changeUserInfo(this);
-		return user;
+		return UserEntity.builder()
+				.userId(user.getUserId())
+				.email(user.getEmail())
+				.password(user.getPassword())
+				.userPoint(user.getUserPoint())
+				.roleCode(user.getRoleCode())
+				//변경 포인트
+				.userPhone(StringUtils.isEmpty(this.userPhone()) ? user.getUserPhone() : this.userPhone())
+				.userName(StringUtils.isEmpty(this.userName()) ? user.getUserName() : this.userName())
+				.profileName(StringUtils.isEmpty(this.profileName()) ? user.getProfileName() : this.profileName())
+				.profileUrl(StringUtils.isEmpty(this.profileUrl()) ? user.getProfileUrl() : this.profileUrl())
+				.alarmYn(StringUtils.isEmpty(this.alarmYn()) ? user.getAlarmYn() : this.alarmYn())
+				////
+				.build();
 	}
 }

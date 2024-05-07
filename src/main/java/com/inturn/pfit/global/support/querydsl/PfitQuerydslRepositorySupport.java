@@ -27,7 +27,7 @@ public abstract class PfitQuerydslRepositorySupport<C extends EntityPathBase> ex
 	}
 
 	public BooleanExpression like(StringPath path, String param){
-		return ObjectUtils.isEmpty(param) ? null : path.like(param);
+		return ObjectUtils.isEmpty(param) ? null : path.contains(param);
 	}
 
 	public <T> Page<T> pagingList(JPQLQuery<T> query, Pageable pageable) {

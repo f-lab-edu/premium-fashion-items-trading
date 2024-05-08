@@ -21,7 +21,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/user")
 @RequiredArgsConstructor
 public class UserControllerV1 {
 
@@ -32,35 +32,35 @@ public class UserControllerV1 {
 	private final UserCommandService userCommandService;
 
 	//사용자 등록
-	@PostMapping("/user/sign-up")
+	@PostMapping("/sign-up")
 	public ResponseEntity<DataResponseDTO<SignUpResponseDTO>> signUpV1(@RequestBody @Valid SignUpRequestDTO req) {
 		//사용자 등록 처리
 		return ResponseEntity.ok(new DataResponseDTO<>(signUpFacade.signUp(req)));
 	}
 
 	//사용자 중복 확인
-	@GetMapping("/user/check/{email}")
+	@GetMapping("/check/{email}")
 	public ResponseEntity<CommonResponseDTO> duplicateUserV1(@PathVariable @NotEmpty @Email String email) {
 		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.fail(UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()): CommonResponseDTO.ok());
 	}
 
 	//사용자 조회
 	@Secured(RoleConsts.ROLE_USER)
-	@GetMapping("/user")
+	@GetMapping
 	public ResponseEntity<DataResponseDTO<UserResponseDTO>> getUserV1() {
 		return ResponseEntity.ok(new DataResponseDTO<>(userQueryService.getUserBySession()));
 	}
 
 	//사용자 편집
 	@Secured(RoleConsts.ROLE_USER)
-	@PatchMapping("/user/info")
+	@PatchMapping("/info")
 	public ResponseEntity<DataResponseDTO<UserResponseDTO>> changeUserInfoV1(@RequestBody @Valid ChangeUserInfoRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(userCommandService.changeUserInfo(req)));
 	}
 
 	//사용자 패스워드 변경
 	@Secured(RoleConsts.ROLE_USER)
-	@PatchMapping("/user/password")
+	@PatchMapping("/password")
 	public ResponseEntity<CommonResponseDTO> changePasswordV1(@RequestBody @Valid PasswordChangeRequestDTO req) {
 		return ResponseEntity.ok(userCommandService.passwordChange(req));
 	}

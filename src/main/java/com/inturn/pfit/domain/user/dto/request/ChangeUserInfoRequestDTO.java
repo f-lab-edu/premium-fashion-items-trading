@@ -20,19 +20,13 @@ public record ChangeUserInfoRequestDTO(
 		String alarmYn
 ){
 	public UserEntity changeUserInfo(UserEntity user) {
-		return UserEntity.builder()
-				.userId(user.getUserId())
-				.email(user.getEmail())
-				.password(user.getPassword())
-				.userPoint(user.getUserPoint())
-				.roleCode(user.getRoleCode())
-				//변경 포인트
+		return user.toBuilder()
 				.userPhone(StringUtils.isEmpty(this.userPhone()) ? user.getUserPhone() : this.userPhone())
 				.userName(StringUtils.isEmpty(this.userName()) ? user.getUserName() : this.userName())
 				.profileName(StringUtils.isEmpty(this.profileName()) ? user.getProfileName() : this.profileName())
 				.profileUrl(StringUtils.isEmpty(this.profileUrl()) ? user.getProfileUrl() : this.profileUrl())
 				.alarmYn(StringUtils.isEmpty(this.alarmYn()) ? user.getAlarmYn() : this.alarmYn())
-				////
 				.build();
+
 	}
 }

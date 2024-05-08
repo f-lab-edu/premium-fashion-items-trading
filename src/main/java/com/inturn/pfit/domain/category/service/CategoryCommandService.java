@@ -27,8 +27,8 @@ public class CategoryCommandService {
 
 		Category category = req.createCategory();
 
-		//이미 해당 categorySort가 있을 경우 Exception 발생
-		categoryQueryService.isExistCategoryBySort(category.getCategorySort());
+		//이미 해당 categoryOrder가 있을 경우 Exception 발생
+		categoryQueryService.validateExistCategoryByOrder(category.getCategoryOrder());
 
 		return CreateCategoryResponseDTO.from(this.save(category));
 	}
@@ -39,8 +39,8 @@ public class CategoryCommandService {
 		//해당 카테고리가 존재하는지 조회
 		Category category = categoryQueryService.getCategoryById(req.categoryId());
 
-		//이미 해당 categorySort가 있을 경우 Exception 발생
-		categoryQueryService.isExistCategoryBySort(req.categorySort());
+		//이미 해당 categoryOrder가 있을 경우 Exception 발생
+		categoryQueryService.validateExistCategoryByOrder(req.categoryOrder());
 
 		Category modCategory = req.modifyCategory(category);
 

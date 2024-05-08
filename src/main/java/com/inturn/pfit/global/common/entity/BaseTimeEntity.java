@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class BaseTimeEntity {

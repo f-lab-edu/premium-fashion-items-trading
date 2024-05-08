@@ -1,7 +1,7 @@
 package com.inturn.pfit.domain.category.service;
 
 import com.inturn.pfit.domain.category.entity.Category;
-import com.inturn.pfit.domain.category.exception.ExistCategorySortException;
+import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
 import com.inturn.pfit.global.common.exception.NotFoundException;
@@ -30,7 +30,7 @@ class CategoryQueryServiceTest {
 	CategoryRepository categoryRepository;
 
 	String categoryName = "신발";
-	Integer categorySort = 1;
+	Integer categoryOrder = 1;
 	Integer categoryId = 1;
 
 	Category category;
@@ -40,12 +40,12 @@ class CategoryQueryServiceTest {
 		category = Category.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(getCategoryById) - 성공")
+	@DisplayName("카테고리 조회 성공")
 	void getCategoryById_Success(){
 
 		//given
@@ -59,7 +59,7 @@ class CategoryQueryServiceTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(getCategoryById) - 카테고리가 존재하지 않음.")
+	@DisplayName("카테고리 데이터가 존재하지 않아 카테고리 조회 실패")
 	void getCategoryById_Fail_NotFoundCategory(){
 
 		//given
@@ -73,35 +73,35 @@ class CategoryQueryServiceTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 유무확인 By Sort(isExistCategoryBySort) - 성공")
-	void isExistCategoryBySort_Success(){
+	@DisplayName("카테고리 순번으로 카테고리 조회 시 데이터가 없기에 성공")
+	void validateExistCategoryByOrder_Success(){
 
 		//given
-		when(categoryRepository.findByCategorySort(categorySort)).thenReturn(Optional.empty());
+		when(categoryRepository.findByCategoryOrder(categoryOrder)).thenReturn(Optional.empty());
 
 		//when
-		categoryQueryService.isExistCategoryBySort(categorySort);
+		categoryQueryService.validateExistCategoryByOrder(categoryOrder);
 
 		//then
 		//verify
-		verify(categoryRepository, times(1)).findByCategorySort(categorySort);
+		verify(categoryRepository, times(1)).findByCategoryOrder(categoryOrder);
 	}
 
 	@Test
-	@DisplayName("카테고리 유무확인 By Sort(isExistCategoryBySort) - 실패 : 이미 등록된 카테고리")
-	void isExistCategoryBySort_Fail(){
+	@DisplayName("카테고리 순번으로 조회 시 카테고리 데이터가 존재하여 실패")
+	void validateExistCategoryByOrder_Fail(){
 
 		//given
-		when(categoryRepository.findByCategorySort(categorySort)).thenReturn(Optional.of(category));
+		when(categoryRepository.findByCategoryOrder(categoryOrder)).thenReturn(Optional.of(category));
 
 		//when
-		final ExistCategorySortException result = assertThrows(ExistCategorySortException.class, () -> categoryQueryService.isExistCategoryBySort(categorySort));
+		final ExistCategoryOrderException result = assertThrows(ExistCategoryOrderException.class, () -> categoryQueryService.validateExistCategoryByOrder(categoryOrder));
 
 		//then
 		assertEquals(result.getMessage(), CategoryErrorCode.EXIST_CATEGORY_SORT_EXCEPTION.getErrorMessage());
 
 		//verify
-		verify(categoryRepository, times(1)).findByCategorySort(categorySort);
+		verify(categoryRepository, times(1)).findByCategoryOrder(categoryOrder);
 	}
 
 

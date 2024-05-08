@@ -22,12 +22,12 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 				.where(
 						eq(qCategory.categoryId, req.categoryId()),
 						like(qCategory.categoryName, req.categoryName()),
-						eq(qCategory.categorySort, req.categorySort())
+						eq(qCategory.categoryOrder, req.categoryOrder())
 				)
 				.select(Projections.fields(CategoryPagingResponseDTO.class,
 						qCategory.categoryId,
 						qCategory.categoryName,
-						qCategory.categorySort
+						qCategory.categoryOrder
 						))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())

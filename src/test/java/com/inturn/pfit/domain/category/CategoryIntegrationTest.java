@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
-import com.inturn.pfit.domain.category.exception.ExistCategorySortException;
+import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.service.CategoryCommandService;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
@@ -48,7 +48,7 @@ class CategoryIntegrationTest {
 
 	static Integer categoryId;
 	static String categoryName;
-	static Integer categorySort;
+	static Integer categoryOrder;
 	CreateCategoryRequestDTO createCategoryRequestDTO;
 	ModifyCategoryRequestDTO modifyCategoryRequestDTO;
 
@@ -56,22 +56,22 @@ class CategoryIntegrationTest {
 	void testBefore() {
 		categoryId = 1;
 		categoryName = "신발";
-		categorySort = 1;
+		categoryOrder = 1;
 		createCategoryRequestDTO = CreateCategoryRequestDTO.builder()
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 
 
 		modifyCategoryRequestDTO = modifyCategoryRequestDTO.builder()
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 	}
 
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 성공")
+	@DisplayName("카테고리 등록 성공")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void createCategory_Success() throws Exception {
@@ -92,10 +92,10 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 실패")
+	@DisplayName("이미 등록된 카테고리 순번으로 등록하여 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
-	void createCategory_Fail_ExistCategorySort() throws Exception {
+	void createCategory_Fail_ExistCategoryOrder() throws Exception {
 		//given
 
 		//이미 해당 객체를 먼저 등록 - 실패 이유
@@ -109,14 +109,14 @@ class CategoryIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExistCategorySortException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExistCategoryOrderException))
 				.andExpect(jsonPath("$.data").doesNotExist())
 				.andExpect(jsonPath("$.success").value(false))
 				.andDo(print());
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 실패 : Unauthorized")
+	@DisplayName("인증 실패로 카테고리 등록 실패")
 	@Transactional
 	void createCategory_Fail_Unauthorized() throws Exception {
 		//given
@@ -135,7 +135,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 실패 : Forbidden")
+	@DisplayName("권한이 달라 카테고리 등록 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_USER)
 	void createCategory_Fail_Forbidden() throws Exception {
@@ -155,13 +155,13 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 실패 : 카테고리 명 필수값 null")
+	@DisplayName("카테고리 명이 없어 카테고리 등록 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void createCategory_Fail_CategoryNameIsNull() throws Exception {
 		//given
 		CreateCategoryRequestDTO req = CreateCategoryRequestDTO.builder()
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 
 		//when
@@ -179,7 +179,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(getCategoryById) - 성공")
+	@DisplayName("카테고리 조회 성공")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getCategoryById_Success() throws Exception {
@@ -196,12 +196,12 @@ class CategoryIntegrationTest {
 				.andExpect(jsonPath("$.success").value(true))
 				.andExpect(jsonPath("$.data.categoryId").value(res.categoryId()))
 				.andExpect(jsonPath("$.data.categoryName").value(categoryName))
-				.andExpect(jsonPath("$.data.categorySort").value(categorySort))
+				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder))
 				.andDo(print());
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(getCategoryById) - 실패 : 존재하지 않는 카테고리 조회")
+	@DisplayName("존재하지 않는 카테고리 ID로 카테고리를 조회하여 NotFoundException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getCategoryById_Fail_NotFoundCategory() throws Exception {
@@ -221,7 +221,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(getCategoryById) - 실패 : 카테고리 ID Null")
+	@DisplayName("카테고리 ID가 null 이기 때문에 카테고리 조회 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getCategoryById_Fail_NullCategoryId() throws Exception {
@@ -239,7 +239,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 수정(modifyCategory) - 성공")
+	@DisplayName("카테고리 수정 성공")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyCategory_Success() throws Exception {
@@ -249,7 +249,7 @@ class CategoryIntegrationTest {
 		ModifyCategoryRequestDTO req = ModifyCategoryRequestDTO.builder()
 				.categoryId(res.categoryId())
 				.categoryName(categoryName.repeat(2))
-				.categorySort(categorySort + 1)
+				.categoryOrder(categoryOrder + 1)
 				.build();
 
 		//when
@@ -264,22 +264,22 @@ class CategoryIntegrationTest {
 				.andExpect(jsonPath("$.success").value(true))
 				.andExpect(jsonPath("$.data.categoryId").value(res.categoryId()))
 				.andExpect(jsonPath("$.data.categoryName").value(categoryName.repeat(2)))
-				.andExpect(jsonPath("$.data.categorySort").value(categorySort + 1))
+				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder + 1))
 				.andDo(print());
 	}
 
 
 	@ParameterizedTest
-	@DisplayName("카테고리 수정(modifyCategory) - 실패 : Valid Fail")
+	@DisplayName("ModifyCategoryRequestDTO 의 파라미터가 validate 되어 카테고리 수정 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	@MethodSource("provideParameter")
-	void modifyCategory_Fail_ValidFail(Integer categoryId, String categoryName, Integer categorySort) throws Exception {
+	void modifyCategory_Fail_ValidFail(Integer categoryId, String categoryName, Integer categoryOrder) throws Exception {
 		//given
 		ModifyCategoryRequestDTO req = ModifyCategoryRequestDTO.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 
 		//when
@@ -298,15 +298,15 @@ class CategoryIntegrationTest {
 
 	private static Stream<Arguments> provideParameter() {
 		return Stream.of(
-				Arguments.of(null, categoryName, categorySort),
-				Arguments.of(1, null, categorySort),
-				Arguments.of(1, "", categorySort),
+				Arguments.of(null, categoryName, categoryOrder),
+				Arguments.of(1, null, categoryOrder),
+				Arguments.of(1, "", categoryOrder),
 				Arguments.of(1, categoryName, null)
 		);
 	}
 
 	@Test
-	@DisplayName("카테고리 수정(modifyCategory) - 실패 : 존재하지 않는 카테고리")
+	@DisplayName("카테고리 데이터가 존재하지 않는 ID로 카테고리 수정을 호출하여 NotFoundException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyCategory_Fail_NotFoundCategory() throws Exception {
@@ -314,7 +314,7 @@ class CategoryIntegrationTest {
 		ModifyCategoryRequestDTO req = ModifyCategoryRequestDTO.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 
 		//when
@@ -332,26 +332,26 @@ class CategoryIntegrationTest {
 	//TODO - paging 관련 테스트는 추후 보완해보자.
 
 	@ParameterizedTest
-	@DisplayName("카테고리 조회 Paging(getCategoryPagingList) - 성공")
+	@DisplayName("카테고리 조회 성공")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	@MethodSource("providePagingParameter")
 	void getCategoryPagingList_Success(Integer size, Integer page, Integer listSize) throws Exception {
 		//given
 		String categoryName = "신발";
-		Integer categorySort = 1;
+		Integer categoryOrder = 1;
 		int createRow = 20;
 
 		for(int i = 0; i < createRow; i++) {
 			categoryCommandService.createCategory(CreateCategoryRequestDTO.builder()
-					.categorySort(categorySort + i)
+					.categoryOrder(categoryOrder + i)
 					.categoryName(categoryName + i)
 					.build());
 		}
 
 		//when
 		ResultActions actions = mockMvc.perform(get("/v1/category/paging")
-				.param("sort", "categorySort,desc")
+				.param("sort", "categoryOrder,desc")
 				.param("size", size.toString())
 				.param("page", page.toString())
 		);

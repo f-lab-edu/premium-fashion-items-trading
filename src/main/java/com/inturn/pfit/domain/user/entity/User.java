@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor

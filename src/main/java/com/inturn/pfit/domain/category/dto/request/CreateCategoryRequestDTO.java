@@ -14,14 +14,14 @@ public record CreateCategoryRequestDTO(
 		String categoryName,
 
 		@NotNull
-		Integer categorySort
+		Integer categoryOrder
 
 ) {
 
 	public Category createCategory() {
 		return Category.builder()
 				.categoryName(categoryName())
-				.categorySort(categorySort())
+				.categoryOrder(categoryOrder())
 				.build();
 	}
 

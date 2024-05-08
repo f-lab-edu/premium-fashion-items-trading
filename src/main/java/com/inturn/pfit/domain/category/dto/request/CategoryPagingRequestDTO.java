@@ -9,7 +9,7 @@ public record CategoryPagingRequestDTO(
 
 		String categoryName,
 
-		Integer categorySort
+		Integer categoryOrder
 ) {
 
 }

@@ -10,7 +10,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Entity(name = "category")
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
@@ -23,5 +23,5 @@ public class Category extends BaseTimeEntity {
 	private String categoryName;
 
 	@Column(nullable = false)
-	private Integer categorySort;
+	private Integer categoryOrder;
 }

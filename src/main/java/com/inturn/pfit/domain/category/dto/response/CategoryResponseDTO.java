@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public record CategoryResponseDTO(
 		Integer categoryId,
 		String categoryName,
-		Integer categorySort,
+		Integer categoryOrder,
 		LocalDateTime createdDt,
 		LocalDateTime updatedDt
 ) {
@@ -18,7 +18,7 @@ public record CategoryResponseDTO(
 		return CategoryResponseDTO.builder()
 				.categoryId(entity.getCategoryId())
 				.categoryName(entity.getCategoryName())
-				.categorySort(entity.getCategorySort())
+				.categoryOrder(entity.getCategoryOrder())
 				.createdDt(entity.getCreatedDt())
 				.updatedDt(entity.getUpdatedDt())
 				.build();

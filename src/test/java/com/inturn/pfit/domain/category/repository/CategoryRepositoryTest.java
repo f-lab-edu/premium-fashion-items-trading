@@ -29,12 +29,12 @@ class CategoryRepositoryTest {
 	void testStart() {
 		category = Category.builder()
 				.categoryName("운동화")
-				.categorySort(1)
+				.categoryOrder(1)
 				.build();
 	}
 
 	@Test
-	@DisplayName("카테고리 저장(save) - 성공")
+	@DisplayName("카테고리 저장 성공(save)")
 	@Transactional
 	void save_Success() {
 
@@ -46,36 +46,36 @@ class CategoryRepositoryTest {
 		//then
 		assertNotNull(result.getCategoryId());
 		assertEquals(result.getCategoryName(), category.getCategoryName());
-		assertEquals(result.getCategorySort(), category.getCategorySort());
+		assertEquals(result.getCategoryOrder(), category.getCategoryOrder());
 
 	}
 	
 	@Test
-	@DisplayName("카테고리 조회(findByCategorySort) - 성공")
+	@DisplayName("카테고리 순번으로 조회 성공(findByCategoryOrder)")
 	@Transactional
-	void findByCategorySort_Success() {
+	void findByCategoryOrder_Success() {
 
 		//given
 
 		//when
 		Category result = categoryRepository.save(category);
-		final Optional<Category> categoryOpt = categoryRepository.findByCategorySort(1);
+		final Optional<Category> categoryOpt = categoryRepository.findByCategoryOrder(1);
 
 		//then
 		assertEquals(categoryOpt.isPresent(), true);
 		assertEquals(categoryOpt.get().getCategoryName(), "운동화");
-		assertEquals(categoryOpt.get().getCategorySort(), 1);
+		assertEquals(categoryOpt.get().getCategoryOrder(), 1);
 	}
 
 	@Test
-	@DisplayName("카테고리 조회(findByCategorySort) - 실패 : Not")
+	@DisplayName("카테고리 번호로 조회 시 데이터가 이미 존재하여 실패")
 	@Transactional
-	void findByCategorySort_Fail_NotFound() {
+	void findByCategoryOrder_Fail_NotFound() {
 
 		//given
 
 		//when
-		final Optional<Category> categoryOpt = categoryRepository.findByCategorySort(1);
+		final Optional<Category> categoryOpt = categoryRepository.findByCategoryOrder(1);
 
 		//then
 		assertEquals(categoryOpt.isPresent(), false);

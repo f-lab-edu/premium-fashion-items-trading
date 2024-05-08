@@ -23,32 +23,33 @@ import org.springframework.web.bind.annotation.*;
 
 @Secured(RoleConsts.ROLE_ADMIN)
 @RestController
+@RequestMapping("/v1")
 @RequiredArgsConstructor
-public class CategoryController {
+public class CategoryControllerV1 {
 
 	private final CategoryQueryService categoryQueryService;
 
 	private final CategoryCommandService categoryCommandService;
 
-	@GetMapping("/v1/category/{categoryId}")
+	@GetMapping("/category/{categoryId}")
 	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryByIdV1(@PathVariable @Valid @NotNull Integer categoryId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategory(categoryId)));
 	}
 
 	//카테고리 등록
-	@PostMapping("/v1/category")
+	@PostMapping("/category")
 	public ResponseEntity<DataResponseDTO<CreateCategoryResponseDTO>> createCategoryV1(@RequestBody @Valid CreateCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.createCategory(req)));
 	}
 
 	//카테고리 편집
-	@PatchMapping("/v1/category")
+	@PatchMapping("/category")
 	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> modifyCategoryV1(@RequestBody @Valid ModifyCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.modifyCategory(req)));
 	}
 
 	//카테고리 삭제
-	@DeleteMapping("/v1/category")
+	@DeleteMapping("/category")
 	public ResponseEntity<CommonResponseDTO> deleteCategoryV1(@RequestBody @Valid DeleteCategoryRequestDTO req) {
 		//TODO - 현재 삭제 메소드는 하위 테이블인 제품에 categoryId를 FK 로 제공하기 떄문에 
 		//제품 개발이 된 후 제품에 categoryId가 존재하는 경우 validate 처리
@@ -56,7 +57,7 @@ public class CategoryController {
 	}
 
 	//카테고리 조회 Paging
-	@GetMapping("/v1/category/paging")
+	@GetMapping("/category/paging")
 	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingListV1(CategoryPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategoryPagingList(req, page)));
 	}

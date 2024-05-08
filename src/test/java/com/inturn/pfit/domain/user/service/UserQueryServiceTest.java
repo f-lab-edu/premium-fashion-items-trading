@@ -96,7 +96,7 @@ class UserQueryServiceTest {
 		UserResponseDTO res = userQueryService.getUserBySession();
 
 		//then
-		assertEquals(res.getUserId(), userId);
+		assertEquals(res.userId(), userId);
 
 		//verify
 		verify(userRepository, times(1)).findById(userId);

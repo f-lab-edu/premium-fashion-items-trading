@@ -1,15 +1,17 @@
 package com.inturn.pfit.domain.user.dto.response;
 
+import com.inturn.pfit.domain.user.entity.UserEntity;
 import lombok.Builder;
-import lombok.Getter;
 
-@Getter
+
 @Builder
-public class SignUpResponseDTO {
+public record SignUpResponseDTO(
+		Long userId
+) {
 
-	private Long userId;
-
-	public SignUpResponseDTO(Long userId) {
-		this.userId = userId;
+	public static SignUpResponseDTO from(UserEntity user) {
+		return SignUpResponseDTO.builder()
+				.userId(user.getUserId())
+				.build();
 	}
 }

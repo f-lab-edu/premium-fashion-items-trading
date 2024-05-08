@@ -1,32 +1,41 @@
 package com.inturn.pfit.domain.user.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.inturn.pfit.domain.user.entity.UserEntity;
+import com.inturn.pfit.global.support.utils.PfitConsts;
 import lombok.Builder;
-import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Builder
-@Getter
-public class UserResponseDTO {
+public record UserResponseDTO(
 
-	private Long userId;
+		Long userId,
 
-	private String email;
+		String email,
 
-	private String password;
+		String password,
 
-	private String userPhone;
+		String userPhone,
 
-	private String userName;
+		String userName,
 
-	private String profileName;
+		String profileName,
 
-	private String profileUrl;
+		String profileUrl,
 
-	private Long userPoint;
+		Long userPoint,
 
-	private String alarmYn;
+		String alarmYn,
 
-	private String roleCode;
+		String roleCode,
+
+		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
+		LocalDateTime createdDt,
+		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
+		LocalDateTime updatedDt
+) {
+
 
 	public static UserResponseDTO from(UserEntity entity) {
 		return UserResponseDTO.builder()
@@ -40,6 +49,8 @@ public class UserResponseDTO {
 				.userPoint(entity.getUserPoint())
 				.alarmYn(entity.getAlarmYn())
 				.roleCode(entity.getRoleCode())
+				.createdDt(entity.getCreatedDt())
+				.updatedDt(entity.getUpdatedDt())
 				.build();
 	}
 }

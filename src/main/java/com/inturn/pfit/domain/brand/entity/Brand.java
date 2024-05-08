@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity(name = "brand")
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Brand extends BaseTimeEntity {

@@ -7,13 +7,11 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity(name = "user")
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
-@DynamicUpdate
 public class UserEntity extends User {
 
 	@ManyToOne

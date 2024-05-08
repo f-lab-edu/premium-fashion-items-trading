@@ -7,14 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @SuperBuilder(toBuilder = true)
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicUpdate
 public class User extends BaseTimeEntity {
 
 	@Id

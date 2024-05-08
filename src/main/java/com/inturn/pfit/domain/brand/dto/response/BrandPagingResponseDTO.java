@@ -1,5 +1,6 @@
 package com.inturn.pfit.domain.brand.dto.response;
 
+import com.inturn.pfit.global.common.dto.response.CommonTimeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,9 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BrandPagingResponseDTO {
+public class BrandPagingResponseDTO extends CommonTimeDTO {
 
-	Integer brandId;
-	String brandName;
+	private Integer brandId;
+	private String brandName;
 
 }

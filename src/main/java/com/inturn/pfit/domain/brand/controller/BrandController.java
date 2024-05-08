@@ -3,14 +3,12 @@ package com.inturn.pfit.domain.brand.controller;
 
 import com.inturn.pfit.domain.brand.dto.request.BrandPagingRequestDTO;
 import com.inturn.pfit.domain.brand.dto.request.CreateBrandRequestDTO;
-import com.inturn.pfit.domain.brand.dto.request.DeleteBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.request.ModifyBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.response.BrandPagingResponseDTO;
 import com.inturn.pfit.domain.brand.dto.response.BrandResponseDTO;
 import com.inturn.pfit.domain.brand.dto.response.CreateBrandResponseDTO;
 import com.inturn.pfit.domain.brand.service.BrandCommandService;
 import com.inturn.pfit.domain.brand.service.BrandQueryService;
-import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import jakarta.validation.Valid;
@@ -31,6 +29,7 @@ public class BrandController {
 
 	private final BrandCommandService brandCommandService;
 
+	//브랜드 단일 조회
 	@GetMapping("/v1/brand/{brandId}")
 	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> getBrandByIdV1(@PathVariable @Valid @NotNull Integer brandId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrand(brandId)));
@@ -48,17 +47,18 @@ public class BrandController {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.modifyBrand(req)));
 	}
 
-	//브랜드 삭제
-	@DeleteMapping("/v1/brand")
-	public ResponseEntity<CommonResponseDTO> deleteBrandV1(@RequestBody @Valid DeleteBrandRequestDTO req) {
-		//TODO - 현재 삭제 메소드는 하위 테이블인 제품에 brandId를 FK 로 제공하기 떄문에 
-		//제품 개발이 된 후 제품에 brandId가 존재하는 경우 validate 처리
-		return ResponseEntity.ok(brandCommandService.deleteBrand(req));
-	}
-
 	//브랜드 조회 Paging
 	@GetMapping("/v1/brand/paging")
 	public ResponseEntity<DataResponseDTO<Page<BrandPagingResponseDTO>>> getBrandPagingListV1(BrandPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrandPagingList(req, page)));
 	}
+
+	//TODO - 추후 상품 개발 완료 후 삭제 메소드 추가 개발
+	//브랜드 삭제
+//	@DeleteMapping("/v1/brand")
+//	public ResponseEntity<CommonResponseDTO> deleteBrandV1(@RequestBody @Valid DeleteBrandRequestDTO req) {
+//
+//		//제품 개발이 된 후 제품에 brandId가 존재하는 경우 validate 처리
+//		return ResponseEntity.ok(brandCommandService.deleteBrand(req));
+//	}
 }

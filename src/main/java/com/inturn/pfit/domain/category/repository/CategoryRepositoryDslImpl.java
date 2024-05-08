@@ -27,7 +27,9 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 				.select(Projections.fields(CategoryPagingResponseDTO.class,
 						qCategory.categoryId,
 						qCategory.categoryName,
-						qCategory.categoryOrder
+						qCategory.categoryOrder,
+						qCategory.createdDt,
+						qCategory.updatedDt
 						))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())

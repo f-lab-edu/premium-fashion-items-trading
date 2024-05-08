@@ -15,8 +15,7 @@ public record ModifyBrandRequestDTO(
 		String brandName
 ) {
 	public Brand modifyBrand(Brand brand) {
-		return Brand.builder()
-				.brandId(brandId)
+		return brand.toBuilder()
 				.brandName(brandName)
 				.build();
 	}

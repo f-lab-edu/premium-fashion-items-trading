@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class CategoryPagingResponseDTO {
 	private Integer categoryId;
 	private String categoryName;
-	private Integer categorySort;
+	private Integer categoryOrder;
 }

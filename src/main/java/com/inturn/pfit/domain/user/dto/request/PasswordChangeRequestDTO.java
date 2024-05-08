@@ -23,19 +23,8 @@ public record PasswordChangeRequestDTO(
 	}
 
 	public UserEntity changePassword(UserEntity user, PasswordEncoder encoder) {
-		return UserEntity.builder()
-				.userId(user.getUserId())
-				.email(user.getEmail())
-				//변경 포인트
+		return user.toBuilder()
 				.password(encoder.encode(this.password))
-				////
-				.userPoint(user.getUserPoint())
-				.roleCode(user.getRoleCode())
-				.userPhone(user.getUserPhone())
-				.userName(user.getUserName())
-				.profileName(user.getProfileName())
-				.profileUrl(user.getProfileUrl())
-				.alarmYn(user.getAlarmYn())
 				.build();
 	}
 }

@@ -8,20 +8,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/v1")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthControllerV1 {
 
 	private final AuthService authService;
 
-	@PostMapping("/v1/login")
+	@PostMapping("/login")
 	public ResponseEntity<CommonResponseDTO> loginV1(@RequestBody @Valid LoginRequestDTO user) {
 		return ResponseEntity.ok(authService.login(user));
 	}
 
-	@PostMapping("/v1/logout")
+	@PostMapping("/logout")
 	public ResponseEntity<CommonResponseDTO> logoutV1() {
 		authService.logout();
 		return ResponseEntity.ok(CommonResponseDTO.ok());

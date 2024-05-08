@@ -14,14 +14,12 @@ public record ModifyCategoryRequestDTO(
 		@Length(max = 255)
 		String categoryName,
 		@NotNull
-		Integer categorySort
+		Integer categoryOrder
 ) {
 	public Category modifyCategory(Category category) {
-		//맞는지 검증은 별도로 ?
-		return Category.builder()
-				.categoryId(categoryId)
+		return category.toBuilder()
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 	}
 }

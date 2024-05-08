@@ -5,7 +5,7 @@ import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
-import com.inturn.pfit.domain.category.exception.ExistCategorySortException;
+import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
 import com.inturn.pfit.global.common.exception.NotFoundException;
@@ -36,7 +36,7 @@ class CategoryCommandServiceTest {
 
 
 	String categoryName = "신발";
-	Integer categorySort = 1;
+	Integer categoryOrder = 1;
 	Integer categoryId = 1;
 
 
@@ -46,19 +46,19 @@ class CategoryCommandServiceTest {
 		category = Category.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 성공")
+	@DisplayName("카테고리 등록 성공")
 	void createCategory_Success(){
 		//given
 		CreateCategoryRequestDTO req = CreateCategoryRequestDTO.builder()
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
-		doNothing().when(categoryQueryService).isExistCategoryBySort(categorySort);
+		doNothing().when(categoryQueryService).validateExistCategoryByOrder(categoryOrder);
 		when(categoryRepository.save(any())).thenReturn(category);
 
 		//when
@@ -69,44 +69,44 @@ class CategoryCommandServiceTest {
 
 		//verify
 		verify(categoryRepository, times(1)).save(any());
-		verify(categoryQueryService, times(1)).isExistCategoryBySort(categorySort);
+		verify(categoryQueryService, times(1)).validateExistCategoryByOrder(categoryOrder);
 	}
 
 	@Test
-	@DisplayName("카테고리 등록(createCategory) - 실패 : 카테고리 Sort가 이미 존재함.")
-	void createCategory_Fail_IsExistCategorySort(){
+	@DisplayName("카테고리 순번이 이미 존재하여 카테고리 등록 실패")
+	void createCategory_Fail_ExistCategoryOrder(){
 		//given
 		CreateCategoryRequestDTO req = CreateCategoryRequestDTO.builder()
 				.categoryName(categoryName)
-				.categorySort(categorySort)
+				.categoryOrder(categoryOrder)
 				.build();
-		doThrow(new ExistCategorySortException()).when(categoryQueryService).isExistCategoryBySort(categorySort);
+		doThrow(new ExistCategoryOrderException()).when(categoryQueryService).validateExistCategoryByOrder(categoryOrder);
 
 		//when
-		final ExistCategorySortException result = assertThrows(ExistCategorySortException.class, () -> categoryCommandService.createCategory(req));
+		final ExistCategoryOrderException result = assertThrows(ExistCategoryOrderException.class, () -> categoryCommandService.createCategory(req));
 
 		//then
 		assertEquals(result.getMessage(), CategoryErrorCode.EXIST_CATEGORY_SORT_EXCEPTION.getErrorMessage());
 
 		//verify
-		verify(categoryQueryService, times(1)).isExistCategoryBySort(categorySort);
+		verify(categoryQueryService, times(1)).validateExistCategoryByOrder(categoryOrder);
 	}
 
 	@Test
-	@DisplayName("카테고리 편집(modifyCategory) - 성공")
+	@DisplayName("카테고리 편집 성공")
 	void modifyCategory_Success() {
 		//given
 		ModifyCategoryRequestDTO req = ModifyCategoryRequestDTO.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName.repeat(2))
-				.categorySort(categorySort + 1)
+				.categoryOrder(categoryOrder + 1)
 				.build();
 		when(categoryQueryService.getCategoryById(req.categoryId())).thenReturn(category);
-		doNothing().when(categoryQueryService).isExistCategoryBySort(req.categorySort());
+		doNothing().when(categoryQueryService).validateExistCategoryByOrder(req.categoryOrder());
 		Category modCategory = Category.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName.repeat(2))
-				.categorySort(categorySort + 1)
+				.categoryOrder(categoryOrder + 1)
 				.build();
 		when(categoryRepository.save(any())).thenReturn(modCategory);
 
@@ -115,23 +115,23 @@ class CategoryCommandServiceTest {
 
 		//then
 		assertEquals(req.categoryId(), res.categoryId());
-		assertEquals(req.categorySort(), res.categorySort());
+		assertEquals(req.categoryOrder(), res.categoryOrder());
 		assertEquals(req.categoryName(), res.categoryName());
 
 		//verify
 		verify(categoryRepository, times(1)).save(any());
 		verify(categoryQueryService, times(1)).getCategoryById(req.categoryId());
-		verify(categoryQueryService, times(1)).isExistCategoryBySort(req.categorySort());
+		verify(categoryQueryService, times(1)).validateExistCategoryByOrder(req.categoryOrder());
 	}
 
 	@Test
-	@DisplayName("카테고리 편집(modifyCategory) - 실패 : 존재하지 않는 카테고리")
+	@DisplayName("존재하지 않는 카테고리 데이터로 편집하여 편집 실패")
 	void modifyCategory_Fail_NotFoundCategory() {
 		//given
 		ModifyCategoryRequestDTO req = ModifyCategoryRequestDTO.builder()
 				.categoryId(categoryId)
 				.categoryName(categoryName.repeat(2))
-				.categorySort(categorySort + 1)
+				.categoryOrder(categoryOrder + 1)
 				.build();
 		when(categoryQueryService.getCategoryById(req.categoryId())).thenThrow(new NotFoundException());
 
@@ -143,7 +143,7 @@ class CategoryCommandServiceTest {
 
 		//verify
 		verify(categoryQueryService, times(1)).getCategoryById(req.categoryId());
-		verify(categoryQueryService, times(0)).isExistCategoryBySort(req.categorySort());
+		verify(categoryQueryService, times(0)).validateExistCategoryByOrder(req.categoryOrder());
 		verify(categoryRepository, times(0)).save(any());
 	}
 

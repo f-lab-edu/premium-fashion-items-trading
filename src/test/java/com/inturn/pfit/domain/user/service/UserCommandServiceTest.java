@@ -14,10 +14,9 @@ import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
 import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
-import com.inturn.pfit.global.config.security.service.UserSession;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
-import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import com.inturn.pfit.global.support.utils.SessionUtils;
+import com.inturn.pfit.support.fixture.SessionFixture;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,12 +25,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Optional;
 
@@ -172,7 +167,7 @@ class UserCommandServiceTest {
 		//session 설정
 		//기 등록 사용자 정보
 		var user = getUserEntity();
-		setMockSession(new UserSession(user));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 
 		//변경 사용자 정보
 		UserEntity changeUser = req.changeUserInfo(user);
@@ -198,7 +193,7 @@ class UserCommandServiceTest {
 		//given
 		var req = createChangeUserInfoRequestDTO();
 
-		setMockSession(null);
+		SessionFixture.setMockSession();
 
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userCommandService.changeUserInfo(req));
@@ -217,12 +212,7 @@ class UserCommandServiceTest {
 		var req = createChangeUserInfoRequestDTO();
 
 		//session 설정
-		setMockSession(new UserSession(UserEntity.builder().roleCode(RoleConsts.ROLE_USER)
-				.email(email)
-				.password(password)
-				.userId(userId)
-				.build()
-		));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.empty());
 
 		//when & then
@@ -241,15 +231,6 @@ class UserCommandServiceTest {
 				.build();
 	}
 
-	private void setMockSession(UserSession userSession) {
-		MockHttpSession session = new MockHttpSession();
-		session.setAttribute(SessionConsts.LOGIN_USER, userSession);
-
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setSession(session);
-		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-	}
-
 	@Test
 	@DisplayName("사용자 비밀번호 변경(passwordChange) - 성공")
 	void passwordChange_Success() {
@@ -259,7 +240,7 @@ class UserCommandServiceTest {
 
 		var user = getUserEntity();
 		//session 설정
-		setMockSession(new UserSession(user));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 
 		var changeUser = getUserEntity();
 		req.changePassword(changeUser, passwordEncoder);
@@ -285,7 +266,7 @@ class UserCommandServiceTest {
 		var req = PasswordChangeRequestDTO.builder().password(password).confirmPassword(password).build();
 
 		//session 설정
-		setMockSession(new UserSession(getUserEntity()));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 		when(userRepository.findById(SessionUtils.getUserSession().getUserId())).thenReturn(Optional.empty());
 
 		//when & then
@@ -304,7 +285,7 @@ class UserCommandServiceTest {
 		var req = PasswordChangeRequestDTO.builder().password(password).confirmPassword(password.repeat(2)).build();
 
 		//session 설정
-		setMockSession(new UserSession(getUserEntity()));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 
 		//when & then
 		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.passwordChange(req));

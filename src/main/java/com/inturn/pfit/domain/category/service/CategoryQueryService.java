@@ -4,7 +4,7 @@ import com.inturn.pfit.domain.category.dto.request.CategoryPagingRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryPagingResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
-import com.inturn.pfit.domain.category.exception.ExistCategorySortException;
+import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +35,9 @@ public class CategoryQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public void isExistCategoryBySort(Integer categorySort) {
-		categoryRepository.findByCategorySort(categorySort).ifPresent(o -> {
-			throw new ExistCategorySortException();
+	public void validateExistCategoryByOrder(Integer categoryOrder) {
+		categoryRepository.findByCategoryOrder(categoryOrder).ifPresent(o -> {
+			throw new ExistCategoryOrderException();
 		});
 	}
 }

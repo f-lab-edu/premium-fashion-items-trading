@@ -22,33 +22,34 @@ import org.springframework.web.bind.annotation.*;
 
 @Secured(RoleConsts.ROLE_ADMIN)
 @RestController
+@RequestMapping("/v1/brand")
 @RequiredArgsConstructor
-public class BrandController {
+public class BrandV1Controller {
 
 	private final BrandQueryService brandQueryService;
 
 	private final BrandCommandService brandCommandService;
 
 	//브랜드 단일 조회
-	@GetMapping("/v1/brand/{brandId}")
+	@GetMapping("/{brandId}")
 	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> getBrandByIdV1(@PathVariable @Valid @NotNull Integer brandId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrand(brandId)));
 	}
 
 	//브랜드 등록
-	@PostMapping("/v1/brand")
+	@PostMapping
 	public ResponseEntity<DataResponseDTO<CreateBrandResponseDTO>> createBrandV1(@RequestBody @Valid CreateBrandRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.createBrand(req)));
 	}
 
 	//브랜드 편집
-	@PatchMapping("/v1/brand")
+	@PatchMapping
 	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> modifyBrandV1(@RequestBody @Valid ModifyBrandRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.modifyBrand(req)));
 	}
 
 	//브랜드 조회 Paging
-	@GetMapping("/v1/brand/paging")
+	@GetMapping("/paging")
 	public ResponseEntity<DataResponseDTO<Page<BrandPagingResponseDTO>>> getBrandPagingListV1(BrandPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrandPagingList(req, page)));
 	}

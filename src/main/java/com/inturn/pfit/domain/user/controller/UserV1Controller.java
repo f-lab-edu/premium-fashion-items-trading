@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
-public class UserControllerV1 {
+public class UserV1Controller {
 
 	private final SignUpFacade signUpFacade;
 

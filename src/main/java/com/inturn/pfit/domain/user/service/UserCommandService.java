@@ -37,14 +37,14 @@ public class UserCommandService {
 		if(!req.isCorrectPassword()) {
 			throw new PasswordMismatchException();
 		}
-		return this.save(UserEntity.signUpUser(req.email(), req.password(), req.alarmYn(), role.getRoleCode(), passwordEncoder));
+		return this.save(req.signUpUser(passwordEncoder));
 	}
 
 	@Transactional
 	public UserResponseDTO changeUserInfo(ChangeUserInfoRequestDTO req) {
-		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
-		user.changeUserInfo(req);
-		return UserResponseDTO.from(this.save(user));
+		UserEntity user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
+		UserEntity modUser = req.changeUserInfo(user);
+		return UserResponseDTO.from(this.save(modUser));
 	}
 
 	@Transactional
@@ -52,9 +52,9 @@ public class UserCommandService {
 		if(!req.isCorrectPassword()) {
 			throw new PasswordMismatchException();
 		}
-		var user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
-		user.changePassword(req.password(), passwordEncoder);
-		this.save(user);
+		UserEntity user = userRepository.findById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException());
+		UserEntity changeUser = req.changePassword(user, passwordEncoder);
+		this.save(changeUser);
 		return CommonResponseDTO.ok();
 	}
 

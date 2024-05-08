@@ -5,8 +5,8 @@ import com.inturn.pfit.global.common.exception.PfitException;
 
 public class PasswordMismatchException extends PfitException {
 
-	public PasswordMismatchException() {
-		super(UserErrorCode.PASSWORD_MISMATCH.getError());
-	}
 
+	public PasswordMismatchException() {
+		super(UserErrorCode.PASSWORD_MISMATCH_EXCEPTION.getError());
+	}
 }

@@ -25,6 +25,6 @@ public class PfitAccessDeniedHandler implements AccessDeniedHandler {
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(objectMapper.writeValueAsString(CommonResponseDTO.fail(CommonErrorCode.FORBIDDEN.getError().getDefaultErrorMessage())));
+		response.getWriter().write(objectMapper.writeValueAsString(CommonResponseDTO.fail(CommonErrorCode.FORBIDDEN.getErrorMessage())));
 	}
 }

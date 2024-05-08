@@ -20,8 +20,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@PfitSecurityConfigTest(AuthController.class)
-class AuthControllerTest {
+@PfitSecurityConfigTest(AuthControllerV1.class)
+class AuthControllerV1Test {
 
 	@Autowired
 	MockMvc mockMvc;

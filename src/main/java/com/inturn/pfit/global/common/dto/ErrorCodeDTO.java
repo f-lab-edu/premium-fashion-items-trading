@@ -11,6 +11,10 @@ public class ErrorCodeDTO {
 
 	private String defaultErrorMessage;
 
+	public Integer getStatusValue() {
+		return status.value();
+	}
+
 	public static ErrorCodeDTO createErrorDTO(HttpStatus status, String defaultErrorMessage) {
 		return ErrorCodeDTO.builder()
 				.status(status)

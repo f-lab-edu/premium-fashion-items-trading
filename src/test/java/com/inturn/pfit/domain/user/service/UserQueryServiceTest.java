@@ -5,21 +5,16 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.repository.UserRepository;
 import com.inturn.pfit.global.common.exception.NotFoundSessionException;
 import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
-import com.inturn.pfit.global.config.security.service.UserSession;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
-import com.inturn.pfit.global.config.security.vo.SessionConsts;
 import com.inturn.pfit.global.support.utils.SessionUtils;
+import com.inturn.pfit.support.fixture.SessionFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Optional;
 
@@ -92,7 +87,7 @@ class UserQueryServiceTest {
 
 		//given
 		//setSession
-		setMockSession(new UserSession(user));
+		SessionFixture.setMockSession(RoleConsts.ROLE_USER);
 
 		Long userId = SessionUtils.getUserSession().getUserId();
 		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
@@ -113,23 +108,24 @@ class UserQueryServiceTest {
 
 		//given
 		//setSession
-		setMockSession(null);
+		//null session
+		SessionFixture.setMockSession();
 
 		//when & then
 		final NotFoundSessionException result = assertThrows(NotFoundSessionException.class, () -> userQueryService.getUserBySession());
 		assertNotNull(result);
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError().getDefaultErrorMessage());
+		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(userRepository, times(0)).findById(userId);
 	}
 
-	private void setMockSession(UserSession userSession) {
-		MockHttpSession session = new MockHttpSession();
-		session.setAttribute(SessionConsts.LOGIN_USER, userSession);
-
-		MockHttpServletRequest request = new MockHttpServletRequest();
-		request.setSession(session);
-		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-	}
+//	private void setMockSession(UserSession userSession) {
+//		MockHttpSession session = new MockHttpSession();
+//		session.setAttribute(SessionConsts.LOGIN_USER, userSession);
+//
+//		MockHttpServletRequest request = new MockHttpServletRequest();
+//		request.setSession(session);
+//		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+//	}
 }

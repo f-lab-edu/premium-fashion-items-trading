@@ -1,12 +1,15 @@
 package com.inturn.pfit.domain.user.dto.request;
 
 
+import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.global.support.annotation.Password;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Builder
@@ -32,7 +35,21 @@ public record SignUpRequestDTO (
 		@NotEmpty
 		String roleCode
 ) {
-	public boolean isCorrectPassword() {
+	public Boolean isCorrectPassword() {
 		return StringUtils.equals(password, confirmPassword);
+	}
+
+	public UserEntity signUpUser(PasswordEncoder encoder) {
+		//등록시 사용자명, 프로필명은 random으로 등록
+		String name = RandomStringUtils.randomAlphanumeric(10);
+		return UserEntity.builder()
+				.email(email)
+				.password(encoder.encode(password))
+				.alarmYn(alarmYn)
+				.roleCode(roleCode)
+				.userPoint(0l)
+				.userName(name)
+				.profileName(name)
+				.build();
 	}
 }

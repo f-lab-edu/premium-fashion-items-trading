@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!--기본 로그 위치는 C드라이브로 지정 -->
+	<property name="LOG_FILE" value="C:/pfit/pfit.log" />
+	<!--운영 서버인 경우만 상대 경로로 오버라이딩 -->
+	<springProfile name="prod">
+		<property name="LOG_FILE" value="C:/pfit/pfit.log" />
+	</springProfile>
+
+	<!--logback 기본 설정 로드 -->
+	<include
+		resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+<!--	CONSOLE 이라는 이름의 ConsoleAppender를 생성-->
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<pattern>${FILE_LOG_PATTERN}</pattern>
+		</encoder>
+		<file>${LOG_FILE}</file>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>${LOG_FILE_MAX_SIZE:-100MB}</maxFileSize>
+			<maxHistory>${LOG_FILE_MAX_HISTORY:-10}</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<logger name="log4jdbc.log4j2" level="ERROR" additivity="false" />
+	<logger name="org.apache.commons.dbcp2" level="INFO" />
+	<logger name="java.sql" level="INFO" />
+	<logger name="jdbc.sqlonly" level="INFO" />
+<!--	SQL문만을 로그로 남기며, PreparedStatement일 경우 관련된 argument 값으로 대체된 SQL문이 보여진다.-->
+	<logger name="jdbc.sqltiming" level="INFO" />
+<!--	SQL문과 해당 SQL을 실행시키는데 수행된 시간 정보(milliseconds)를 포함한다.-->
+	<logger name="jdbc.audit" level="ERROR" />
+<!--	ResultSet을 제외한 모든 JDBC 호출 정보를 로그로 남긴다. 많은 양의 로그가 생성되므로 특별히 JDBC 문제를-->
+<!--	추적해야 할 필요가 있는 경우를 제외하고는 사용을 권장하지 않는다.-->
+	<logger name="jdbc.resultset" level="ERROR" />
+<!--	ResultSet을 포함한 모든 JDBC 호출 정보를 로그로 남기므로 매우 방대한 양의 로그가 생성된다.-->
+	<logger name="jdbc.resultsettable" level="ERROR" />
+
+	<!--AUTO-CONFIGURATION REPORT 로그 설정 -->
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="springfox.documentation" level="ERROR" />
+	<logger name="com.zaxxer.hikari" level="ERROR" />
+	<logger name="org.hibernate" level="ERROR" />
+	<logger name="org.apache.commons" level="ERROR" />
+
+	<!--profile별 설정 -->
+	<springProfile name="prod">
+		<root level="INFO">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+	<springProfile name="dev">
+		<root level="INFO">
+			위에서 생성한 ConsoleAppender를 INFO level에서 사용되도록 설정
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+	<springProfile name="junit">
+		<root level="DEBUG">
+			<appender-ref ref="CONSOLE" />
+			<appender-ref ref="FILE" />
+		</root>
+	</springProfile>
+</configuration>

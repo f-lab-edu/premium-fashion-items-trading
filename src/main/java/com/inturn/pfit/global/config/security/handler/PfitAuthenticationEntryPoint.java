@@ -25,6 +25,6 @@ public class PfitAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.getWriter().write(objectMapper.writeValueAsString(CommonResponseDTO.fail(CommonErrorCode.UNAUTHORIZED.getError().getDefaultErrorMessage())));
+		response.getWriter().write(objectMapper.writeValueAsString(CommonResponseDTO.fail(CommonErrorCode.UNAUTHORIZED.getErrorMessage())));
 	}
 }

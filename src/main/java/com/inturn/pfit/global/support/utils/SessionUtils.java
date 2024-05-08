@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+//@UtilityClass는 기본 생성자가 private으로 생성되어 reflection 혹은 내부에서 생성자를 호출할 경우 UnsupportedOperationException 발생
 @UtilityClass
 public class SessionUtils {
 
@@ -34,7 +35,7 @@ public class SessionUtils {
 		ServletRequestAttributes servletRA = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = servletRA.getRequest().getSession();
 
-		if(ObjectUtils.isEmpty(session)){
+		if (ObjectUtils.isEmpty(session)) {
 			throw new NotFoundSessionException();
 		}
 		return session;

@@ -35,11 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@PfitSecurityConfigTest(UserController.class)
+@PfitSecurityConfigTest(UserControllerV1.class)
 //TODO - EnableGlobalMethodSecurity도 PfitSecurityConfigTest 어노테이션에 추가하고 싶은데 @Secured 관련 에러 발생, 추후 확인
 //EnableGlobalMethodSecurity Deprecate되어 개선 사항 알아보자.
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-class UserControllerTest {
+class UserControllerV1Test {
 
 	@Autowired
 	private MockMvc mockMvc;
@@ -196,8 +196,8 @@ class UserControllerTest {
 
 		var user = getUserEntity();
 		var changeUserInfo = getUserEntity();
-		changeUserInfo.changeUserInfo(req);
-		when(userCommandService.changeUserInfo(req)).thenReturn(UserResponseDTO.from(changeUserInfo));
+		UserEntity modUser = req.changeUserInfo(user);
+		when(userCommandService.changeUserInfo(req)).thenReturn(UserResponseDTO.from(modUser));
 
 		//when
 		ResultActions actions = mockMvc.perform(patch("/v1/user/info")
@@ -246,7 +246,7 @@ class UserControllerTest {
 	@DisplayName("사용자 중복 확인(duplicateUser) - 성공")
 	void duplicateUser_Success() throws Exception{
 		//given
-		when(userQueryService.duplicateUser(email)).thenReturn(true);
+		when(userQueryService.duplicateUser(email)).thenReturn(false);
 
 		//when
 		ResultActions actions = mockMvc.perform(get("/v1/user/check/%s".formatted(email)));

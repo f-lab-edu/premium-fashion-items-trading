@@ -1,24 +1,22 @@
 package com.inturn.pfit.domain.brand.dto.response;
 
 
-import com.inturn.pfit.domain.category.entity.Category;
+import com.inturn.pfit.domain.brand.entity.Brand;
 import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Builder
 public record BrandResponseDTO(
-		Integer categoryId,
-		String categoryName,
-		Integer categorySort,
+		Integer brandId,
+		String brandName,
 		LocalDateTime createdDt,
 		LocalDateTime updatedDt
 ) {
-	public static BrandResponseDTO from(Category entity) {
+	public static BrandResponseDTO from(Brand entity) {
 		return BrandResponseDTO.builder()
-				.categoryId(entity.getCategoryId())
-				.categoryName(entity.getCategoryName())
-				.categorySort(entity.getCategorySort())
+				.brandId(entity.getBrandId())
+				.brandName(entity.getBrandName())
 				.createdDt(entity.getCreatedDt())
 				.updatedDt(entity.getUpdatedDt())
 				.build();

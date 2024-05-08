@@ -6,6 +6,6 @@ import lombok.Builder;
 @Builder
 public record DeleteBrandRequestDTO(
 		@NotNull
-		Integer categoryId
+		Integer brandId
 ) {
 }

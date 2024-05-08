@@ -6,14 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity(name = "brand")
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@DynamicUpdate
 public class Brand extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

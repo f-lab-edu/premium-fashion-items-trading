@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BrandPagingResponseDTO {
 
-	Integer categoryId;
-	String categoryName;
-	Integer categorySort;
+	Integer brandId;
+	String brandName;
 
 }

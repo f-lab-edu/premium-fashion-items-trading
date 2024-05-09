@@ -89,7 +89,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
           username: ${{ secrets.SERVER_USERNAME }} # ubuntu
-          password: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           envs: GITHUB_SHA
           script: |
             sudo docker ps
@@ -105,7 +105,7 @@ jobs:
         with:
           host: ${{ secrets.HOST_DEV }} # EC2 퍼블릭 IPv4 DNS
           username: ${{ secrets.SERVER_USERNAME }} # ubuntu
-          password: ${{ secrets.SERVER_USERNAME }}
+          password: ${{ secrets.SERVER_PASSWORD }}
           port: 22
           key: ${{ secrets.PRIVATE_KEY }}
           script: |

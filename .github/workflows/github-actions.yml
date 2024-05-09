@@ -93,9 +93,9 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker ps
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pfit
-            docker stop spring-cicd2 && docker rm spring-cicd2 && docker rmi lusida0131/spring-cicd2:
-            sudo docker run -d -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/pfit
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pfit-prod
+            sudo docker stop pfit-prod && docker rm pfit-prod && docker rmi ${{ secrets.DOCKER_USERNAME }}/pfit-prod:latest
+            sudo docker run -d -p 8080:8080 --name pfit-prod --restart always ${{ secrets.DOCKER_USERNAME }}/pfit-prod:latest 
             sudo docker image prune -f
 
       ## deploy to develop
@@ -112,6 +112,6 @@ jobs:
           script: |
             sudo docker ps
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pfit-dev
-            sudo docker stop ${{ secrets.DOCKER_USERNAME }}/pfit-dev && docker rm ${{ secrets.DOCKER_USERNAME }}/pfit-dev && docker rmi ${{ secrets.DOCKER_USERNAME }}/pfit-dev:latest
+            sudo docker stop pfit-dev && docker rm pfit-dev && docker rmi ${{ secrets.DOCKER_USERNAME }}/pfit-dev:latest
             sudo docker run -d -p 8082:8080 --name pfit-dev --restart always ${{ secrets.DOCKER_USERNAME }}/pfit-dev:latest 
             sudo docker image prune -f

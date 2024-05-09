@@ -13,16 +13,16 @@ public record BrandResponseDTO(
 		Integer brandId,
 		String brandName,
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime createdDt,
+		LocalDateTime createdAt,
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime updatedDt
+		LocalDateTime updatedAt
 ) {
 	public static BrandResponseDTO from(Brand entity) {
 		return BrandResponseDTO.builder()
 				.brandId(entity.getBrandId())
 				.brandName(entity.getBrandName())
-				.createdDt(entity.getCreatedDt())
-				.updatedDt(entity.getUpdatedDt())
+				.createdAt(entity.getCreatedAt())
+				.updatedAt(entity.getUpdatedAt())
 				.build();
 	}
 }

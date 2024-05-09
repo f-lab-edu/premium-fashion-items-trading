@@ -26,8 +26,8 @@ public class BrandRepositoryImpl extends PfitQuerydslRepositorySupport implement
 				.select(Projections.fields(BrandPagingResponseDTO.class,
 						qBrand.brandId,
 						qBrand.brandName,
-						qBrand.createdDt,
-						qBrand.updatedDt
+						qBrand.createdAt,
+						qBrand.updatedAt
 				))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())

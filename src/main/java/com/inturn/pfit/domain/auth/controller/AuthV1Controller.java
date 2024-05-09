@@ -19,12 +19,12 @@ public class AuthV1Controller {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	public ResponseEntity<CommonResponseDTO> loginV1(@RequestBody @Valid LoginRequestDTO user) {
+	public ResponseEntity<CommonResponseDTO> login(@RequestBody @Valid LoginRequestDTO user) {
 		return ResponseEntity.ok(authService.login(user));
 	}
 
 	@PostMapping("/logout")
-	public ResponseEntity<CommonResponseDTO> logoutV1() {
+	public ResponseEntity<CommonResponseDTO> logout() {
 		authService.logout();
 		return ResponseEntity.ok(CommonResponseDTO.ok());
 	}

@@ -28,8 +28,8 @@ public class CategoryRepositoryDslImpl extends PfitQuerydslRepositorySupport imp
 						qCategory.categoryId,
 						qCategory.categoryName,
 						qCategory.categoryOrder,
-						qCategory.createdDt,
-						qCategory.updatedDt
+						qCategory.createdAt,
+						qCategory.updatedAt
 						))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())

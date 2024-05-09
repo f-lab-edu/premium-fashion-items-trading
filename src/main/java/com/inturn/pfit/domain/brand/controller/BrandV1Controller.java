@@ -32,32 +32,32 @@ public class BrandV1Controller {
 
 	//브랜드 단일 조회
 	@GetMapping("/{brandId}")
-	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> getBrandByIdV1(@PathVariable @Valid @NotNull Integer brandId) {
+	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> getBrandById(@PathVariable @Valid @NotNull Integer brandId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrand(brandId)));
 	}
 
 	//브랜드 등록
 	@PostMapping
-	public ResponseEntity<DataResponseDTO<CreateBrandResponseDTO>> createBrandV1(@RequestBody @Valid CreateBrandRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<CreateBrandResponseDTO>> createBrand(@RequestBody @Valid CreateBrandRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.createBrand(req)));
 	}
 
 	//브랜드 편집
 	@PatchMapping
-	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> modifyBrandV1(@RequestBody @Valid ModifyBrandRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> modifyBrand(@RequestBody @Valid ModifyBrandRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.modifyBrand(req)));
 	}
 
 	//브랜드 조회 Paging
 	@GetMapping("/paging")
-	public ResponseEntity<DataResponseDTO<Page<BrandPagingResponseDTO>>> getBrandPagingListV1(BrandPagingRequestDTO req, Pageable page) {
+	public ResponseEntity<DataResponseDTO<Page<BrandPagingResponseDTO>>> getBrandPagingList(BrandPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrandPagingList(req, page)));
 	}
 
 	//TODO - 추후 상품 개발 완료 후 삭제 메소드 추가 개발
 	//브랜드 삭제
 //	@DeleteMapping("/v1/brand")
-//	public ResponseEntity<CommonResponseDTO> deleteBrandV1(@RequestBody @Valid DeleteBrandRequestDTO req) {
+//	public ResponseEntity<CommonResponseDTO> deleteBrand(@RequestBody @Valid DeleteBrandRequestDTO req) {
 //
 //		//제품 개발이 된 후 제품에 brandId가 존재하는 경우 validate 처리
 //		return ResponseEntity.ok(brandCommandService.deleteBrand(req));

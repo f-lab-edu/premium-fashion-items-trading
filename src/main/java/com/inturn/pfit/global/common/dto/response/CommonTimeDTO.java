@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class CommonTimeDTO {
 	@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-	private LocalDateTime createdDt;
+	private LocalDateTime createdAt;
 
 	@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-	private LocalDateTime updatedDt;
+	private LocalDateTime updatedAt;
 }

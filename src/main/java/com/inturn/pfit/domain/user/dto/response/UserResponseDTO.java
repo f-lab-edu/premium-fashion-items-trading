@@ -31,9 +31,9 @@ public record UserResponseDTO(
 		String roleCode,
 
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime createdDt,
+		LocalDateTime createdAt,
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime updatedDt
+		LocalDateTime updatedAt
 ) {
 
 
@@ -49,8 +49,8 @@ public record UserResponseDTO(
 				.userPoint(entity.getUserPoint())
 				.alarmYn(entity.getAlarmYn())
 				.roleCode(entity.getRoleCode())
-				.createdDt(entity.getCreatedDt())
-				.updatedDt(entity.getUpdatedDt())
+				.createdAt(entity.getCreatedAt())
+				.updatedAt(entity.getUpdatedAt())
 				.build();
 	}
 }

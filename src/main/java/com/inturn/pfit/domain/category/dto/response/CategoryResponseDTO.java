@@ -14,17 +14,17 @@ public record CategoryResponseDTO(
 		String categoryName,
 		Integer categoryOrder,
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime createdDt,
+		LocalDateTime createdAt,
 		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime updatedDt
+		LocalDateTime updatedAt
 ) {
 	public static CategoryResponseDTO from(Category entity) {
 		return CategoryResponseDTO.builder()
 				.categoryId(entity.getCategoryId())
 				.categoryName(entity.getCategoryName())
 				.categoryOrder(entity.getCategoryOrder())
-				.createdDt(entity.getCreatedDt())
-				.updatedDt(entity.getUpdatedDt())
+				.createdAt(entity.getCreatedAt())
+				.updatedAt(entity.getUpdatedAt())
 				.build();
 	}
 }

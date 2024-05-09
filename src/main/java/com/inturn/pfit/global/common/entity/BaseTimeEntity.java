@@ -25,19 +25,19 @@ public class BaseTimeEntity {
 	@DateTimeFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
 	//@JsonFormat를 사용하여 @RequestBody, @ResponseBody에서 문자열을 해당 날짜 및 시간 객체로 전환
 	@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-	private LocalDateTime createdDt;
+	private LocalDateTime createdAt;
 
 	@DateTimeFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
 	@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-	private LocalDateTime updatedDt;
+	private LocalDateTime updatedAt;
 
 	@PrePersist
 	private void prePersist() {
-		this.createdDt = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 	}
 
 	@PreUpdate
 	private void preUpdate() {
-		this.updatedDt = LocalDateTime.now();
+		this.updatedAt = LocalDateTime.now();
 	}
 }

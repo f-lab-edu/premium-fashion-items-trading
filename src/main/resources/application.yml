@@ -20,7 +20,7 @@ spring:
         format_sql: true
         
 # data.sql로 기초 데이터를 넣을 떄 사용하기 위해
-#    defer-datasource-initialization: true
+    defer-datasource-initialization: true
 
 # Session Setting
   session:
@@ -28,7 +28,7 @@ spring:
     store-type: redis
     redis:
       namespace: pfit:session
-    timeout: 300
+    timeout: 600
 # Redis 설정
   data:
     redis:

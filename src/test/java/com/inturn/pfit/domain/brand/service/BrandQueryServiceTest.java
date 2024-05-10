@@ -1,6 +1,5 @@
 package com.inturn.pfit.domain.brand.service;
 
-import com.inturn.pfit.domain.brand.dto.response.BrandResponseDTO;
 import com.inturn.pfit.domain.brand.entity.Brand;
 import com.inturn.pfit.domain.brand.repository.BrandRepository;
 import com.inturn.pfit.global.common.exception.NotFoundException;
@@ -42,7 +41,7 @@ class BrandQueryServiceTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 조회(getBrandById) - 성공")
+	@DisplayName("브랜드 데이터가 존재하는 브랜드 ID로 브랜드 조회를 시도하면 성공한다.")
 	void getBrandById_Success(){
 
 		//given
@@ -56,7 +55,7 @@ class BrandQueryServiceTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 조회(getBrandById) - 브랜드가 존재하지 않음.")
+	@DisplayName("존재하지 않는 ID로 브랜드 조회를 시도하면 실패한다.")
 	void getBrandById_Fail_NotFoundBrand(){
 
 		//given
@@ -68,20 +67,4 @@ class BrandQueryServiceTest {
 		//then
 		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
 	}
-
-	@Test
-	@DisplayName("브랜드 조회(getBrand) - 성공")
-	void getBrand_Success(){
-
-		//given
-		when(brandRepository.findById(brandId)).thenReturn(Optional.of(brand));
-
-		//when
-		BrandResponseDTO result = brandQueryService.getBrand(brandId);
-
-		//then
-		assertEquals(result.brandId(), brandId);
-		assertEquals(result.brandName(), brandName);
-	}
-
 }

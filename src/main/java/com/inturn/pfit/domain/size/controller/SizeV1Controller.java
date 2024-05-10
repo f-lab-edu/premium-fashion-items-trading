@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Secured(RoleConsts.ROLE_ADMIN)
 @RestController
-@RequestMapping("/v1/Size")
+@RequestMapping("/v1/size")
 @RequiredArgsConstructor
 public class SizeV1Controller {
 
@@ -32,9 +32,9 @@ public class SizeV1Controller {
 	private final SizeCommandService sizeCommandService;
 
 	//브랜드 단일 조회
-	@GetMapping("/{SizeId}")
-	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> getSizeById(@PathVariable @Valid @NotNull Integer SizeId) {
-		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSize(SizeId)));
+	@GetMapping("/{sizeId}")
+	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> getSizeById(@PathVariable @Valid @NotNull Integer sizeId) {
+		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSize(sizeId)));
 	}
 
 	//브랜드 등록
@@ -54,13 +54,4 @@ public class SizeV1Controller {
 	public ResponseEntity<DataResponseDTO<Page<SizePagingResponseDTO>>> getSizePagingList(SizePagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSizePagingList(req, page)));
 	}
-
-	//TODO - 추후 상품 개발 완료 후 삭제 메소드 추가 개발
-	//브랜드 삭제
-//	@DeleteMapping("/v1/Size")
-//	public ResponseEntity<CommonResponseDTO> deleteSize(@RequestBody @Valid DeleteSizeRequestDTO req) {
-//
-//		//제품 개발이 된 후 제품에 SizeId가 존재하는 경우 validate 처리
-//		return ResponseEntity.ok(SizeCommandService.deleteSize(req));
-//	}
 }

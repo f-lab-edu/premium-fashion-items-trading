@@ -25,32 +25,32 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/category")
 @RequiredArgsConstructor
-public class CategoryControllerV1 {
+public class CategoryV1Controller {
 
 	private final CategoryQueryService categoryQueryService;
 
 	private final CategoryCommandService categoryCommandService;
 
 	@GetMapping("/{categoryId}")
-	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryByIdV1(@PathVariable @Valid @NotNull Integer categoryId) {
+	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> getCategoryById(@PathVariable @Valid @NotNull Integer categoryId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategory(categoryId)));
 	}
 
 	//카테고리 등록
 	@PostMapping
-	public ResponseEntity<DataResponseDTO<CreateCategoryResponseDTO>> createCategoryV1(@RequestBody @Valid CreateCategoryRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<CreateCategoryResponseDTO>> createCategory(@RequestBody @Valid CreateCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.createCategory(req)));
 	}
 
 	//카테고리 편집
 	@PatchMapping
-	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> modifyCategoryV1(@RequestBody @Valid ModifyCategoryRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<CategoryResponseDTO>> modifyCategory(@RequestBody @Valid ModifyCategoryRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryCommandService.modifyCategory(req)));
 	}
 
 	//카테고리 삭제
 	@DeleteMapping
-	public ResponseEntity<CommonResponseDTO> deleteCategoryV1(@RequestBody @Valid DeleteCategoryRequestDTO req) {
+	public ResponseEntity<CommonResponseDTO> deleteCategory(@RequestBody @Valid DeleteCategoryRequestDTO req) {
 		//TODO - 현재 삭제 메소드는 하위 테이블인 제품에 categoryId를 FK 로 제공하기 떄문에 
 		//제품 개발이 된 후 제품에 categoryId가 존재하는 경우 validate 처리
 		return ResponseEntity.ok(categoryCommandService.deleteCategory(req));
@@ -58,7 +58,7 @@ public class CategoryControllerV1 {
 
 	//카테고리 조회 Paging
 	@GetMapping("/paging")
-	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingListV1(CategoryPagingRequestDTO req, Pageable page) {
+	public ResponseEntity<DataResponseDTO<Page<CategoryPagingResponseDTO>>> getCategoryPagingList(CategoryPagingRequestDTO req, Pageable page) {
 		return ResponseEntity.ok(new DataResponseDTO<>(categoryQueryService.getCategoryPagingList(req, page)));
 	}
 	

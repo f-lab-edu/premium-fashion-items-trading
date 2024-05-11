@@ -179,9 +179,9 @@ class UserCommandServiceTest {
 		UserResponseDTO res = userCommandService.changeUserInfo(req);
 
 		//then
-		assertEquals(res.getUserName(), req.userName());
-		assertEquals(res.getUserPhone(), req.userPhone());
-		assertEquals(res.getUserId(), user.getUserId());
+		assertEquals(res.userName(), req.userName());
+		assertEquals(res.userPhone(), req.userPhone());
+		assertEquals(res.userId(), user.getUserId());
 
 		//user
 		verify(userRepository, times(1)).save(any());

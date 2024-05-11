@@ -47,7 +47,7 @@ class SignUpFacadeTest {
 		SignUpResponseDTO res = signUpFacade.signUp(req);
 
 		//then
-		assertEquals(res.getUserId(), userId);
+		assertEquals(res.userId(), userId);
 
 		verify(userCommandService, times(1)).signUp(req, role);
 		verify(userRoleQueryService, times(1)).getUserRoleByRoleCode(RoleConsts.ROLE_USER);

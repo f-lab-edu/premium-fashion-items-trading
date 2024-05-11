@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/user")
 @RequiredArgsConstructor
-public class UserControllerV1 {
+public class UserV1Controller {
 
 	private final SignUpFacade signUpFacade;
 
@@ -33,35 +33,35 @@ public class UserControllerV1 {
 
 	//사용자 등록
 	@PostMapping("/sign-up")
-	public ResponseEntity<DataResponseDTO<SignUpResponseDTO>> signUpV1(@RequestBody @Valid SignUpRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<SignUpResponseDTO>> signUp(@RequestBody @Valid SignUpRequestDTO req) {
 		//사용자 등록 처리
 		return ResponseEntity.ok(new DataResponseDTO<>(signUpFacade.signUp(req)));
 	}
 
 	//사용자 중복 확인
 	@GetMapping("/check/{email}")
-	public ResponseEntity<CommonResponseDTO> duplicateUserV1(@PathVariable @NotEmpty @Email String email) {
+	public ResponseEntity<CommonResponseDTO> duplicateUser(@PathVariable @NotEmpty @Email String email) {
 		return ResponseEntity.ok(userQueryService.duplicateUser(email) ? CommonResponseDTO.fail(UserErrorCode.EXIST_USER_EXCEPTION.getErrorMessage()): CommonResponseDTO.ok());
 	}
 
 	//사용자 조회
 	@Secured(RoleConsts.ROLE_USER)
 	@GetMapping
-	public ResponseEntity<DataResponseDTO<UserResponseDTO>> getUserV1() {
+	public ResponseEntity<DataResponseDTO<UserResponseDTO>> getUser() {
 		return ResponseEntity.ok(new DataResponseDTO<>(userQueryService.getUserBySession()));
 	}
 
 	//사용자 편집
 	@Secured(RoleConsts.ROLE_USER)
 	@PatchMapping("/info")
-	public ResponseEntity<DataResponseDTO<UserResponseDTO>> changeUserInfoV1(@RequestBody @Valid ChangeUserInfoRequestDTO req) {
+	public ResponseEntity<DataResponseDTO<UserResponseDTO>> changeUserInfo(@RequestBody @Valid ChangeUserInfoRequestDTO req) {
 		return ResponseEntity.ok(new DataResponseDTO<>(userCommandService.changeUserInfo(req)));
 	}
 
 	//사용자 패스워드 변경
 	@Secured(RoleConsts.ROLE_USER)
 	@PatchMapping("/password")
-	public ResponseEntity<CommonResponseDTO> changePasswordV1(@RequestBody @Valid PasswordChangeRequestDTO req) {
+	public ResponseEntity<CommonResponseDTO> changePassword(@RequestBody @Valid PasswordChangeRequestDTO req) {
 		return ResponseEntity.ok(userCommandService.passwordChange(req));
 	}
 

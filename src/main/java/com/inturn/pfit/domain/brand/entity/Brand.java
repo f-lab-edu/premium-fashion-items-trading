@@ -1,4 +1,4 @@
-package com.inturn.pfit.domain.category.entity;
+package com.inturn.pfit.domain.brand.entity;
 
 import com.inturn.pfit.global.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -7,19 +7,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-@Entity(name = "category")
+@Entity(name = "brand")
 @Getter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category extends BaseTimeEntity {
+public class Brand extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer categoryId;
+	private Integer brandId;
 
 	@Column(nullable = false)
-	private String categoryName;
+	private String brandName;
 
-	@Column(nullable = false)
-	private Integer categoryOrder;
 }

@@ -35,11 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@PfitSecurityConfigTest(UserControllerV1.class)
+@PfitSecurityConfigTest(UserV1Controller.class)
 //TODO - EnableGlobalMethodSecurity도 PfitSecurityConfigTest 어노테이션에 추가하고 싶은데 @Secured 관련 에러 발생, 추후 확인
 //EnableGlobalMethodSecurity Deprecate되어 개선 사항 알아보자.
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-class UserControllerV1Test {
+class UserV1ControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;

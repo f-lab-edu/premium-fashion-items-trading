@@ -1,10 +1,7 @@
-name: CI/CD using github actions & docker
+name: CI using github actions
 
-# event trigger
-# main이나 feature 브랜치에 push가 되었을 때 실행
+# main으로 PR 될 경우 action 발생
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 permissions:
@@ -65,29 +62,3 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-
-      # docker build & push to production
-      - name: Docker build & push to prod
-        if: contains(github.ref, 'main')
-        #build 시 -f 옵션으로 Dockerfile 별 설정 가능 Dockerfile-dev
-        run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/pfit .
-          docker push ${{ secrets.DOCKER_USERNAME }}/pfit
-
-      ## deploy to production
-      - name: Deploy to prod
-        uses: appleboy/ssh-action@master
-        id: deploy-prod
-        if: contains(github.ref, 'main')
-        with:
-          host: ${{ secrets.HOST_PROD }} # EC2 퍼블릭 IPv4 DNS
-          username: ${{ secrets.SERVER_USERNAME }} # ubuntu
-          password: ${{ secrets.SERVER_PASSWORD }}
-          envs: GITHUB_SHA
-          script: |
-            sudo docker ps
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pfit-prod
-            sudo docker stop pfit-prod && docker rm pfit-prod && docker rmi ${{ secrets.DOCKER_USERNAME }}/pfit-prod:latest
-            sudo docker run -d -p 8080:8080 --name pfit-prod --restart always ${{ secrets.DOCKER_USERNAME }}/pfit-prod:latest 
-            sudo docker image prune -f

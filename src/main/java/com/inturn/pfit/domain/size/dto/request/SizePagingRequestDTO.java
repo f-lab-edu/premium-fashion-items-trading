@@ -5,7 +5,8 @@ import lombok.Builder;
 @Builder
 public record SizePagingRequestDTO(
 		Integer sizeId,
-		String sizeName
+		String sizeName,
+		Integer categoryId
 ) {
 
 }

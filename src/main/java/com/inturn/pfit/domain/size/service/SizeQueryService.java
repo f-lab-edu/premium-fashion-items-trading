@@ -1,9 +1,8 @@
 package com.inturn.pfit.domain.size.service;
 
 import com.inturn.pfit.domain.size.dto.request.SizePagingRequestDTO;
-import com.inturn.pfit.domain.size.dto.response.SizePagingResponseDTO;
 import com.inturn.pfit.domain.size.dto.response.SizeResponseDTO;
-import com.inturn.pfit.domain.size.entity.Size;
+import com.inturn.pfit.domain.size.entity.SizeEntity;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class SizeQueryService {
 	private final SizeRepository sizeRepository;
 
 	@Transactional(readOnly = true)
-	public Page<SizePagingResponseDTO> getSizePagingList(SizePagingRequestDTO req, Pageable page) {
+	public Page<SizeResponseDTO> getSizePagingList(SizePagingRequestDTO req, Pageable page) {
 		return sizeRepository.getPagingList(req, page);
 	}
 
@@ -28,7 +27,7 @@ public class SizeQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public Size getSizeById(Integer sizeId) {
+	public SizeEntity getSizeById(Integer sizeId) {
 		return sizeRepository.findById(sizeId).orElseThrow(() -> new NotFoundException());
 	}
 }

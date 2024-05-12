@@ -1,11 +1,9 @@
 package com.inturn.pfit.domain.size.service;
 
-import com.inturn.pfit.domain.size.dto.request.CreateSizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.request.DeleteSizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.request.ModifySizeRequestDTO;
-import com.inturn.pfit.domain.size.dto.response.CreateSizeResponseDTO;
 import com.inturn.pfit.domain.size.dto.response.SizeResponseDTO;
-import com.inturn.pfit.domain.size.entity.Size;
+import com.inturn.pfit.domain.size.entity.SizeEntity;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -20,22 +18,13 @@ public class SizeCommandService {
 
 	private final SizeQueryService SizeQueryService;
 
-	//브랜드 등록
-	@Transactional
-	public CreateSizeResponseDTO createSize(CreateSizeRequestDTO req) {
-
-		Size Size = req.createSize();
-
-		return CreateSizeResponseDTO.from(this.save(Size));
-	}
-
 	@Transactional
 	public SizeResponseDTO modifySize(ModifySizeRequestDTO req) {
 
 		//해당 브랜드가 존재하는지 조회
-		Size Size = SizeQueryService.getSizeById(req.sizeId());
+		SizeEntity Size = SizeQueryService.getSizeById(req.sizeId());
 
-		Size modSize = req.modifySize(Size);
+		SizeEntity modSize = req.modifySize(Size);
 
 		return SizeResponseDTO.from(this.save(modSize));
 	}
@@ -48,7 +37,7 @@ public class SizeCommandService {
 	}
 
 	@Transactional
-	public Size save(Size entity) {
+	public SizeEntity save(SizeEntity entity) {
 		return sizeRepository.save(entity);
 	}
 }

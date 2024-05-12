@@ -18,8 +18,8 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-        
-# data.sql로 기초 데이터를 넣을 떄 사용하기 위해
+        default_batch_fetch_size: 50
+    # data.sql로 기초 데이터를 넣을 떄 사용하기 위해
     defer-datasource-initialization: true
 
 # Session Setting

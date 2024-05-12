@@ -1,28 +1,43 @@
 package com.inturn.pfit.domain.size.dto.response;
 
+import com.inturn.pfit.domain.size.entity.SizeEntity;
+import com.inturn.pfit.domain.sizetype.dto.response.SizeTypeResponseDTO;
+import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
+import com.inturn.pfit.global.common.dto.response.CommonTimeDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.inturn.pfit.domain.size.entity.Size;
-import com.inturn.pfit.global.support.utils.PfitConsts;
-import lombok.Builder;
+import java.util.List;
+import java.util.stream.Collectors;
 
-import java.time.LocalDateTime;
+@Getter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class SizeResponseDTO extends CommonTimeDTO {
 
-@Builder
-public record SizeResponseDTO(
-		Integer sizeId,
-		String sizeName,
-		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime createdAt,
-		@JsonFormat(pattern = PfitConsts.DateTImeConsts.DATE_TIME)
-		LocalDateTime updatedAt
-) {
-	public static SizeResponseDTO from(Size entity) {
+	private Integer sizeId;
+
+	private Integer categoryId;
+
+	private String sizeName;
+
+	private List<SizeTypeResponseDTO> sizeTypeList;
+
+	public static SizeResponseDTO from(SizeEntity entity) {
 		return SizeResponseDTO.builder()
 				.sizeId(entity.getSizeId())
 				.sizeName(entity.getSizeName())
+				.categoryId(entity.getCategoryId())
 				.createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt())
+				.sizeTypeList(of(entity.getSizeTypeList()))
 				.build();
+	}
+
+	private static List<SizeTypeResponseDTO> of(List<SizeTypeEntity> entityList) {
+		return entityList.stream().map(SizeTypeResponseDTO::from).collect(Collectors.toList());
 	}
 }

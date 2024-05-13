@@ -31,7 +31,7 @@ class BrandRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 저장(save) - 성공")
+	@DisplayName("브랜드 데이터가 정상적인 상황에서 브랜드 저장을 시도하면 성공한다.")
 	@Transactional
 	void save_Success() {
 

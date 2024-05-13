@@ -65,7 +65,7 @@ class BrandIntegrationTest {
 
 
 	@Test
-	@DisplayName("브랜드 등록 성공")
+	@DisplayName("이슈가 없는 상황에서 브랜드 등록을 시도할 경우 성공한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void createBrand_Success() throws Exception {
@@ -86,7 +86,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("인증 정보가 없어 브랜드 등록 실패")
+	@DisplayName("인증 정보가 없는 상황에서 브랜드 등록을 시도하면 실패한다.")
 	@Transactional
 	void createBrand_Fail_Unauthorized() throws Exception {
 		//given
@@ -105,7 +105,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 등록 권한이 없어 실패")
+	@DisplayName("권한이 없는 상황에서 브랜드 등록을 시도하면 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_USER)
 	void createBrand_Fail_Forbidden() throws Exception {
@@ -125,7 +125,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 명 (필수값)이 null이기 때문에 브랜드 등록 실패")
+	@DisplayName("필수값이 null인 상황에서 브랜드 등록을 시도하면 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void createBrand_Fail_BrandNameIsNull() throws Exception {
@@ -148,7 +148,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 조회 성공")
+	@DisplayName("데이터가 존재하는 브랜드 조회를 시도하면 성공한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getBrandById_Success() throws Exception {
@@ -169,7 +169,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 브랜드 ID로 브랜드 조회하여 NotFoundException 발생으로 실패")
+	@DisplayName("존재하지 않는 브랜드 ID로 브랜드 조회를 시도하면 NotFoundException 발생으로 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getBrandById_Fail_NotFoundBrand() throws Exception {
@@ -189,7 +189,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 ID를 Null로 조회하여 실패")
+	@DisplayName("조회할 브랜드 ID가 없는 상황에서 브랜드 조회를 시도하면 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getBrandById_Fail_NullBrandId() throws Exception {
@@ -207,7 +207,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("브랜드 편집 성공")
+	@DisplayName("기존 브랜드가 존재하는 상황에서 브랜드 편집을 시도하면 성공한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyBrand_Success() throws Exception {
@@ -236,7 +236,7 @@ class BrandIntegrationTest {
 
 
 	@ParameterizedTest
-	@DisplayName("브랜드 ID, 브랜드 명 필수값이 존재하지 않아 Validate 처리되어 브랜드 편집 실패")
+	@DisplayName("브랜드 ID, 브랜드 명 필수값이 존재하지 않는 상황에서 브랜드 편집을 시도하면 Validate 처리되어 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	@MethodSource("provideParameter")
@@ -270,7 +270,7 @@ class BrandIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 브랜드 ID로 편집을 시도하여 브랜드 편집 실패")
+	@DisplayName("존재하지 않는 브랜드 ID로 브랜드 편집을 시도하면 실패한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyBrand_Fail_NotFoundBrand() throws Exception {
@@ -293,7 +293,7 @@ class BrandIntegrationTest {
 	}
 
 	@ParameterizedTest
-	@DisplayName("브랜드 Paging 조회 성공")
+	@DisplayName("정상적인 요청 상황에서 브랜드 Paging 조회를 시도하면 성공한다.")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	@MethodSource("providePagingParameter")

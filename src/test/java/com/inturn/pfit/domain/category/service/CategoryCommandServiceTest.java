@@ -6,9 +6,9 @@ import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
+import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -133,10 +133,10 @@ class CategoryCommandServiceTest {
 				.categoryName(categoryName.repeat(2))
 				.categoryOrder(categoryOrder + 1)
 				.build();
-		when(categoryQueryService.getCategoryById(req.categoryId())).thenThrow(new NotFoundException());
+		when(categoryQueryService.getCategoryById(req.categoryId())).thenThrow(new NotFoundCategoryException());
 
 		//when
-		final NotFoundException result = assertThrows(NotFoundException.class, () -> categoryCommandService.modifyCategory(req));
+		final NotFoundCategoryException result = assertThrows(NotFoundCategoryException.class, () -> categoryCommandService.modifyCategory(req));
 
 		//then
 		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());

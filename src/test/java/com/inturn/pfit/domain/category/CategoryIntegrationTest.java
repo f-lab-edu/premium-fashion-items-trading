@@ -5,8 +5,8 @@ import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
+import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
 import com.inturn.pfit.domain.category.service.CategoryCommandService;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -201,7 +201,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 카테고리 ID로 카테고리를 조회하여 NotFoundException 발생 실패")
+	@DisplayName("존재하지 않는 카테고리 ID로 카테고리를 조회하여 NotFoundCategoryException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getCategoryById_Fail_NotFoundCategory() throws Exception {
@@ -214,7 +214,7 @@ class CategoryIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundCategoryException))
 				.andExpect(jsonPath("$.data").doesNotExist())
 				.andExpect(jsonPath("$.success").value(false))
 				.andDo(print());
@@ -306,7 +306,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 데이터가 존재하지 않는 ID로 카테고리 수정을 호출하여 NotFoundException 발생 실패")
+	@DisplayName("카테고리 데이터가 존재하지 않는 ID로 카테고리 수정을 호출하여 NotFoundCategoryException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyCategory_Fail_NotFoundCategory() throws Exception {
@@ -325,7 +325,7 @@ class CategoryIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundCategoryException))
 				.andDo(print());
 	}
 

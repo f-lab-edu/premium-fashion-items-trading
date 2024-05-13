@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Getter
 @SuperBuilder
 @NoArgsConstructor
@@ -28,6 +31,10 @@ public class SizeTypeResponseDTO extends CommonTimeDTO {
 				.createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt())
 				.build();
+	}
+
+	public static List<SizeTypeResponseDTO> of(List<SizeTypeEntity> entityList) {
+		return entityList.stream().map(SizeTypeResponseDTO::from).collect(Collectors.toList());
 	}
 
 }

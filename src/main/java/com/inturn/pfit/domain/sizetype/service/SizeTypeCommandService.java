@@ -1,5 +1,6 @@
 package com.inturn.pfit.domain.sizetype.service;
 
+import com.inturn.pfit.domain.size.entity.SizeEntity;
 import com.inturn.pfit.domain.sizetype.dto.request.ModifySizeTypeRequestDTO;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
 import com.inturn.pfit.domain.sizetype.repository.SizeTypeRepository;
@@ -21,9 +22,9 @@ public class SizeTypeCommandService {
 	}
 
 	@Transactional
-	public void saveCUDAll(Integer sizeId, List<ModifySizeTypeRequestDTO> list) {
+	public void saveCUDAll(SizeEntity size, List<ModifySizeTypeRequestDTO> list) {
 		for(ModifySizeTypeRequestDTO req : list) {
-			SizeTypeEntity entity = req.modifySizeType(sizeId);
+			SizeTypeEntity entity = req.modifySizeType(size);
 			switch (req.cudMode()) {
 				case CREATE, UPDATE -> sizeTypeRepository.save(entity);
 				case DELETE -> sizeTypeRepository.delete(entity);

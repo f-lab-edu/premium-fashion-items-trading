@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity(name = "size_type")
 @Getter
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 public class SizeTypeEntity extends SizeType{
 

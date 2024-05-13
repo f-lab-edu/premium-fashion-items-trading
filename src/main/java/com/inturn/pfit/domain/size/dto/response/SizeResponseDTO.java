@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @SuperBuilder
@@ -21,6 +20,8 @@ public class SizeResponseDTO extends CommonTimeDTO {
 	private Integer sizeId;
 
 	private Integer categoryId;
+
+	private String categoryName;
 
 	private String sizeName;
 
@@ -33,11 +34,18 @@ public class SizeResponseDTO extends CommonTimeDTO {
 				.categoryId(entity.getCategoryId())
 				.createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt())
-				.sizeTypeList(of(entity.getSizeTypeList()))
+				.sizeTypeList(SizeTypeResponseDTO.of(entity.getSizeTypeList()))
 				.build();
 	}
 
-	private static List<SizeTypeResponseDTO> of(List<SizeTypeEntity> entityList) {
-		return entityList.stream().map(SizeTypeResponseDTO::from).collect(Collectors.toList());
+	public static SizeResponseDTO from(SizeEntity entity, List<SizeTypeEntity> sizeTypeEntityList) {
+		return SizeResponseDTO.builder()
+				.sizeId(entity.getSizeId())
+				.sizeName(entity.getSizeName())
+				.categoryId(entity.getCategoryId())
+				.createdAt(entity.getCreatedAt())
+				.updatedAt(entity.getUpdatedAt())
+				.sizeTypeList(SizeTypeResponseDTO.of(sizeTypeEntityList))
+				.build();
 	}
 }

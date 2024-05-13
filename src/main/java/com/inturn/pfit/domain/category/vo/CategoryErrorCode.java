@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum CategoryErrorCode {
 
-	EXIST_CATEGORY_SORT_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "해당 카테고리 순번은 이미 등록되어 있습니다."))
+	EXIST_CATEGORY_SORT_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "해당 카테고리 순번은 이미 등록되어 있습니다.")),
+	NOT_FOUND_CATEGORY_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "해당 카테고리는 존재하지 않습니다."))
 
 	;
 	private ErrorCodeDTO error;

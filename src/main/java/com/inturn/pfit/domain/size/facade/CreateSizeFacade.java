@@ -6,6 +6,7 @@ import com.inturn.pfit.domain.size.dto.response.CreateSizeResponseDTO;
 import com.inturn.pfit.domain.size.entity.SizeEntity;
 import com.inturn.pfit.domain.size.service.SizeCommandService;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
+import com.inturn.pfit.domain.sizetype.exception.DuplicateSizeTypeOrderException;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,21 @@ public class CreateSizeFacade {
 	@Transactional
 	public CreateSizeResponseDTO createSize(CreateSizeRequestDTO req) {
 
+		SizeEntity saveSize = req.createSize();
+		
+		//중복되는 sizeTypeOrder가 있을 경우
+		if(req.isDuplicateSizeTypeOrder()) {
+			throw new DuplicateSizeTypeOrderException();
+		}
+
 		//카테고리가 존재하는지 여부 확인
-		categoryQueryService.getCategoryById(req.createSize().getCategoryId());
+		categoryQueryService.getCategoryById(saveSize.getCategoryId());
 
 		//size 저장
-		SizeEntity size = sizeCommandService.save(req.createSize());
+		SizeEntity size = sizeCommandService.save(saveSize);
 
 		//저장된 id를 반환받아 저장할 sizeType 목록을 반환
-		List<SizeTypeEntity> sizeTypeList = req.getCsreateSizeTypeList(size.getSizeId());
+		List<SizeTypeEntity> sizeTypeList = req.getCreateSizeTypeList(size.getSizeId());
 
 		//sizeType을 저장
 		sizeTypeCommandService.saveAll(sizeTypeList);

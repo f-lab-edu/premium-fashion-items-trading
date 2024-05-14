@@ -1,0 +1,64 @@
+name: CI using github actions
+
+# main으로 PR 될 경우 action 발생
+on:
+  pull_request:
+    branches: [ main ]
+permissions:
+  contents: read
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    # job에서 수행하는 step을 정의하는 곳
+    steps:
+
+      # Repository로 부터 CI 수행 서버로 코드를 내려받는 Action
+      - uses: actions/checkout@v3
+
+      # name은 step의 이름
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3 #jdk를 다운 받고 캐싱하는 action
+        with:
+          #action에 전달하는 input을 정의하는 곳
+          java-version: '17'
+          distribution: 'zulu'
+
+      # gradle caching - 빌드 시간 향상
+      - name: Gradle Caching
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Set Yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application.yml
+        env:
+          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+          spring.datasource.url: ${{ secrets.MYSQL_URL }}
+          spring.datasource.username: ${{ secrets.MYSQL_NAME }}
+          spring.datasource.password: ${{ secrets.MYSQL_PW }}
+
+      - name: Set Junit Yml
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ./src/main/resources/application-junit.yml
+        env:
+          spring.data.redis.host: ${{ secrets.REDIS_HOST }}
+          spring.data.redis.port: ${{ secrets.REDIS_PORT }}
+          spring.datasource.url: ${{ secrets.MYSQL_TEST_URL }}
+          spring.datasource.username: ${{ secrets.MYSQL_NAME }}
+          spring.datasource.password: ${{ secrets.MYSQL_PW }}
+
+      # gradle build
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build

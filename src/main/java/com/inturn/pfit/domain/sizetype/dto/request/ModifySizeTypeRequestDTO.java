@@ -16,8 +16,7 @@ public record ModifySizeTypeRequestDTO(
 		String sizeTypeName,
 		@NotNull
 		Integer sizeTypeOrder,
-
-		@NotEmpty
+		@NotNull
 		CUDMode cudMode
 ) {
 

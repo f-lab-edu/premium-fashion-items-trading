@@ -22,7 +22,9 @@ spring:
     # data.sql로 기초 데이터를 넣을 떄 사용하기 위해
     defer-datasource-initialization: true
 
-# Session Setting
+    open-in-view: false
+
+  # Session Setting
   session:
 # store-type : redis 설정 시 @EnableRedisHttpSession을 추가하지 않아도 세션 저장소로 활용 가능
     store-type: redis

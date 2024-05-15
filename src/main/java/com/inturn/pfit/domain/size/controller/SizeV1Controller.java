@@ -1,7 +1,6 @@
 package com.inturn.pfit.domain.size.controller;
 
 
-
 import com.inturn.pfit.domain.size.dto.request.CreateSizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.request.ModifySizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.request.SizePagingRequestDTO;
@@ -39,7 +38,7 @@ public class SizeV1Controller {
 
 	//사이즈 단일 조회
 	@GetMapping("/{sizeId}")
-	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> getSizeById(@PathVariable @Valid @NotNull Integer sizeId) {
+	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> getSizeById(@PathVariable @NotNull Integer sizeId) {
 		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSize(sizeId)));
 	}
 

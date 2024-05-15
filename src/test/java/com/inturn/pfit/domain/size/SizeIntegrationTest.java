@@ -564,7 +564,7 @@ class SizeIntegrationTest {
 	}
 
 	@Nested
-	@DisplayName("사이즈 편집")
+	@DisplayName("사이즈 조회 Paging")
 	class getSizePagingList{
 
 		@ParameterizedTest

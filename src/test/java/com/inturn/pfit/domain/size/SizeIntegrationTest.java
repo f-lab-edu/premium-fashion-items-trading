@@ -200,7 +200,7 @@ class SizeIntegrationTest {
 
 			//then
 			actions
-					.andExpect(status().isBadRequest())
+					.andExpect(status().isNotFound())
 					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundCategoryException))
 					.andExpect(jsonPath("$.data").doesNotExist())
 					.andExpect(jsonPath("$.success").value(false))
@@ -316,7 +316,7 @@ class SizeIntegrationTest {
 			ResultActions actions = mockMvc.perform(get("/v1/size/%d".formatted(notFoundSizeId)));
 
 			//then
-			CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+			CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
 					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundSizeException));
 		}
 
@@ -417,7 +417,7 @@ class SizeIntegrationTest {
 					.contentType(MediaType.APPLICATION_JSON));
 
 			//then
-			CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+			CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
 					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundSizeException));
 		}
 
@@ -568,7 +568,7 @@ class SizeIntegrationTest {
 	class getSizePagingList{
 
 		@ParameterizedTest
-		@DisplayName("카테고리 조회 성공")
+		@DisplayName("정상적인 요청 상황에서 사이즈 조회 Paging을 호출하면 성공한다.")
 		@Transactional
 		@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 		@MethodSource("providePagingParameter")

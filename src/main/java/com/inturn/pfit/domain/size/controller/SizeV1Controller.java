@@ -8,7 +8,6 @@ import com.inturn.pfit.domain.size.dto.response.CreateSizeResponseDTO;
 import com.inturn.pfit.domain.size.dto.response.SizeResponseDTO;
 import com.inturn.pfit.domain.size.facade.CreateSizeFacade;
 import com.inturn.pfit.domain.size.facade.ModifySizeFacade;
-import com.inturn.pfit.domain.size.service.SizeCommandService;
 import com.inturn.pfit.domain.size.service.SizeQueryService;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
@@ -31,10 +30,8 @@ public class SizeV1Controller {
 
 	private final CreateSizeFacade createSizeFacade;
 
-
 	private final ModifySizeFacade modifySizeFacade;
 
-	private final SizeCommandService sizeCommandService;
 
 	//사이즈 단일 조회
 	@GetMapping("/{sizeId}")

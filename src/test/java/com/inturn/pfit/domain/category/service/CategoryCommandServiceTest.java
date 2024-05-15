@@ -9,7 +9,6 @@ import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
-import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -139,7 +138,7 @@ class CategoryCommandServiceTest {
 		final NotFoundCategoryException result = assertThrows(NotFoundCategoryException.class, () -> categoryCommandService.modifyCategory(req));
 
 		//then
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
+		assertEquals(result.getMessage(), CategoryErrorCode.NOT_FOUND_CATEGORY_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(categoryQueryService, times(1)).getCategoryById(req.categoryId());

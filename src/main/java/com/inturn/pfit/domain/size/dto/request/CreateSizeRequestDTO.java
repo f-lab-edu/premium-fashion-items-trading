@@ -47,6 +47,7 @@ public record CreateSizeRequestDTO(
 	//sizeTypeList의 sizeTypeOrder 중복 여부 확인
 	public boolean isDuplicateSizeTypeOrder() {
 
+		//TODO - 일반적인 경우는 해당 로직에 들어오지 않는데. 통합테스트 시에 들어오면서 에러가 발생하기에 우선 처리.
 		if(CollectionUtils.isEmpty(sizeTypeList)){
 			return true;
 		}

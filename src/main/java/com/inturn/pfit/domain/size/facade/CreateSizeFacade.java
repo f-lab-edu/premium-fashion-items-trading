@@ -27,7 +27,7 @@ public class CreateSizeFacade {
 	@Transactional
 	public CreateSizeResponseDTO createSize(CreateSizeRequestDTO req) {
 
-		SizeEntity saveSize = req.createSize();
+		final SizeEntity saveSize = req.createSize();
 		
 		//중복되는 sizeTypeOrder가 있을 경우
 		if(req.isDuplicateSizeTypeOrder()) {

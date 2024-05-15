@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum SizeErrorCode {
 
-	NOT_FOUND_SIZE_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "사이즈 종류가 존재하지 않습니다."))
+	NOT_FOUND_SIZE_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.NOT_FOUND, "사이즈 종류가 존재하지 않습니다."))
 	;
 	private ErrorCodeDTO error;
 

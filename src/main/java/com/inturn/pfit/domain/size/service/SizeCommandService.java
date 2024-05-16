@@ -1,6 +1,5 @@
 package com.inturn.pfit.domain.size.service;
 
-import com.inturn.pfit.domain.size.dto.request.DeleteSizeRequestDTO;
 import com.inturn.pfit.domain.size.entity.SizeEntity;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
@@ -19,9 +18,9 @@ public class SizeCommandService {
 	private final SizeQueryService SizeQueryService;
 
 	@Transactional
-	public CommonResponseDTO deleteSize(DeleteSizeRequestDTO req) {
+	public CommonResponseDTO deleteSize(Integer sizeId) {
 		//브랜드 ID로 조회하고 삭제 처리
-		sizeRepository.delete(SizeQueryService.getSizeById(req.sizeId()));
+		sizeRepository.delete(SizeQueryService.getSizeById(sizeId));
 		return CommonResponseDTO.ok();
 	}
 

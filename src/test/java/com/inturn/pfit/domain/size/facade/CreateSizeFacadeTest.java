@@ -9,8 +9,10 @@ import com.inturn.pfit.domain.sizetype.dto.request.CreateSizeTypeRequestDTO;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
 import com.inturn.pfit.domain.sizetype.exception.DuplicateSizeTypeOrderException;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeCommandService;
+import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
+@Tag(TestTypeConsts.UNIT_TEST)
 class CreateSizeFacadeTest {
 
 	@InjectMocks
@@ -87,7 +90,7 @@ class CreateSizeFacadeTest {
 		//verify
 		verify(sizeTypeCommandService, times(1)).saveAll(anyList());
 		verify(sizeCommandService, times(1)).save(any());
-		verify(categoryQueryService, times(1)).getCategoryById(categoryId);
+		verify(categoryQueryService, times(1)).validateCategoryById(categoryId);
 	}
 
 	@Test
@@ -112,7 +115,7 @@ class CreateSizeFacadeTest {
 		//verify
 		verify(sizeTypeCommandService, times(0)).saveAll(anyList());
 		verify(sizeCommandService, times(0)).save(any());
-		verify(categoryQueryService, times(0)).getCategoryById(categoryId);
+		verify(categoryQueryService, times(0)).validateCategoryById(categoryId);
 	}
 
 }

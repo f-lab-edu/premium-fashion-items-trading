@@ -5,12 +5,14 @@ import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
-import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
+import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,6 +24,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
+@Tag(TestTypeConsts.UNIT_TEST)
 class CategoryCommandServiceTest {
 
 	@InjectMocks
@@ -132,13 +135,13 @@ class CategoryCommandServiceTest {
 				.categoryName(categoryName.repeat(2))
 				.categoryOrder(categoryOrder + 1)
 				.build();
-		when(categoryQueryService.getCategoryById(req.categoryId())).thenThrow(new NotFoundCategoryException());
+		when(categoryQueryService.getCategoryById(req.categoryId())).thenThrow(new CategoryNotFoundException());
 
 		//when
-		final NotFoundCategoryException result = assertThrows(NotFoundCategoryException.class, () -> categoryCommandService.modifyCategory(req));
+		final CategoryNotFoundException result = assertThrows(CategoryNotFoundException.class, () -> categoryCommandService.modifyCategory(req));
 
 		//then
-		assertEquals(result.getMessage(), CategoryErrorCode.NOT_FOUND_CATEGORY_EXCEPTION.getErrorMessage());
+		assertEquals(result.getMessage(), CategoryErrorCode.CATEGORY_NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(categoryQueryService, times(1)).getCategoryById(req.categoryId());

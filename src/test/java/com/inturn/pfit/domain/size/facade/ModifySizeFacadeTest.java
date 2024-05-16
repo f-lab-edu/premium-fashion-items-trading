@@ -9,11 +9,13 @@ import com.inturn.pfit.domain.size.service.SizeQueryService;
 import com.inturn.pfit.domain.sizetype.dto.request.ModifySizeTypeRequestDTO;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
 import com.inturn.pfit.domain.sizetype.exception.DuplicateSizeTypeOrderException;
-import com.inturn.pfit.domain.sizetype.exception.NotFoundSizeTypeException;
+import com.inturn.pfit.domain.sizetype.exception.SizeTypeNotFoundException;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeCommandService;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeQueryService;
-import com.inturn.pfit.global.common.vo.CUDMode;
+import com.inturn.pfit.global.common.vo.CUDRequestCommand;
+import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
+@Tag(TestTypeConsts.UNIT_TEST)
 class ModifySizeFacadeTest {
 
 	@InjectMocks
@@ -78,7 +81,7 @@ class ModifySizeFacadeTest {
 
 		for(ModifySizeTypeRequestDTO sizeTypeReq : modifySizeRequestDTO.sizeTypeList()) {
 			SizeTypeEntity modSizeTypeEntity = sizeTypeReq.modifySizeType(size.getSizeId(), size.getSizeTypeList());
-			switch (sizeTypeReq.cudMode()) {
+			switch (sizeTypeReq.cudRequestCommand()) {
 				case CREATE -> modifySizeTypeList.add(modSizeTypeEntity);
 				case UPDATE -> {
 					modifySizeTypeList.removeIf(o -> modSizeTypeEntity.getSizeTypeId().equals(o.getSizeTypeId()));
@@ -88,7 +91,7 @@ class ModifySizeFacadeTest {
 			}
 		}
 
-		SizeEntity modSize = modifySizeRequestDTO.modifySize(size);
+		SizeEntity modSize = modifySizeRequestDTO.convertSize(size);
 
 		when(sizeQueryService.getSizeById(sizeId)).thenReturn(size);
 		when(sizeCommandService.save(any())).thenReturn(modSize);
@@ -116,7 +119,7 @@ class ModifySizeFacadeTest {
 		//given
 		int notFoundSizeTypeId = 0;
 		List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(notFoundSizeTypeId).sizeTypeOrder(1).cudMode(CUDMode.DELETE).build()
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(notFoundSizeTypeId).sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.DELETE).build()
 		);
 
 		ModifySizeRequestDTO modifySizeRequestDTO = getModifySizeRequestDTO(sizeId, modifySizeTypeRequestDTOList);
@@ -136,7 +139,7 @@ class ModifySizeFacadeTest {
 		when(sizeQueryService.getSizeById(sizeId)).thenReturn(size);
 
 		//when & then
-		final NotFoundSizeTypeException results = assertThrows(NotFoundSizeTypeException.class, () -> modifySizeFacade.modifySize(modifySizeRequestDTO));
+		final SizeTypeNotFoundException results = assertThrows(SizeTypeNotFoundException.class, () -> modifySizeFacade.modifySize(modifySizeRequestDTO));
 
 		//verify
 		verify(sizeQueryService, times(1)).getSizeById(sizeId);
@@ -151,8 +154,8 @@ class ModifySizeFacadeTest {
 
 		//given
 		List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(1).sizeTypeOrder(1).cudMode(CUDMode.DELETE).build(),
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("290").sizeTypeOrder(2).cudMode(CUDMode.CREATE).build()
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(1).sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.DELETE).build(),
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("290").sizeTypeOrder(2).cudRequestCommand(CUDRequestCommand.CREATE).build()
 		);
 
 		ModifySizeRequestDTO modifySizeRequestDTO = getModifySizeRequestDTO(sizeId, modifySizeTypeRequestDTOList);
@@ -184,10 +187,10 @@ class ModifySizeFacadeTest {
 	private ModifySizeRequestDTO getModifySizeRequestDTO(Integer sizeId) {
 
 		List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(1).sizeTypeOrder(1).cudMode(CUDMode.DELETE).build(),
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudMode(CUDMode.CREATE).build(),
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeId(2).sizeTypeOrder(4).cudMode(CUDMode.UPDATE).build(),
-				ModifySizeTypeRequestDTO.builder().sizeTypeName("250").sizeTypeOrder(2).cudMode(CUDMode.CREATE).build()
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("270").sizeTypeId(1).sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.DELETE).build(),
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeId(2).sizeTypeOrder(4).cudRequestCommand(CUDRequestCommand.UPDATE).build(),
+				ModifySizeTypeRequestDTO.builder().sizeTypeName("250").sizeTypeOrder(2).cudRequestCommand(CUDRequestCommand.CREATE).build()
 		);
 
 		return ModifySizeRequestDTO.builder()

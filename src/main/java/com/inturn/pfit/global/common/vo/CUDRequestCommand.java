@@ -1,6 +1,6 @@
 package com.inturn.pfit.global.common.vo;
 
-public enum CUDMode {
+public enum CUDRequestCommand {
 
 	CREATE,
 	UPDATE,

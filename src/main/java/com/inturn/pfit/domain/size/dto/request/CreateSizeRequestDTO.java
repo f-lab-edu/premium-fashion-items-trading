@@ -32,13 +32,12 @@ public record CreateSizeRequestDTO(
 
 ) {
 
-	public SizeEntity createSize() {
+	public SizeEntity convertSize() {
 		return SizeEntity.builder()
 				.categoryId(categoryId())
 				.sizeName(sizeName())
 				.build();
 	}
-
 
 	public List<SizeTypeEntity> getCreateSizeTypeList(Integer sizeId) {
 		return sizeTypeList().stream().map(o -> o.createSizeType(sizeId)).collect(Collectors.toList());

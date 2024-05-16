@@ -36,24 +36,24 @@ public class SizeV1Controller {
 	//사이즈 단일 조회
 	@GetMapping("/{sizeId}")
 	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> getSizeById(@PathVariable @NotNull Integer sizeId) {
-		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSize(sizeId)));
+		return DataResponseDTO.ok(sizeQueryService.getSize(sizeId));
 	}
 
 	//사이즈 등록
 	@PostMapping
 	public ResponseEntity<DataResponseDTO<CreateSizeResponseDTO>> createSize(@RequestBody @Valid CreateSizeRequestDTO req) {
-		return ResponseEntity.ok(new DataResponseDTO<>(createSizeFacade.createSize(req)));
+		return DataResponseDTO.ok(createSizeFacade.createSize(req));
 	}
 
 	//사이즈 편집
 	@PatchMapping
 	public ResponseEntity<DataResponseDTO<SizeResponseDTO>> modifySize(@RequestBody @Valid ModifySizeRequestDTO req) {
-		return ResponseEntity.ok(new DataResponseDTO<>(modifySizeFacade.modifySize(req)));
+		return DataResponseDTO.ok(modifySizeFacade.modifySize(req));
 	}
 
 	//사이즈 조회 Paging
 	@GetMapping("/paging")
 	public ResponseEntity<DataResponseDTO<Page<SizeResponseDTO>>> getSizePagingList(SizePagingRequestDTO req, Pageable page) {
-		return ResponseEntity.ok(new DataResponseDTO<>(sizeQueryService.getSizePagingList(req, page)));
+		return DataResponseDTO.ok(sizeQueryService.getSizePagingList(req, page));
 	}
 }

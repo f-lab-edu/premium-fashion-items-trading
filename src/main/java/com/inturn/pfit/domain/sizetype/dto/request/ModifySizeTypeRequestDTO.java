@@ -1,8 +1,8 @@
 package com.inturn.pfit.domain.sizetype.dto.request;
 
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
-import com.inturn.pfit.domain.sizetype.exception.NotFoundSizeTypeException;
-import com.inturn.pfit.global.common.vo.CUDMode;
+import com.inturn.pfit.domain.sizetype.exception.SizeTypeNotFoundException;
+import com.inturn.pfit.global.common.vo.CUDRequestCommand;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -18,14 +18,14 @@ public record ModifySizeTypeRequestDTO(
 		@NotNull
 		Integer sizeTypeOrder,
 		@NotNull
-		CUDMode cudMode
+		CUDRequestCommand cudRequestCommand
 ) {
 
 	public SizeTypeEntity modifySizeType(Integer sizeId, List<SizeTypeEntity> sizeTypeList) {
 		//해당 CREATE, DELETE면 새로 만들어서 처리
-		return CUDMode.UPDATE.equals(cudMode()) ?
+		return CUDRequestCommand.UPDATE.equals(cudRequestCommand()) ?
 				//update 이면 toBuilder
-				sizeTypeList.stream().filter(o -> sizeTypeId.equals(o.getSizeTypeId())).findFirst().orElseThrow(() -> new NotFoundSizeTypeException())
+				sizeTypeList.stream().filter(o -> sizeTypeId.equals(o.getSizeTypeId())).findFirst().orElseThrow(() -> new SizeTypeNotFoundException())
 						.toBuilder()
 						.sizeTypeName(sizeTypeName())
 						.sizeTypeOrder(sizeTypeOrder())

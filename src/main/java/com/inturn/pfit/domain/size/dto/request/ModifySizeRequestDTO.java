@@ -26,7 +26,7 @@ public record ModifySizeRequestDTO(
 		@NotNull
 		List<ModifySizeTypeRequestDTO> sizeTypeList
 ) {
-	public SizeEntity modifySize(SizeEntity size) {
+	public SizeEntity convertSize(SizeEntity size) {
 		return size.toBuilder()
 				.sizeName(sizeName())
 				.categoryId(categoryId())

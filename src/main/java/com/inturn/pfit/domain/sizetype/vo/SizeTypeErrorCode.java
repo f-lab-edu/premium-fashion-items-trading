@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum SizeTypeErrorCode {
 
-	NOT_FOUND_SIZE_TYPE_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "사이즈 종류가 존재하지 않습니다.")),
+	SIZE_TYPE_NOT_FOUND_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "사이즈 종류가 존재하지 않습니다.")),
 	DUPLICATE_SIZE_TYPE_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "사이즈 종류의 순서가 중복일 수 없습니다."))
 
 	;

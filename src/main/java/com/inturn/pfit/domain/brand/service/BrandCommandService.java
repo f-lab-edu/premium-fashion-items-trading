@@ -1,7 +1,6 @@
 package com.inturn.pfit.domain.brand.service;
 
 import com.inturn.pfit.domain.brand.dto.request.CreateBrandRequestDTO;
-import com.inturn.pfit.domain.brand.dto.request.DeleteBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.request.ModifyBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.response.BrandResponseDTO;
 import com.inturn.pfit.domain.brand.dto.response.CreateBrandResponseDTO;
@@ -41,9 +40,9 @@ public class BrandCommandService {
 	}
 
 	@Transactional
-	public CommonResponseDTO deleteBrand(DeleteBrandRequestDTO req) {
+	public CommonResponseDTO deleteBrand(Integer brandId) {
 		//브랜드 ID로 조회하고 삭제 처리
-		brandRepository.delete(brandQueryService.getBrandById(req.brandId()));
+		brandRepository.delete(brandQueryService.getBrandById(brandId));
 		return CommonResponseDTO.ok();
 	}
 

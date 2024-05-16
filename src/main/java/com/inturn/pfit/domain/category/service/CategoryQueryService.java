@@ -4,8 +4,8 @@ import com.inturn.pfit.domain.category.dto.request.CategoryPagingRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryPagingResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
-import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,7 +31,12 @@ public class CategoryQueryService {
 
 	@Transactional(readOnly = true)
 	public Category getCategoryById(Integer categoryId) {
-		return categoryRepository.findById(categoryId).orElseThrow(() -> new NotFoundCategoryException());
+		return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException());
+	}
+
+	@Transactional(readOnly = true)
+	public void validateCategoryById(Integer categoryId) {
+		categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException());
 	}
 
 	@Transactional(readOnly = true)

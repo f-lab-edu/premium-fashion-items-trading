@@ -26,7 +26,7 @@ public class SizeTypeCommandService {
 		for(ModifySizeTypeRequestDTO req : list) {
 			//위와 같이 req로 for문 처리한 이유는 entity에는 CUD 모드 컬럼이 없기 때문에.
 			SizeTypeEntity entity = req.modifySizeType(size.getSizeId(), size.getSizeTypeList());
-			switch (req.cudMode()) {
+			switch (req.cudRequestCommand()) {
 				case CREATE, UPDATE -> sizeTypeRepository.save(entity);
 				case DELETE -> sizeTypeRepository.delete(entity);
 			}

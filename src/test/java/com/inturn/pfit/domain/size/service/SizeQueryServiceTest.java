@@ -2,7 +2,7 @@ package com.inturn.pfit.domain.size.service;
 
 import com.inturn.pfit.domain.size.dto.response.SizeResponseDTO;
 import com.inturn.pfit.domain.size.entity.SizeEntity;
-import com.inturn.pfit.domain.size.exception.NotFoundSizeException;
+import com.inturn.pfit.domain.size.exception.SizeNotFoundException;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import com.inturn.pfit.domain.size.vo.SizeErrorCode;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
@@ -71,10 +71,10 @@ class SizeQueryServiceTest {
 		when(sizeRepository.findById(sizeId)).thenReturn(Optional.empty());
 
 		//when
-		final NotFoundSizeException result =  assertThrows(NotFoundSizeException.class, () -> sizeQueryService.getSize(sizeId));
+		final SizeNotFoundException result =  assertThrows(SizeNotFoundException.class, () -> sizeQueryService.getSize(sizeId));
 
 		//then
-		assertEquals(result.getMessage(), SizeErrorCode.NOT_FOUND_SIZE_EXCEPTION.getErrorMessage());
+		assertEquals(result.getMessage(), SizeErrorCode.SIZE_NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
 		verify(sizeRepository, times(1)).findById(sizeId);

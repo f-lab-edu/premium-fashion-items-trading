@@ -3,7 +3,7 @@ package com.inturn.pfit.domain.size.service;
 import com.inturn.pfit.domain.size.dto.request.SizePagingRequestDTO;
 import com.inturn.pfit.domain.size.dto.response.SizeResponseDTO;
 import com.inturn.pfit.domain.size.entity.SizeEntity;
-import com.inturn.pfit.domain.size.exception.NotFoundSizeException;
+import com.inturn.pfit.domain.size.exception.SizeNotFoundException;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +28,6 @@ public class SizeQueryService {
 
 	@Transactional(readOnly = true)
 	public SizeEntity getSizeById(Integer sizeId) {
-		return sizeRepository.findById(sizeId).orElseThrow(() -> new NotFoundSizeException());
+		return sizeRepository.findById(sizeId).orElseThrow(() -> new SizeNotFoundException());
 	}
 }

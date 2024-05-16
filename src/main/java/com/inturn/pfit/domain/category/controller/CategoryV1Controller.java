@@ -2,7 +2,6 @@ package com.inturn.pfit.domain.category.controller;
 
 import com.inturn.pfit.domain.category.dto.request.CategoryPagingRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
-import com.inturn.pfit.domain.category.dto.request.DeleteCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryPagingResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
@@ -50,10 +49,10 @@ public class CategoryV1Controller {
 
 	//카테고리 삭제
 	@DeleteMapping
-	public ResponseEntity<CommonResponseDTO> deleteCategory(@RequestBody @Valid DeleteCategoryRequestDTO req) {
+	public ResponseEntity<CommonResponseDTO> deleteCategory(@RequestParam Integer categoryId) {
 		//TODO - 현재 삭제 메소드는 하위 테이블인 제품에 categoryId를 FK 로 제공하기 떄문에 
 		//제품 개발이 된 후 제품에 categoryId가 존재하는 경우 validate 처리
-		return ResponseEntity.ok(categoryCommandService.deleteCategory(req));
+		return ResponseEntity.ok(categoryCommandService.deleteCategory(categoryId));
 	}
 
 	//카테고리 조회 Paging

@@ -3,13 +3,13 @@ package com.inturn.pfit.domain.size;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
-import com.inturn.pfit.domain.category.exception.NotFoundCategoryException;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.service.CategoryCommandService;
 import com.inturn.pfit.domain.size.dto.request.CreateSizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.request.ModifySizeRequestDTO;
 import com.inturn.pfit.domain.size.dto.response.CreateSizeResponseDTO;
-import com.inturn.pfit.domain.size.exception.NotFoundSizeException;
+import com.inturn.pfit.domain.size.exception.SizeNotFoundException;
 import com.inturn.pfit.domain.size.facade.CreateSizeFacade;
 import com.inturn.pfit.domain.size.repository.SizeRepository;
 import com.inturn.pfit.domain.size.service.SizeQueryService;
@@ -17,10 +17,11 @@ import com.inturn.pfit.domain.sizetype.dto.request.CreateSizeTypeRequestDTO;
 import com.inturn.pfit.domain.sizetype.dto.request.ModifySizeTypeRequestDTO;
 import com.inturn.pfit.domain.sizetype.entity.SizeTypeEntity;
 import com.inturn.pfit.domain.sizetype.exception.DuplicateSizeTypeOrderException;
-import com.inturn.pfit.domain.sizetype.exception.NotFoundSizeTypeException;
+import com.inturn.pfit.domain.sizetype.exception.SizeTypeNotFoundException;
 import com.inturn.pfit.domain.sizetype.repository.SizeTypeRepository;
-import com.inturn.pfit.global.common.vo.CUDMode;
+import com.inturn.pfit.global.common.vo.CUDRequestCommand;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.support.annotation.IntegrationTest;
 import com.inturn.pfit.support.fixture.CommonResponseResultFixture;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.*;
@@ -28,11 +29,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,10 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
-@SpringBootTest
-@ActiveProfiles("junit")
-@AutoConfigureMockMvc
+@IntegrationTest
 class SizeIntegrationTest {
 
 	@Autowired
@@ -91,9 +86,9 @@ class SizeIntegrationTest {
 	);
 
 	static List<ModifySizeTypeRequestDTO> modifySizeTypeList = List.of(
-			ModifySizeTypeRequestDTO.builder().sizeTypeName("275").sizeTypeOrder(1).cudMode(CUDMode.CREATE).build(),
-			ModifySizeTypeRequestDTO.builder().sizeTypeName("280").sizeTypeOrder(2).cudMode(CUDMode.CREATE).build(),
-			ModifySizeTypeRequestDTO.builder().sizeTypeName("285").sizeTypeOrder(3).cudMode(CUDMode.CREATE).build()
+			ModifySizeTypeRequestDTO.builder().sizeTypeName("275").sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+			ModifySizeTypeRequestDTO.builder().sizeTypeName("280").sizeTypeOrder(2).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+			ModifySizeTypeRequestDTO.builder().sizeTypeName("285").sizeTypeOrder(3).cudRequestCommand(CUDRequestCommand.CREATE).build()
 	);
 
 	CreateSizeRequestDTO createSizeRequestDTO;
@@ -201,7 +196,7 @@ class SizeIntegrationTest {
 			//then
 			actions
 					.andExpect(status().isNotFound())
-					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundCategoryException))
+					.andExpect(result -> assertTrue(result.getResolvedException() instanceof CategoryNotFoundException))
 					.andExpect(jsonPath("$.data").doesNotExist())
 					.andExpect(jsonPath("$.success").value(false))
 					.andDo(print());
@@ -317,7 +312,7 @@ class SizeIntegrationTest {
 
 			//then
 			CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
-					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundSizeException));
+					.andExpect(result -> assertTrue(result.getResolvedException() instanceof SizeNotFoundException));
 		}
 
 		@Test
@@ -357,12 +352,12 @@ class SizeIntegrationTest {
 				List<ModifySizeTypeRequestDTO> list = new ArrayList<>();
 				//UPDATE할 항목 선정
 				list.add(
-						ModifySizeTypeRequestDTO.builder().cudMode(CUDMode.UPDATE).sizeTypeOrder(sizeTypeEntityList.get(updateIdx).getSizeTypeOrder())
+						ModifySizeTypeRequestDTO.builder().cudRequestCommand(CUDRequestCommand.UPDATE).sizeTypeOrder(sizeTypeEntityList.get(updateIdx).getSizeTypeOrder())
 								.sizeTypeId(sizeTypeEntityList.get(updateIdx).getSizeTypeId())
 								.sizeTypeName(sizeTypeEntityList.get(updateIdx).getSizeTypeName().repeat(2)).build()
 				);
 				list.add(
-						ModifySizeTypeRequestDTO.builder().cudMode(CUDMode.DELETE).sizeTypeId(sizeTypeEntityList.get(deleteIdx).getSizeTypeId())
+						ModifySizeTypeRequestDTO.builder().cudRequestCommand(CUDRequestCommand.DELETE).sizeTypeId(sizeTypeEntityList.get(deleteIdx).getSizeTypeId())
 								.sizeTypeOrder(sizeTypeEntityList.get(deleteIdx).getSizeTypeOrder())
 								.sizeTypeName(sizeTypeEntityList.get(deleteIdx).getSizeTypeName()).build()
 				);
@@ -370,15 +365,15 @@ class SizeIntegrationTest {
 			});
 
 			//삭제할
-			final int deleteSizeTypeOrder = modifySizeTypeRequestDTOList.stream().filter(o -> CUDMode.DELETE.equals(o.cudMode()))
+			final int deleteSizeTypeOrder = modifySizeTypeRequestDTOList.stream().filter(o -> CUDRequestCommand.DELETE.equals(o.cudRequestCommand()))
 					.map(ModifySizeTypeRequestDTO::sizeTypeOrder).findFirst().orElse(10);
 			//size 조회
 			//기존 데이터 중 UPDATE, DELETE 처리
 			modifySizeTypeRequestDTOList.addAll(
 					//삭제할 sizeTypeOrder로 CREATE
 					List.of(
-							ModifySizeTypeRequestDTO.builder().cudMode(CUDMode.CREATE).sizeTypeOrder(deleteSizeTypeOrder).sizeTypeName("240").build(),
-							ModifySizeTypeRequestDTO.builder().cudMode(CUDMode.CREATE).sizeTypeOrder(4).sizeTypeName("245").build()
+							ModifySizeTypeRequestDTO.builder().cudRequestCommand(CUDRequestCommand.CREATE).sizeTypeOrder(deleteSizeTypeOrder).sizeTypeName("240").build(),
+							ModifySizeTypeRequestDTO.builder().cudRequestCommand(CUDRequestCommand.CREATE).sizeTypeOrder(4).sizeTypeName("245").build()
 					)
 			);
 
@@ -418,7 +413,7 @@ class SizeIntegrationTest {
 
 			//then
 			CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
-					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundSizeException));
+					.andExpect(result -> assertTrue(result.getResolvedException() instanceof SizeNotFoundException));
 		}
 
 		@Test
@@ -432,7 +427,7 @@ class SizeIntegrationTest {
 
 			int notFoundSizeTypeId = 0;
 			List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).sizeTypeId(notFoundSizeTypeId).cudMode(CUDMode.UPDATE).build()
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).sizeTypeId(notFoundSizeTypeId).cudRequestCommand(CUDRequestCommand.UPDATE).build()
 			);
 
 			ModifySizeRequestDTO modifySizeRequestDTO = getModifySizeRequestDTO(responseDTO.sizeId(), modifySizeTypeRequestDTOList);
@@ -444,7 +439,7 @@ class SizeIntegrationTest {
 
 			//then
 			CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
-					.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundSizeTypeException));
+					.andExpect(result -> assertTrue(result.getResolvedException() instanceof SizeTypeNotFoundException));
 		}
 
 		@Test
@@ -457,8 +452,8 @@ class SizeIntegrationTest {
 			CreateSizeResponseDTO responseDTO = createSizeFacade.createSize(createSizeRequestDTO);
 
 			List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudMode(CUDMode.CREATE).build(),
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeOrder(1).cudMode(CUDMode.CREATE).build()
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.CREATE).build()
 			);
 
 			ModifySizeRequestDTO modifySizeRequestDTO = getModifySizeRequestDTO(responseDTO.sizeId(), modifySizeTypeRequestDTOList);
@@ -485,7 +480,7 @@ class SizeIntegrationTest {
 			int sizeTypeOrder = sizeQueryService.getSize(responseDTO.sizeId()).getSizeTypeList().get(0).getSizeTypeOrder();
 
 			List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(sizeTypeOrder).cudMode(CUDMode.CREATE).build()
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(sizeTypeOrder).cudRequestCommand(CUDRequestCommand.CREATE).build()
 			);
 
 			ModifySizeRequestDTO modifySizeRequestDTO = getModifySizeRequestDTO(responseDTO.sizeId(), modifySizeTypeRequestDTOList);
@@ -539,9 +534,9 @@ class SizeIntegrationTest {
 		private ModifySizeRequestDTO getModifySizeRequestDTO(Integer sizeId) {
 
 			List<ModifySizeTypeRequestDTO> modifySizeTypeRequestDTOList = List.of(
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudMode(CUDMode.CREATE).build(),
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeOrder(2).cudMode(CUDMode.CREATE).build(),
-					ModifySizeTypeRequestDTO.builder().sizeTypeName("250").sizeTypeOrder(3).cudMode(CUDMode.CREATE).build()
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("240").sizeTypeOrder(1).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("245").sizeTypeOrder(2).cudRequestCommand(CUDRequestCommand.CREATE).build(),
+					ModifySizeTypeRequestDTO.builder().sizeTypeName("250").sizeTypeOrder(3).cudRequestCommand(CUDRequestCommand.CREATE).build()
 			);
 
 			return ModifySizeRequestDTO.builder()
@@ -583,7 +578,7 @@ class SizeIntegrationTest {
 						.categoryId(categoryId)
 						.sizeTypeList(createSizeTypeList)
 						.build();
-				CreateSizeResponseDTO responseDTO = createSizeFacade.createSize(createSizeRequestDTO);
+				createSizeFacade.createSize(createSizeRequestDTO);
 			}
 
 			//when

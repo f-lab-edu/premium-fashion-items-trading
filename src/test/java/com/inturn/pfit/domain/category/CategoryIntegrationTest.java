@@ -4,10 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.service.CategoryCommandService;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
+import com.inturn.pfit.support.annotation.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@ActiveProfiles("junit")
-@AutoConfigureMockMvc
+@IntegrationTest
 class CategoryIntegrationTest {
 
 	@Autowired
@@ -201,7 +197,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("존재하지 않는 카테고리 ID로 카테고리를 조회하여 NotFoundException 발생 실패")
+	@DisplayName("존재하지 않는 카테고리 ID로 카테고리를 조회하여 NotFoundCategoryException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void getCategoryById_Fail_NotFoundCategory() throws Exception {
@@ -214,7 +210,7 @@ class CategoryIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CategoryNotFoundException))
 				.andExpect(jsonPath("$.data").doesNotExist())
 				.andExpect(jsonPath("$.success").value(false))
 				.andDo(print());
@@ -306,7 +302,7 @@ class CategoryIntegrationTest {
 	}
 
 	@Test
-	@DisplayName("카테고리 데이터가 존재하지 않는 ID로 카테고리 수정을 호출하여 NotFoundException 발생 실패")
+	@DisplayName("카테고리 데이터가 존재하지 않는 ID로 카테고리 수정을 호출하여 NotFoundCategoryException 발생 실패")
 	@Transactional
 	@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 	void modifyCategory_Fail_NotFoundCategory() throws Exception {
@@ -325,7 +321,7 @@ class CategoryIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CategoryNotFoundException))
 				.andDo(print());
 	}
 

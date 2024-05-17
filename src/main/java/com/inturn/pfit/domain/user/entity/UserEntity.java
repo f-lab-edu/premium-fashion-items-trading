@@ -16,6 +16,6 @@ public class UserEntity extends User {
 
 	@ManyToOne
 	@JoinColumn(name = "roleCode", updatable = false, insertable = false)
-	public UserRole userRole;
+	private UserRole userRole;
 
 }

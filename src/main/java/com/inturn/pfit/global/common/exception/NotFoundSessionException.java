@@ -2,7 +2,7 @@ package com.inturn.pfit.global.common.exception;
 
 import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
 
-public class NotFoundSessionException extends PfitException{
+public final class NotFoundSessionException extends PfitException{
 
 	public NotFoundSessionException() {
 		super(CommonErrorCode.NOT_FOUND_SESSION_EXCEPTION.getError());

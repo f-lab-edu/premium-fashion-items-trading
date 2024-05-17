@@ -2,7 +2,6 @@ package com.inturn.pfit.domain.category.service;
 
 
 import com.inturn.pfit.domain.category.dto.request.CreateCategoryRequestDTO;
-import com.inturn.pfit.domain.category.dto.request.DeleteCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
@@ -48,9 +47,9 @@ public class CategoryCommandService {
 	}
 
 	@Transactional
-	public CommonResponseDTO deleteCategory(DeleteCategoryRequestDTO req) {
+	public CommonResponseDTO deleteCategory(Integer categoryId) {
 		//카테고리 ID로 조회하고 삭제 처리
-		categoryRepository.delete(categoryQueryService.getCategoryById(req.categoryId()));
+		categoryRepository.delete(categoryQueryService.getCategoryById(categoryId));
 		return CommonResponseDTO.ok();
 	}
 

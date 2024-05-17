@@ -73,6 +73,22 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+task unitTest(type: Test) {
+	group = 'verification'
+	description = 'Runs the unit tests.'
+	useJUnitPlatform{
+		excludeTags 'IntegrationTest'
+	}
+}
+
+task integrationTest(type: Test) {
+	group = 'verification'
+	description = 'Runs the integration tests.'
+	useJUnitPlatform{
+		includeTags 'IntegrationTest'
+	}
+}
+
 def querydslDir = "out/generated"
 
 sourceSets {

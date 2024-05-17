@@ -30,7 +30,12 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 				.authorizeHttpRequests(r ->
-						r.requestMatchers( "/v1/user/sign-up", "/v1/user/check/**", "/v1/login", "/v1/logout", "/error").permitAll()
+						r.requestMatchers( "/*/user/sign-up"
+										, "/*/user/check/**"
+										, "/*/login"
+										, "/*/logout"
+										, "/error"
+										, "/actuator/**").permitAll()
 								.anyRequest().authenticated()
 				)
 				.csrf(CsrfConfigurer::disable)

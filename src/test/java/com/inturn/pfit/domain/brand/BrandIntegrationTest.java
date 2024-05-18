@@ -8,6 +8,7 @@ import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.service.BrandCommandService;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import com.inturn.pfit.support.annotation.IntegrationTest;
+import com.inturn.pfit.support.fixture.CommonResponseResultFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +27,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,12 +73,8 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(createBrandRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
-				.andExpect(jsonPath("$.data.brandId").exists())
-				.andDo(print());
+		CommonResponseResultFixture.successResultActions(actions)
+				.andExpect(jsonPath("$.data.brandId").exists());
 	}
 
 	@Test
@@ -93,11 +89,7 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(createBrandRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isUnauthorized());
 	}
 
 	@Test
@@ -113,11 +105,7 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(createBrandRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isForbidden())
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isForbidden());
 	}
 
 	@Test
@@ -135,12 +123,8 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	@Test
@@ -155,13 +139,9 @@ class BrandIntegrationTest {
 		ResultActions actions = mockMvc.perform(get("/v1/brand/%s".formatted(res.brandId())));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
+		CommonResponseResultFixture.successResultActions(actions)
 				.andExpect(jsonPath("$.data.brandId").value(res.brandId()))
-				.andExpect(jsonPath("$.data.brandName").value(brandName))
-				.andDo(print());
+				.andExpect(jsonPath("$.data.brandName").value(brandName));
 	}
 
 	@Test
@@ -176,12 +156,8 @@ class BrandIntegrationTest {
 		ResultActions actions = mockMvc.perform(get("/v1/brand/%s".formatted(notExistBrandId)));
 
 		//then
-		actions
-				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException));
 	}
 
 	@Test
@@ -197,9 +173,7 @@ class BrandIntegrationTest {
 		//TODO 해당 테스트는 고민을 해보자.
 		//@NotNull에 대해서 처리할 수 있는 조건을 확인해보자.
 		//then
-		actions
-				.andExpect(status().isInternalServerError())
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isInternalServerError());
 	}
 
 	@Test
@@ -221,13 +195,9 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
+		CommonResponseResultFixture.successResultActions(actions)
 				.andExpect(jsonPath("$.data.brandId").value(res.brandId()))
-				.andExpect(jsonPath("$.data.brandName").value(brandName.repeat(2)))
-				.andDo(print());
+				.andExpect(jsonPath("$.data.brandName").value(brandName.repeat(2)));
 	}
 
 
@@ -249,12 +219,8 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	private static Stream<Arguments> provideParameter() {
@@ -282,10 +248,8 @@ class BrandIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException));
 	}
 
 	@ParameterizedTest
@@ -312,11 +276,8 @@ class BrandIntegrationTest {
 		);
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andExpect(jsonPath("$.data.content.length()").value(listSize))
-				.andDo(print());
+		CommonResponseResultFixture.successResultActions(actions)
+				.andExpect(jsonPath("$.data.content.length()").value(listSize));
 	}
 
 	private static Stream<Arguments> providePagingParameter() {

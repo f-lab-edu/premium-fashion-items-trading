@@ -1,20 +1,25 @@
 package com.inturn.pfit.domain.address.controller;
 
+import com.inturn.pfit.domain.address.dto.request.CreateAddressRequestDTO;
+import com.inturn.pfit.domain.address.dto.request.ModifyAddressRequestDTO;
 import com.inturn.pfit.domain.address.dto.response.AddressResponseDTO;
-import com.inturn.pfit.domain.address.service.AddressCommandService;
+import com.inturn.pfit.domain.address.dto.response.CreateAddressResponseDTO;
+import com.inturn.pfit.domain.address.facade.CreateAddressFacade;
+import com.inturn.pfit.domain.address.facade.GetUserAddressFacade;
+import com.inturn.pfit.domain.address.facade.ModifyAddressFacade;
 import com.inturn.pfit.domain.address.service.AddressQueryService;
 import com.inturn.pfit.global.common.dto.response.DataResponseDTO;
+import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Secured(RoleConsts.ROLE_USER)
 @RestController
 @RequestMapping("/v1/address")
 @RequiredArgsConstructor
@@ -22,30 +27,34 @@ public class AddressV1Controller {
 
 	private final AddressQueryService addressQueryService;
 
-	private final AddressCommandService addressCommandService;
+	private final ModifyAddressFacade modifyAddressFacade;
+
+	private final CreateAddressFacade createAddressFacade;
+
+	private final GetUserAddressFacade getUserAddressFacade;
 
 	//주소록 조회
 	@GetMapping("/{addressId}")
 	public ResponseEntity<DataResponseDTO<AddressResponseDTO>> getAddressById(@PathVariable @Valid @NotNull Long addressId) {
-		return DataResponseDTO.ok(addressQueryService.getAddressById(addressId));
+		return DataResponseDTO.ok(addressQueryService.getAddress(addressId));
 	}
 
 	//주소록 등록
-//	@PostMapping
-//	public ResponseEntity<DataResponseDTO<CreateAddressResponseDTO>> createAddress(@RequestBody @Valid CreateAddressRequestDTO req) {
-//		return DataResponseDTO.ok(addressCommandService.createAddress(req));
-//	}
-//
-//	//주소록 편집
-//	@PatchMapping
-//	public ResponseEntity<DataResponseDTO<AddressResponseDTO>> modifyAddress(@RequestBody @Valid ModifyAddressRequestDTO req) {
-//		return DataResponseDTO.ok(addressCommandService.modifyAddress(req));
-//	}
+	@PostMapping
+	public ResponseEntity<DataResponseDTO<CreateAddressResponseDTO>> createAddress(@RequestBody @Valid CreateAddressRequestDTO req) {
+		return DataResponseDTO.ok(createAddressFacade.createAddress(req));
+	}
+
+	//주소록 편집
+	@PatchMapping
+	public ResponseEntity<DataResponseDTO<AddressResponseDTO>> modifyAddress(@RequestBody @Valid ModifyAddressRequestDTO req) {
+		return DataResponseDTO.ok(modifyAddressFacade.modifyAddress(req));
+	}
 
 	//주소록 사용자 조회
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<DataResponseDTO<List<AddressResponseDTO>>> getAddressByUserId(@PathVariable @Valid @NotNull Long userId) {
-		return DataResponseDTO.ok(addressQueryService.getAddressListByUserId(userId));
+		return DataResponseDTO.ok(getUserAddressFacade.getAddressListByUserId(userId));
 	}
 
 }

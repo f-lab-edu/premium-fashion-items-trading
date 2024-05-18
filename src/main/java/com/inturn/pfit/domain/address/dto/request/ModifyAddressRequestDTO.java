@@ -38,7 +38,7 @@ public record ModifyAddressRequestDTO(
 ) {
 
 	public AddressEntity convertAddress(AddressEntity entity) {
-		return entity.builder()
+		return entity.toBuilder()
 				.recipients(recipients())
 				.phone(phone())
 				.postCode(postCode())

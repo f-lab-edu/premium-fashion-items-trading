@@ -2,6 +2,8 @@ package com.inturn.pfit.domain.address.facade;
 
 import com.inturn.pfit.domain.address.dto.response.AddressResponseDTO;
 import com.inturn.pfit.domain.address.service.AddressQueryService;
+import com.inturn.pfit.domain.user.entity.UserEntity;
+import com.inturn.pfit.domain.user.exception.UserNotFoundException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,8 @@ public class GetUserAddressFacade {
 	@Transactional(readOnly = true)
 	public List<AddressResponseDTO> getAddressListByUserId(final Long userId) {
 
+		final UserEntity user = userQueryService.getUserById(userId).orElseThrow(() -> new UserNotFoundException());
 
-
-		return addressQueryService.getAddressListByUserId(userId);
+		return addressQueryService.getAddressListByUserId(user.getUserId());
 	}
 }

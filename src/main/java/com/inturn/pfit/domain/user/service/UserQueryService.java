@@ -22,13 +22,13 @@ public class UserQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public UserEntity getUserById(Long userId) {
-		return userRepository.findById(userId).orElseThrow(() -> new NotFoundException());
+	public Optional<UserEntity> getUserById(Long userId) {
+		return userRepository.findById(userId);
 	}
 
 	@Transactional(readOnly = true)
 	public UserResponseDTO getUserBySession() {
-		return UserResponseDTO.from(this.getUserById(SessionUtils.getUserSession().getUserId()));
+		return UserResponseDTO.from(this.getUserById(SessionUtils.getUserSession().getUserId()).orElseThrow(() -> new NotFoundException()));
 	}
 
 	@Transactional(readOnly = true)

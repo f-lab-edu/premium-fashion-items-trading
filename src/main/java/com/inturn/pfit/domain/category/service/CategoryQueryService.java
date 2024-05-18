@@ -35,7 +35,7 @@ public class CategoryQueryService {
 	}
 
 	@Transactional(readOnly = true)
-	public void validateCategoryById(Integer categoryId) {
+	public void validateExistCategoryById(Integer categoryId) {
 		categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException());
 	}
 

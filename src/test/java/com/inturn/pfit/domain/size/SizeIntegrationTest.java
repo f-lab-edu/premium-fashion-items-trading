@@ -93,9 +93,6 @@ class SizeIntegrationTest {
 
 	CreateSizeRequestDTO createSizeRequestDTO;
 
-
-	//TODO - BeforeAll로 한번만 쓸 수 없나 ??
-	//아니면 BeforeEach 이기 때문에 매일 등록될 텐데..
 	//상위 데이터를 넣어놓는 방법 찾아보자.
 	@BeforeEach
 	void testStart() {
@@ -567,7 +564,7 @@ class SizeIntegrationTest {
 		@Transactional
 		@WithMockUser(authorities = RoleConsts.ROLE_ADMIN)
 		@MethodSource("providePagingParameter")
-		void getCategoryPagingList_Success(Integer size, Integer page, String searchSizeName, Integer listSize) throws Exception {
+		void getSizePagingList_Success(Integer size, Integer page, String searchSizeName, Integer listSize) throws Exception {
 
 			//given
 			int createRow = 20;

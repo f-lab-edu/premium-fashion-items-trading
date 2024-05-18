@@ -5,10 +5,8 @@ import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class CategoryQueryServiceTest {
 
 	@InjectMocks

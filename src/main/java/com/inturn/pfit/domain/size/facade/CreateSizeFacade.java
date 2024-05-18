@@ -35,7 +35,7 @@ public class CreateSizeFacade {
 		}
 
 		//카테고리가 존재하는지 여부 확인
-		categoryQueryService.validateCategoryById(saveSize.getCategoryId());
+		categoryQueryService.validateExistCategoryById(saveSize.getCategoryId());
 
 		//size 저장
 		SizeEntity size = sizeCommandService.save(saveSize);

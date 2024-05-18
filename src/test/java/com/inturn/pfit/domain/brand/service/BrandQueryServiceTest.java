@@ -1,13 +1,11 @@
 package com.inturn.pfit.domain.brand.service;
 
 import com.inturn.pfit.domain.brand.entity.Brand;
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.repository.BrandRepository;
-import com.inturn.pfit.global.common.exception.NotFoundException;
-import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
-import com.inturn.pfit.support.vo.TestTypeConsts;
+import com.inturn.pfit.domain.brand.vo.BrandErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class BrandQueryServiceTest {
 
 	@InjectMocks
@@ -65,9 +62,9 @@ class BrandQueryServiceTest {
 		when(brandRepository.findById(brandId)).thenReturn(Optional.empty());
 
 		//when
-		final NotFoundException result =  assertThrows(NotFoundException.class, () -> brandQueryService.getBrandById(brandId));
+		final BrandNotFoundException result =  assertThrows(BrandNotFoundException.class, () -> brandQueryService.getBrandById(brandId));
 
 		//then
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
+		assertEquals(result.getMessage(), BrandErrorCode.BRAND_NOT_FOUND_EXCEPTION.getErrorMessage());
 	}
 }

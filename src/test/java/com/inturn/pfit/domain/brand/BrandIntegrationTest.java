@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.inturn.pfit.domain.brand.dto.request.CreateBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.request.ModifyBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.response.CreateBrandResponseDTO;
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.service.BrandCommandService;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import com.inturn.pfit.support.annotation.IntegrationTest;
 import org.junit.jupiter.api.BeforeEach;
@@ -178,7 +178,7 @@ class BrandIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException))
 				.andExpect(jsonPath("$.data").doesNotExist())
 				.andExpect(jsonPath("$.success").value(false))
 				.andDo(print());
@@ -284,7 +284,7 @@ class BrandIntegrationTest {
 		//then
 		actions
 				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof NotFoundException))
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof BrandNotFoundException))
 				.andDo(print());
 	}
 

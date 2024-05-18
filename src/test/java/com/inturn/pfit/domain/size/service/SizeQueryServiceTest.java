@@ -67,17 +67,17 @@ class SizeQueryServiceTest {
 	void getSize_Fail_NotFoundSize() {
 
 		//given
-		int sizeId = 1;
-		when(sizeRepository.findById(sizeId)).thenReturn(Optional.empty());
+		int sizeNotExist = 1;
+		when(sizeRepository.findById(sizeNotExist)).thenReturn(Optional.empty());
 
 		//when
-		final SizeNotFoundException result =  assertThrows(SizeNotFoundException.class, () -> sizeQueryService.getSize(sizeId));
+		final SizeNotFoundException result =  assertThrows(SizeNotFoundException.class, () -> sizeQueryService.getSize(sizeNotExist));
 
 		//then
 		assertEquals(result.getMessage(), SizeErrorCode.SIZE_NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
-		verify(sizeRepository, times(1)).findById(sizeId);
+		verify(sizeRepository, times(1)).findById(sizeNotExist);
 	}
 
 

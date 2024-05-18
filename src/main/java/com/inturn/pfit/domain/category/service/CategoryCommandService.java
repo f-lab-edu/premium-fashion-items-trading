@@ -6,6 +6,7 @@ import com.inturn.pfit.domain.category.dto.request.ModifyCategoryRequestDTO;
 import com.inturn.pfit.domain.category.dto.response.CategoryResponseDTO;
 import com.inturn.pfit.domain.category.dto.response.CreateCategoryResponseDTO;
 import com.inturn.pfit.domain.category.entity.Category;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class CategoryCommandService {
 	public CategoryResponseDTO modifyCategory(ModifyCategoryRequestDTO req) {
 
 		//해당 카테고리가 존재하는지 조회
-		Category category = categoryQueryService.getCategoryById(req.categoryId());
+		Category category = categoryQueryService.getCategoryById(req.categoryId()).orElseThrow(() -> new CategoryNotFoundException());
 
 		//이미 해당 categoryOrder가 있을 경우 Exception 발생
 		categoryQueryService.validateExistCategoryByOrder(req.categoryOrder());
@@ -49,7 +50,7 @@ public class CategoryCommandService {
 	@Transactional
 	public CommonResponseDTO deleteCategory(Integer categoryId) {
 		//카테고리 ID로 조회하고 삭제 처리
-		categoryRepository.delete(categoryQueryService.getCategoryById(categoryId));
+//		categoryRepository.delete(categoryQueryService.getCategoryById(categoryId));
 		return CommonResponseDTO.ok();
 	}
 

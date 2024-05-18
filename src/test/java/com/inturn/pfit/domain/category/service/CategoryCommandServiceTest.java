@@ -17,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -100,7 +102,7 @@ class CategoryCommandServiceTest {
 				.categoryName(categoryName.repeat(2))
 				.categoryOrder(categoryOrder + 1)
 				.build();
-		when(categoryQueryService.getCategoryById(req.categoryId())).thenReturn(category);
+		when(categoryQueryService.getCategoryById(req.categoryId())).thenReturn(Optional.of(category));
 		doNothing().when(categoryQueryService).validateExistCategoryByOrder(req.categoryOrder());
 		Category modCategory = Category.builder()
 				.categoryId(categoryId)

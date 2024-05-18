@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BrandQueryService {
@@ -24,16 +26,18 @@ public class BrandQueryService {
 
 	@Transactional(readOnly = true)
 	public BrandResponseDTO getBrand(Integer brandId) {
-		return BrandResponseDTO.from(getBrandById(brandId));
+		return BrandResponseDTO.from(getBrandById(brandId).orElseThrow(() -> new BrandNotFoundException()));
 	}
 
 	@Transactional(readOnly = true)
-	public Brand getBrandById(Integer brandId) {
-		return brandRepository.findById(brandId).orElseThrow(() -> new BrandNotFoundException());
+	public Optional<Brand> getBrandById(Integer brandId) {
+		return brandRepository.findById(brandId);
 	}
 
 	@Transactional(readOnly = true)
 	public void validateExistBrandById(Integer brandId) {
-		brandRepository.findById(brandId).orElseThrow(() -> new BrandNotFoundException());
+		if(getBrandById(brandId).isEmpty()) {
+			throw new BrandNotFoundException();
+		}
 	}
 }

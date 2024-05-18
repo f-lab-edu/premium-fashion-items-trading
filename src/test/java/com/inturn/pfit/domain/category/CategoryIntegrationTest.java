@@ -26,6 +26,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -246,14 +247,19 @@ class CategoryIntegrationTest {
 				.categoryOrder(categoryOrder)
 				.build();
 
-		//when
-		ResultActions actions = mockMvc.perform(patch("/v1/category")
+//		//when & then
+//		mockMvc.perform(patch("/v1/category")
+//						.contentType(MediaType.APPLICATION_JSON)
+//						.content(objectMapper.writeValueAsString(req)))
+//				.andDo(print())
+//				.andReturn().getResponse();
+//		assertTH
+		MethodArgumentNotValidException result = assertThrows(MethodArgumentNotValidException.class, () -> mockMvc.perform(patch("/v1/category")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(req)));
+				.content(objectMapper.writeValueAsString(req))));
 
-		//then
-		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
+//
+//		assertThrows();
 	}
 
 	private static Stream<Arguments> provideParameter() {

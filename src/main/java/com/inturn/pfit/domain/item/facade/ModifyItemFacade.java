@@ -1,6 +1,8 @@
 package com.inturn.pfit.domain.item.facade;
 
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.service.BrandQueryService;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.service.CategoryQueryService;
 import com.inturn.pfit.domain.item.dto.request.ModifyItemRequestDTO;
 import com.inturn.pfit.domain.item.dto.response.ItemResponseDTO;
@@ -63,9 +65,9 @@ public class ModifyItemFacade {
 	private void validateModifyItem(ModifyItemRequestDTO req, ItemEntity item) {
 
 		//TODO - 이미 해당 카테고리로 상품이 등록된 경우는 validate 추가 -> 상품 개발 후 해당 내용 개발 진행
-		categoryQueryService.validateExistCategoryByOrder(req.categoryId());
+		categoryQueryService.getCategoryById(req.categoryId()).orElseThrow(() -> new CategoryNotFoundException());
 
-		brandQueryService.validateExistBrandById(req.brandId());
+		brandQueryService.getBrandById(req.brandId()).orElseThrow(() -> new BrandNotFoundException());
 
 		List<ModifyItemSizeRequestDTO> modifyItemSizeRequestDTOList = req.itemSizeList();
 
@@ -85,11 +87,14 @@ public class ModifyItemFacade {
 			}
 		}
 
-		//CREATE는 별도 비교
-		if(!modifyItemSizeRequestDTOList.stream().filter(o -> CUDRequestCommand.CREATE.equals(o.cudRequestCommand())).map(ModifyItemSizeRequestDTO::itemSizeOrder)
-				.allMatch(itemSizeOrderMap::add)) {
+		if(isDuplicateItemSizeOrderByCreateRequest(modifyItemSizeRequestDTOList, itemSizeOrderMap)) {
 			throw new DuplicateItemSizeOrderException();
 		}
+	}
+
+	private boolean isDuplicateItemSizeOrderByCreateRequest(List<ModifyItemSizeRequestDTO> modifyItemSizeRequestDTOList, HashSet<Integer> itemSizeOrderMap) {
+		return !modifyItemSizeRequestDTOList.stream().filter(o -> CUDRequestCommand.CREATE.equals(o.cudRequestCommand())).map(ModifyItemSizeRequestDTO::itemSizeOrder)
+				.allMatch(itemSizeOrderMap::add);
 	}
 
 	private void validateExistItemSizeForRequestUpdateAndDelete(ItemEntity item, List<ModifyItemSizeRequestDTO> modifyItemSizeRequestDTOList) {

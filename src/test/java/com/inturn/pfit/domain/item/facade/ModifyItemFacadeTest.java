@@ -1,7 +1,13 @@
 package com.inturn.pfit.domain.item.facade;
 
+import com.inturn.pfit.domain.brand.entity.Brand;
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.service.BrandQueryService;
+import com.inturn.pfit.domain.brand.vo.BrandErrorCode;
+import com.inturn.pfit.domain.category.entity.Category;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.service.CategoryQueryService;
+import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
 import com.inturn.pfit.domain.item.dto.request.ModifyItemRequestDTO;
 import com.inturn.pfit.domain.item.dto.response.ItemResponseDTO;
 import com.inturn.pfit.domain.item.entity.ItemEntity;
@@ -27,6 +33,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -67,6 +74,11 @@ class ModifyItemFacadeTest {
 	static Long itemId;
 	static String itemName;
 
+
+	static Category category;
+	static Brand brand;
+
+
 	@BeforeAll
 	static void initTest () {
 		Random random = new Random();
@@ -75,6 +87,17 @@ class ModifyItemFacadeTest {
 		brandId = random.nextInt();
 		itemId = random.nextLong();
 		itemName = RandomStringUtils.random(10);
+
+		category = Category.builder()
+				.categoryId(categoryId)
+				.categoryName("신발")
+				.categoryOrder(1)
+				.build();
+
+		brand = Brand.builder()
+				.brandId(brandId)
+				.brandName("NIKE")
+				.build();
 	}
 
 	@Test
@@ -103,6 +126,9 @@ class ModifyItemFacadeTest {
 
 		ItemEntity modItem = modifyItemRequestDTO.convertItem(item);
 
+		when(categoryQueryService.getCategoryById(categoryId)).thenReturn(Optional.of(category));
+		when(brandQueryService.getBrandById(brandId)).thenReturn(Optional.of(brand));
+
 		when(itemQueryService.getItemById(itemId)).thenReturn(item);
 		when(itemCommandService.save(any())).thenReturn(modItem);
 		when(itemSizeQueryService.getItemSizeListBySizeId(itemId)).thenReturn(modifyItemSizeList);
@@ -116,6 +142,8 @@ class ModifyItemFacadeTest {
 		assertEquals(res.getItemSizeList().size(), modifyItemSizeList.size());
 
 		//verify
+		verify(categoryQueryService, times(1)).getCategoryById(categoryId);
+		verify(brandQueryService, times(1)).getBrandById(brandId);
 		verify(itemQueryService, times(1)).getItemById(itemId);
 		verify(itemCommandService, times(1)).save(any());
 		verify(itemSizeCommandService, times(1)).saveCUDAll(any(), anyList());
@@ -123,7 +151,62 @@ class ModifyItemFacadeTest {
 	}
 
 	@Test
-	@DisplayName("상품 사이즈 데이터가 없는 상황에서 상품 편집을 실행하면 실패한다.")
+	@DisplayName("존재하지 않는 카테고리 ID로 상품 편집을 실행하면 실패한다.")
+	void modifyItem_Fail_CategoryNotFound() {
+
+		//given
+		ModifyItemRequestDTO modifyItemRequestDTO = getModifyItemRequestDTO(itemId);
+
+		ItemEntity item = getItemEntity();
+
+		when(categoryQueryService.getCategoryById(categoryId)).thenReturn(Optional.empty());
+		when(itemQueryService.getItemById(itemId)).thenReturn(item);
+
+		//when
+		final CategoryNotFoundException result = assertThrows(CategoryNotFoundException.class, () -> modifyItemFacade.modifyItem(modifyItemRequestDTO));
+
+		//then
+		assertEquals(result.getMessage(), CategoryErrorCode.CATEGORY_NOT_FOUND_EXCEPTION.getErrorMessage());
+
+		//verify
+		verify(itemQueryService, times(1)).getItemById(itemId);
+		verify(categoryQueryService, times(1)).getCategoryById(categoryId);
+		verify(brandQueryService, times(0)).getBrandById(brandId);
+		verify(itemSizeQueryService, times(0)).getItemSizeListBySizeId(itemId);
+		verify(itemCommandService, times(0)).save(any());
+		verify(itemSizeCommandService, times(0)).saveCUDAll(any(), anyList());
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 브랜드 ID로 상품 편집을 실행하면 실패한다.")
+	void modifyItem_Fail_BrandNotFound() {
+
+		//given
+		ModifyItemRequestDTO modifyItemRequestDTO = getModifyItemRequestDTO(itemId);
+
+		ItemEntity item = getItemEntity();
+
+		when(categoryQueryService.getCategoryById(categoryId)).thenReturn(Optional.of(category));
+		when(brandQueryService.getBrandById(brandId)).thenReturn(Optional.empty());
+		when(itemQueryService.getItemById(itemId)).thenReturn(item);
+
+		//when
+		final BrandNotFoundException result = assertThrows(BrandNotFoundException.class, () -> modifyItemFacade.modifyItem(modifyItemRequestDTO));
+
+		//then
+		assertEquals(result.getMessage(), BrandErrorCode.BRAND_NOT_FOUND_EXCEPTION.getErrorMessage());
+
+		//verify
+		verify(itemQueryService, times(1)).getItemById(itemId);
+		verify(categoryQueryService, times(1)).getCategoryById(categoryId);
+		verify(brandQueryService, times(1)).getBrandById(brandId);
+		verify(itemSizeQueryService, times(0)).getItemSizeListBySizeId(itemId);
+		verify(itemCommandService, times(0)).save(any());
+		verify(itemSizeCommandService, times(0)).saveCUDAll(any(), anyList());
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 상품 사이즈 ID로 상품 편집을 실행하면 실패한다.")
 	void modifyItem_Fail_NotFoundItemSize() {
 
 		//given
@@ -136,6 +219,8 @@ class ModifyItemFacadeTest {
 
 		ItemEntity item = getItemEntity();
 
+		when(categoryQueryService.getCategoryById(categoryId)).thenReturn(Optional.of(category));
+		when(brandQueryService.getBrandById(brandId)).thenReturn(Optional.of(brand));
 		when(itemQueryService.getItemById(itemId)).thenReturn(item);
 
 		//when
@@ -145,6 +230,8 @@ class ModifyItemFacadeTest {
 		assertEquals(result.getMessage(), ItemSizeErrorCode.ITEM_SIZE_NOT_FOUND_EXCEPTION.getErrorMessage());
 
 		//verify
+		verify(categoryQueryService, times(1)).getCategoryById(categoryId);
+		verify(brandQueryService, times(1)).getBrandById(brandId);
 		verify(itemQueryService, times(1)).getItemById(itemId);
 		verify(itemSizeQueryService, times(0)).getItemSizeListBySizeId(itemId);
 		verify(itemCommandService, times(0)).save(any());
@@ -165,6 +252,8 @@ class ModifyItemFacadeTest {
 
 		ItemEntity item = getItemEntity();
 
+		when(categoryQueryService.getCategoryById(categoryId)).thenReturn(Optional.of(category));
+		when(brandQueryService.getBrandById(brandId)).thenReturn(Optional.of(brand));
 		when(itemQueryService.getItemById(itemId)).thenReturn(item);
 
 		//when & then

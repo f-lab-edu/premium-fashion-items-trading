@@ -1,6 +1,8 @@
 package com.inturn.pfit.domain.item.facade;
 
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.service.BrandQueryService;
+import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.service.CategoryQueryService;
 import com.inturn.pfit.domain.item.dto.request.CreateItemRequestDTO;
 import com.inturn.pfit.domain.item.dto.response.CreateItemResponseDTO;
@@ -45,8 +47,8 @@ public class CreateItemFacade {
 	private void validateCreateItem(CreateItemRequestDTO req) {
 		req.validateDuplicateItemSizeOrder();
 
-		categoryQueryService.validateExistCategoryById(req.categoryId());
+		categoryQueryService.getCategoryById(req.categoryId()).orElseThrow(() -> new CategoryNotFoundException());
 
-		brandQueryService.validateExistBrandById(req.brandId());
+		brandQueryService.getBrandById(req.brandId()).orElseThrow(() -> new BrandNotFoundException());
 	}
 }

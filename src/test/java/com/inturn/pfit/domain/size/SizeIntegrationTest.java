@@ -419,7 +419,6 @@ class SizeIntegrationTest {
 		void modifySize_Fail_NotFoundModifySizeType() throws Exception {
 
 			//given
-			//Size 등록
 			CreateSizeResponseDTO responseDTO = createSizeFacade.createSize(createSizeRequestDTO);
 
 			int notFoundSizeTypeId = 0;
@@ -435,7 +434,7 @@ class SizeIntegrationTest {
 					.contentType(MediaType.APPLICATION_JSON));
 
 			//then
-			CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+			CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
 					.andExpect(result -> assertTrue(result.getResolvedException() instanceof SizeTypeNotFoundException));
 		}
 

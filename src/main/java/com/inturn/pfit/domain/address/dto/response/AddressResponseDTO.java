@@ -42,3 +42,4 @@ public class AddressResponseDTO extends CommonTimeDTO {
 				.build();
 	}
 }
+

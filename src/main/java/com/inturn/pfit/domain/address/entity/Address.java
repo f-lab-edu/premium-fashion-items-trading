@@ -1,6 +1,7 @@
 package com.inturn.pfit.domain.address.entity;
 
 import com.inturn.pfit.global.common.entity.BaseTimeEntity;
+import com.inturn.pfit.global.support.utils.PfitConsts;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,4 +38,8 @@ public class Address extends BaseTimeEntity {
 
 	@Column(nullable = false, length = 1)
 	private String defaultYn;
+	
+	public void setDefaultN() {
+		this.defaultYn = PfitConsts.CommonCodeConsts.YN_N;
+	}
 }

@@ -2,9 +2,10 @@ package com.inturn.pfit.domain.userrole.service;
 
 import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.domain.userrole.repository.UserRoleRepository;
-import com.inturn.pfit.global.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class UserRoleQueryService {
 	 * @param roleCode
 	 * @return 데이터가 존재할 경우 UserRole 반환
 	 */
-	public UserRole getUserRoleByRoleCode(String roleCode) {
-		return userRoleRepository.findById(roleCode).orElseThrow(() -> new NotFoundException());
+	public Optional<UserRole> getUserRoleByRoleCode(String roleCode) {
+		return userRoleRepository.findById(roleCode);
 	}
 }

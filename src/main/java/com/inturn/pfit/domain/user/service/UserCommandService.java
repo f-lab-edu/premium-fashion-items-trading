@@ -8,7 +8,6 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.ExistUserException;
 import com.inturn.pfit.domain.user.exception.PasswordMismatchException;
 import com.inturn.pfit.domain.user.repository.UserRepository;
-import com.inturn.pfit.domain.userrole.entity.UserRole;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.global.common.exception.NotFoundException;
 import com.inturn.pfit.global.support.utils.SessionUtils;
@@ -28,7 +27,7 @@ public class UserCommandService {
 
 
 	@Transactional
-	public UserEntity signUp(SignUpRequestDTO req, UserRole role) {
+	public UserEntity signUp(SignUpRequestDTO req) {
 		//이미 등록된 email의 사용자 인지 확인
 		Optional<UserEntity> userOpt = userRepository.findByEmail(req.email());
 		if(userOpt.isPresent()){

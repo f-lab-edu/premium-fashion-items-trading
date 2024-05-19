@@ -1,14 +1,11 @@
 package com.inturn.pfit.domain.category.service;
 
 import com.inturn.pfit.domain.category.entity.Category;
-import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class CategoryQueryServiceTest {
 
 	@InjectMocks
@@ -54,10 +50,10 @@ class CategoryQueryServiceTest {
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
 
 		//when
-		Category result = categoryQueryService.getCategoryById(categoryId);
+		final Optional<Category> result = categoryQueryService.getCategoryById(categoryId);
 
 		//then
-		assertEquals(result.getCategoryId(), categoryId);
+		assertEquals(result.get().getCategoryId(), categoryId);
 	}
 
 	@Test
@@ -68,10 +64,10 @@ class CategoryQueryServiceTest {
 		when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
 		//when
-		final CategoryNotFoundException result =  assertThrows(CategoryNotFoundException.class, () -> categoryQueryService.getCategoryById(categoryId));
+		final Optional<Category> result = categoryQueryService.getCategoryById(categoryId);
 
 		//then
-		assertEquals(result.getMessage(), CategoryErrorCode.CATEGORY_NOT_FOUND_EXCEPTION.getErrorMessage());
+		assertEquals(result.isEmpty(), true);
 	}
 
 	@Test

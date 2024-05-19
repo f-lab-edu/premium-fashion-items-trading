@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryQueryService {
@@ -26,17 +28,19 @@ public class CategoryQueryService {
 
 	@Transactional(readOnly = true)
 	public CategoryResponseDTO getCategory(Integer categoryId) {
-		return CategoryResponseDTO.from(getCategoryById(categoryId));
+		return CategoryResponseDTO.from(getCategoryById(categoryId).orElseThrow(() -> new CategoryNotFoundException()));
 	}
 
 	@Transactional(readOnly = true)
-	public Category getCategoryById(Integer categoryId) {
-		return categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException());
+	public Optional<Category> getCategoryById(Integer categoryId) {
+		return categoryRepository.findById(categoryId);
 	}
 
 	@Transactional(readOnly = true)
-	public void validateCategoryById(Integer categoryId) {
-		categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException());
+	public void validateExistCategoryById(Integer categoryId) {
+		if(getCategoryById(categoryId).isEmpty()) {
+			throw new CategoryNotFoundException();
+		};
 	}
 
 	@Transactional(readOnly = true)

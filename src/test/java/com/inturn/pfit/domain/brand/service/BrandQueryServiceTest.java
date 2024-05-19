@@ -2,12 +2,8 @@ package com.inturn.pfit.domain.brand.service;
 
 import com.inturn.pfit.domain.brand.entity.Brand;
 import com.inturn.pfit.domain.brand.repository.BrandRepository;
-import com.inturn.pfit.global.common.exception.NotFoundException;
-import com.inturn.pfit.global.common.exception.vo.CommonErrorCode;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -17,11 +13,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class BrandQueryServiceTest {
 
 	@InjectMocks
@@ -51,10 +45,10 @@ class BrandQueryServiceTest {
 		when(brandRepository.findById(brandId)).thenReturn(Optional.of(brand));
 
 		//when
-		Brand result = brandQueryService.getBrandById(brandId);
+		Optional<Brand> result = brandQueryService.getBrandById(brandId);
 
 		//then
-		assertEquals(result.getBrandId(), brandId);
+		assertEquals(result.get().getBrandId(), brandId);
 	}
 
 	@Test
@@ -65,9 +59,9 @@ class BrandQueryServiceTest {
 		when(brandRepository.findById(brandId)).thenReturn(Optional.empty());
 
 		//when
-		final NotFoundException result =  assertThrows(NotFoundException.class, () -> brandQueryService.getBrandById(brandId));
+		Optional<Brand> brandOptional = brandQueryService.getBrandById(brandId);
 
 		//then
-		assertEquals(result.getMessage(), CommonErrorCode.NOT_FOUND_EXCEPTION.getErrorMessage());
+		assertEquals(brandOptional.isEmpty(), true);
 	}
 }

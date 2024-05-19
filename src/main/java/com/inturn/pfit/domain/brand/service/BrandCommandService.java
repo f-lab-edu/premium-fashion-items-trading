@@ -5,6 +5,7 @@ import com.inturn.pfit.domain.brand.dto.request.ModifyBrandRequestDTO;
 import com.inturn.pfit.domain.brand.dto.response.BrandResponseDTO;
 import com.inturn.pfit.domain.brand.dto.response.CreateBrandResponseDTO;
 import com.inturn.pfit.domain.brand.entity.Brand;
+import com.inturn.pfit.domain.brand.exception.BrandNotFoundException;
 import com.inturn.pfit.domain.brand.repository.BrandRepository;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class BrandCommandService {
 	public BrandResponseDTO modifyBrand(ModifyBrandRequestDTO req) {
 
 		//해당 브랜드가 존재하는지 조회
-		Brand brand = brandQueryService.getBrandById(req.brandId());
+		Brand brand = brandQueryService.getBrandById(req.brandId()).orElseThrow(() -> new BrandNotFoundException());
 
 		Brand modBrand = req.modifyBrand(brand);
 
@@ -42,7 +43,7 @@ public class BrandCommandService {
 	@Transactional
 	public CommonResponseDTO deleteBrand(Integer brandId) {
 		//브랜드 ID로 조회하고 삭제 처리
-		brandRepository.delete(brandQueryService.getBrandById(brandId));
+//		brandRepository.delete(brandQueryService.getBrandById(brandId));
 		return CommonResponseDTO.ok();
 	}
 

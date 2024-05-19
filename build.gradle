@@ -38,6 +38,9 @@ dependencies {
 	//lang3은 유틸리티 클래스를 제공하여 개발의 편의성 증대
 	implementation 'org.apache.commons:commons-lang3'
 
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
 	//JDBC와 연결하여 로깅할 수 있는 log4jdbc-log4j2 의존성 추가
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	//QueryDsl 의존성 추가

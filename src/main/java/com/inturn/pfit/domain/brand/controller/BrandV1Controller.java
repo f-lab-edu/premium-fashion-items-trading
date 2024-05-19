@@ -33,25 +33,25 @@ public class BrandV1Controller {
 	//브랜드 단일 조회
 	@GetMapping("/{brandId}")
 	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> getBrandById(@PathVariable @Valid @NotNull Integer brandId) {
-		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrand(brandId)));
+		return DataResponseDTO.ok(brandQueryService.getBrand(brandId));
 	}
 
 	//브랜드 등록
 	@PostMapping
 	public ResponseEntity<DataResponseDTO<CreateBrandResponseDTO>> createBrand(@RequestBody @Valid CreateBrandRequestDTO req) {
-		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.createBrand(req)));
+		return DataResponseDTO.ok(brandCommandService.createBrand(req));
 	}
 
 	//브랜드 편집
 	@PatchMapping
 	public ResponseEntity<DataResponseDTO<BrandResponseDTO>> modifyBrand(@RequestBody @Valid ModifyBrandRequestDTO req) {
-		return ResponseEntity.ok(new DataResponseDTO<>(brandCommandService.modifyBrand(req)));
+		return DataResponseDTO.ok(brandCommandService.modifyBrand(req));
 	}
 
 	//브랜드 조회 Paging
 	@GetMapping("/paging")
 	public ResponseEntity<DataResponseDTO<Page<BrandPagingResponseDTO>>> getBrandPagingList(BrandPagingRequestDTO req, Pageable page) {
-		return ResponseEntity.ok(new DataResponseDTO<>(brandQueryService.getBrandPagingList(req, page)));
+		return DataResponseDTO.ok(brandQueryService.getBrandPagingList(req, page));
 	}
 
 	//TODO - 추후 상품 개발 완료 후 삭제 메소드 추가 개발

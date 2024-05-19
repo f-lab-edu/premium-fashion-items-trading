@@ -18,6 +18,7 @@ public class AddressQueryService {
 
 	private final AddressRepository addressRepository;
 
+	//session에 저장된 id와 비교.
 	@Transactional(readOnly = true)
 	public AddressResponseDTO getAddress(Long addressId) {
 		return AddressResponseDTO.from(getAddressById(addressId).orElseThrow(() -> new AddressNotFoundException()));

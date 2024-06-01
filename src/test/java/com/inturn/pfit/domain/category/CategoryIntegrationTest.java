@@ -9,6 +9,7 @@ import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.service.CategoryCommandService;
 import com.inturn.pfit.global.config.security.vo.RoleConsts;
 import com.inturn.pfit.support.annotation.IntegrationTest;
+import com.inturn.pfit.support.fixture.CommonResponseResultFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,12 +80,8 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(createCategoryRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
-				.andExpect(jsonPath("$.data.categoryId").exists())
-				.andDo(print());
+		CommonResponseResultFixture.successResultActions(actions)
+				.andExpect(jsonPath("$.data.categoryId").exists());
 	}
 
 	@Test
@@ -103,12 +100,8 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(createCategoryRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExistCategoryOrderException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof ExistCategoryOrderException));
 	}
 
 	@Test
@@ -123,11 +116,7 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(createCategoryRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isUnauthorized())
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isUnauthorized());
 	}
 
 	@Test
@@ -143,11 +132,7 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(createCategoryRequestDTO)));
 
 		//then
-		actions
-				.andExpect(status().isForbidden())
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isForbidden());
 	}
 
 	@Test
@@ -166,12 +151,8 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	@Test
@@ -186,14 +167,10 @@ class CategoryIntegrationTest {
 		ResultActions actions = mockMvc.perform(get("/v1/category/%s".formatted(res.categoryId())));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
+		CommonResponseResultFixture.successResultActions(actions)
 				.andExpect(jsonPath("$.data.categoryId").value(res.categoryId()))
 				.andExpect(jsonPath("$.data.categoryName").value(categoryName))
-				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder))
-				.andDo(print());
+				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder));
 	}
 
 	@Test
@@ -208,12 +185,8 @@ class CategoryIntegrationTest {
 		ResultActions actions = mockMvc.perform(get("/v1/category/%s".formatted(notExistCategoryId)));
 
 		//then
-		actions
-				.andExpect(status().isNotFound())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CategoryNotFoundException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isNotFound())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof CategoryNotFoundException));
 	}
 
 	@Test
@@ -229,9 +202,7 @@ class CategoryIntegrationTest {
 		//TODO 해당 테스트는 고민을 해보자.
 		//@NotNull에 대해서 처리할 수 있는 조건을 확인해보자.
 		//then
-		actions
-				.andExpect(status().isInternalServerError())
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isInternalServerError());
 	}
 
 	@Test
@@ -254,14 +225,11 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.data").exists())
-				.andExpect(jsonPath("$.success").value(true))
+
+		CommonResponseResultFixture.successResultActions(actions)
 				.andExpect(jsonPath("$.data.categoryId").value(res.categoryId()))
 				.andExpect(jsonPath("$.data.categoryName").value(categoryName.repeat(2)))
-				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder + 1))
-				.andDo(print());
+				.andExpect(jsonPath("$.data.categoryOrder").value(categoryOrder + 1));
 	}
 
 
@@ -284,12 +252,8 @@ class CategoryIntegrationTest {
 				.content(objectMapper.writeValueAsString(req)));
 
 		//then
-		actions
-				.andExpect(status().isBadRequest())
-				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException))
-				.andExpect(jsonPath("$.data").doesNotExist())
-				.andExpect(jsonPath("$.success").value(false))
-				.andDo(print());
+		CommonResponseResultFixture.failResultActions(actions, status().isBadRequest())
+				.andExpect(result -> assertTrue(result.getResolvedException() instanceof MethodArgumentNotValidException));
 	}
 
 	private static Stream<Arguments> provideParameter() {
@@ -353,11 +317,8 @@ class CategoryIntegrationTest {
 		);
 
 		//then
-		actions
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.success").value(true))
-				.andExpect(jsonPath("$.data.content.length()").value(listSize))
-				.andDo(print());
+		CommonResponseResultFixture.successResultActions(actions)
+				.andExpect(jsonPath("$.data.content.length()").value(listSize));
 	}
 
 	private static Stream<Arguments> providePagingParameter() {

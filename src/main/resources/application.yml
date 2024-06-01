@@ -53,3 +53,9 @@ server:
   port: 8080
   servlet:
     context-path: /pfit
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

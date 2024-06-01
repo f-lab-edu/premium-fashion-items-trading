@@ -13,9 +13,7 @@ import com.inturn.pfit.domain.sizetype.exception.SizeTypeNotFoundException;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeCommandService;
 import com.inturn.pfit.domain.sizetype.service.SizeTypeQueryService;
 import com.inturn.pfit.global.common.vo.CUDRequestCommand;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class ModifySizeFacadeTest {
 
 	@InjectMocks

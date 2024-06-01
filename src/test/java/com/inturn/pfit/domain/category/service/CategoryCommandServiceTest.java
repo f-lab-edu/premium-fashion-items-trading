@@ -9,22 +9,21 @@ import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.exception.ExistCategoryOrderException;
 import com.inturn.pfit.domain.category.repository.CategoryRepository;
 import com.inturn.pfit.domain.category.vo.CategoryErrorCode;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(SpringExtension.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class CategoryCommandServiceTest {
 
 	@InjectMocks
@@ -103,7 +102,7 @@ class CategoryCommandServiceTest {
 				.categoryName(categoryName.repeat(2))
 				.categoryOrder(categoryOrder + 1)
 				.build();
-		when(categoryQueryService.getCategoryById(req.categoryId())).thenReturn(category);
+		when(categoryQueryService.getCategoryById(req.categoryId())).thenReturn(Optional.of(category));
 		doNothing().when(categoryQueryService).validateExistCategoryByOrder(req.categoryOrder());
 		Category modCategory = Category.builder()
 				.categoryId(categoryId)

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class SizeResponseDTO extends CommonTimeDTO {
 				.sizeId(entity.getSizeId())
 				.sizeName(entity.getSizeName())
 				.categoryId(entity.getCategoryId())
+				.categoryName(ObjectUtils.isEmpty(entity.getCategory()) ? null : entity.getCategory().getCategoryName())
 				.createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt())
 				.sizeTypeList(SizeTypeResponseDTO.of(entity.getSizeTypeList()))
@@ -43,6 +45,7 @@ public class SizeResponseDTO extends CommonTimeDTO {
 				.sizeId(entity.getSizeId())
 				.sizeName(entity.getSizeName())
 				.categoryId(entity.getCategoryId())
+				.categoryName(ObjectUtils.isEmpty(entity.getCategory()) ? null : entity.getCategory().getCategoryName())
 				.createdAt(entity.getCreatedAt())
 				.updatedAt(entity.getUpdatedAt())
 				.sizeTypeList(SizeTypeResponseDTO.of(sizeTypeEntityList))

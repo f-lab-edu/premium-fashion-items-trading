@@ -5,9 +5,7 @@ import com.inturn.pfit.domain.auth.dto.LoginRequestDTO;
 import com.inturn.pfit.domain.auth.service.AuthService;
 import com.inturn.pfit.global.common.dto.response.CommonResponseDTO;
 import com.inturn.pfit.support.annotation.PfitSecurityConfigTest;
-import com.inturn.pfit.support.vo.TestTypeConsts;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +21,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @PfitSecurityConfigTest(AuthV1Controller.class)
-@Tag(TestTypeConsts.UNIT_TEST)
 class AuthV1ControllerTest {
 
 	@Autowired

@@ -4,6 +4,7 @@ import com.inturn.pfit.domain.address.dto.response.AddressResponseDTO;
 import com.inturn.pfit.domain.address.entity.AddressEntity;
 import com.inturn.pfit.domain.address.exception.AddressNotFoundException;
 import com.inturn.pfit.domain.address.repository.AddressRepository;
+import com.inturn.pfit.global.support.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,15 @@ public class AddressQueryService {
 	//session에 저장된 id와 비교.
 	@Transactional(readOnly = true)
 	public AddressResponseDTO getAddress(Long addressId) {
-		return AddressResponseDTO.from(getAddressById(addressId).orElseThrow(() -> new AddressNotFoundException()));
+		AddressEntity address = getAddressById(addressId).orElseThrow(() -> new AddressNotFoundException());
+
+		long userId = SessionUtils.getUserId();
+
+		if(!address.getUserId().equals(userId)) {
+
+		}
+
+		return AddressResponseDTO.from(address);
 	}
 
 	@Transactional(readOnly = true)

@@ -51,7 +51,7 @@ public class AddressV1Controller {
 		return DataResponseDTO.ok(modifyAddressFacade.modifyAddress(req));
 	}
 
-	//주소록 사용자 조회
+	//사용자 주소록 목록 조회
 	@GetMapping("/user/{userId}")
 	public ResponseEntity<DataResponseDTO<List<AddressResponseDTO>>> getAddressByUserId(@PathVariable @Valid @NotNull Long userId) {
 		return DataResponseDTO.ok(getUserAddressFacade.getAddressListByUserId(userId));

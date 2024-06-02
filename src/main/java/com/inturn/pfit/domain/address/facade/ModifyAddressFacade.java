@@ -29,12 +29,12 @@ public class ModifyAddressFacade {
 
 		final UserEntity user = userQueryService.getUserById(SessionUtils.getUserId()).orElseThrow(() -> new UserNotFoundException());
 
-		AddressEntity optionalAddress = addressQueryService.getAddressById(req.addressId()).orElseThrow(() -> new AddressNotFoundException());
+		AddressEntity address = addressQueryService.getAddressById(req.addressId()).orElseThrow(() -> new AddressNotFoundException());
 
 		if(PfitConsts.CommonCodeConsts.YN_Y.equals(req.defaultYn())){
 			user.getAddressList().forEach(AddressEntity::setDefaultN);
 		}
 
-		return AddressResponseDTO.from(addressCommandService.save(req.convertAddress(optionalAddress)));
+		return AddressResponseDTO.from(addressCommandService.save(req.convertAddress(address)));
 	}
 }

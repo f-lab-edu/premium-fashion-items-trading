@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@SpringBootTest
+@SpringBootTest(properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.session.SessionAutoConfiguration")
 @ActiveProfiles("junit")
 @AutoConfigureMockMvc
 @Tag(TestTypeConsts.INTEGRATION_TEST)

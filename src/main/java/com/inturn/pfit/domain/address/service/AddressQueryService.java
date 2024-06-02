@@ -3,6 +3,7 @@ package com.inturn.pfit.domain.address.service;
 import com.inturn.pfit.domain.address.dto.response.AddressResponseDTO;
 import com.inturn.pfit.domain.address.entity.AddressEntity;
 import com.inturn.pfit.domain.address.exception.AddressNotFoundException;
+import com.inturn.pfit.domain.address.exception.UserNotEqualsAddressException;
 import com.inturn.pfit.domain.address.repository.AddressRepository;
 import com.inturn.pfit.global.support.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,11 @@ public class AddressQueryService {
 
 	private final AddressRepository addressRepository;
 
-	//session에 저장된 id와 비교.
 	@Transactional(readOnly = true)
 	public AddressResponseDTO getAddress(Long addressId) {
 		AddressEntity address = getAddressById(addressId).orElseThrow(() -> new AddressNotFoundException());
-
-		long userId = SessionUtils.getUserId();
-
-		if(!address.getUserId().equals(userId)) {
-
+		if(!address.getUserId().equals(SessionUtils.getUserId())) {
+			throw new UserNotEqualsAddressException();
 		}
 
 		return AddressResponseDTO.from(address);

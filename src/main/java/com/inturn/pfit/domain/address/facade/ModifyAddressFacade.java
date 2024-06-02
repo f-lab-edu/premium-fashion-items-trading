@@ -10,6 +10,7 @@ import com.inturn.pfit.domain.user.entity.UserEntity;
 import com.inturn.pfit.domain.user.exception.UserNotFoundException;
 import com.inturn.pfit.domain.user.service.UserQueryService;
 import com.inturn.pfit.global.support.utils.PfitConsts;
+import com.inturn.pfit.global.support.utils.SessionUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,7 @@ public class ModifyAddressFacade {
 	@Transactional
 	public AddressResponseDTO modifyAddress(ModifyAddressRequestDTO req) {
 
-		final UserEntity user = userQueryService.getUserById(req.userId()).orElseThrow(() -> new UserNotFoundException());
+		final UserEntity user = userQueryService.getUserById(SessionUtils.getUserId()).orElseThrow(() -> new UserNotFoundException());
 
 		AddressEntity optionalAddress = addressQueryService.getAddressById(req.addressId()).orElseThrow(() -> new AddressNotFoundException());
 

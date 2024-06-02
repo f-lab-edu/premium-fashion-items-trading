@@ -12,8 +12,6 @@ public record ModifyAddressRequestDTO(
 
 		@NotNull
 		Long addressId,
-		@NotNull
-		Long userId,
 
 		@NotEmpty
 		String recipients,

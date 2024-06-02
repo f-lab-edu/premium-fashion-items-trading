@@ -2,16 +2,12 @@ package com.inturn.pfit.domain.address.dto.request;
 
 import com.inturn.pfit.domain.address.entity.AddressEntity;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 @Builder
 public record CreateAddressRequestDTO(
-
-		@NotNull
-		Long userId,
 
 		@NotEmpty
 		String recipients,
@@ -35,9 +31,9 @@ public record CreateAddressRequestDTO(
 
 ) {
 
-	public AddressEntity convertAddress() {
+	public AddressEntity convertAddress(Long userId) {
 		return AddressEntity.builder()
-				.userId(userId())
+				.userId(userId)
 				.recipients(recipients())
 				.phone(phone())
 				.postCode(postCode())

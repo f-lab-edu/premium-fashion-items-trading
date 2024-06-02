@@ -33,28 +33,28 @@ public class AddressV1Controller {
 
 	private final GetUserAddressFacade getUserAddressFacade;
 
-	//주소록 조회
+	//주소 조회
 	@GetMapping("/{addressId}")
 	public ResponseEntity<DataResponseDTO<AddressResponseDTO>> getAddressById(@PathVariable @Valid @NotNull Long addressId) {
 		return DataResponseDTO.ok(addressQueryService.getAddress(addressId));
 	}
 
-	//주소록 등록
+	//주소 등록
 	@PostMapping
 	public ResponseEntity<DataResponseDTO<CreateAddressResponseDTO>> createAddress(@RequestBody @Valid CreateAddressRequestDTO req) {
 		return DataResponseDTO.ok(createAddressFacade.createAddress(req));
 	}
 
-	//주소록 편집
+	//주소 편집
 	@PatchMapping
 	public ResponseEntity<DataResponseDTO<AddressResponseDTO>> modifyAddress(@RequestBody @Valid ModifyAddressRequestDTO req) {
 		return DataResponseDTO.ok(modifyAddressFacade.modifyAddress(req));
 	}
 
 	//사용자 주소록 목록 조회
-	@GetMapping("/user/{userId}")
-	public ResponseEntity<DataResponseDTO<List<AddressResponseDTO>>> getAddressByUserId(@PathVariable @Valid @NotNull Long userId) {
-		return DataResponseDTO.ok(getUserAddressFacade.getAddressListByUserId(userId));
+	@GetMapping("/user")
+	public ResponseEntity<DataResponseDTO<List<AddressResponseDTO>>> getAddressByUserId() {
+		return DataResponseDTO.ok(getUserAddressFacade.getAddressListByUserId());
 	}
 
 }

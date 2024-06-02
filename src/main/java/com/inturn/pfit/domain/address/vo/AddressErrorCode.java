@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum AddressErrorCode {
 
 	ADDRESS_NOT_FOUND_EXCEPTION(ErrorCodeDTO.createErrorDTO(HttpStatus.NOT_FOUND, "해당 주소는 존재하지 않습니다.")),
+	USER_NOT_EQUALS_ADDRESS(ErrorCodeDTO.createErrorDTO(HttpStatus.BAD_REQUEST, "조회할 주소는 현재 사용자의 주소가 아닙니다.")),
 	;
 	private ErrorCodeDTO error;
 

@@ -290,7 +290,7 @@ public class AddressIntegrationTest {
 		}
 
 		@ParameterizedTest
-		@DisplayName("인증 정보가 없는 상황에서 주소 등록을 시도하면 실패한다.")
+		@DisplayName("요청 데이터가 유효성 검사를 통과하지 못하는 상황에서 주소 등록을 호출하면 실패한다.")
 		@WithMockUser(authorities = RoleConsts.ROLE_USER)
 		@MethodSource("provideCreateParameter")
 		void createAddress_Fail_ValidateFields(String recipients, String phone, String postCode, String address, String defaultYn) throws Exception {

@@ -70,4 +70,14 @@ public class SessionFixture {
 
 		return session;
 	}
+
+	public static MockHttpSession setMockEmptySession() {
+		MockHttpSession session = new MockHttpSession();
+
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setSession(session);
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		return session;
+	}
 }

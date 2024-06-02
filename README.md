@@ -16,7 +16,7 @@ KREAM을 모티브로 만든 프리미엄 패션 제품 거래 서비스 입니�
 ![Pasted image 20240423225608](https://github.com/f-lab-edu/premium-fashion-items-trading/assets/110794550/f9209585-33df-452f-a489-7981008df482)
 
 ## **데이터베이스 ERD**
-![2024-04-23 22 42 10](https://github.com/f-lab-edu/premium-fashion-items-trading/assets/110794550/c2cc0eaa-bd27-4d1f-8b55-f2a3e0b84d6c)
+![image](https://github.com/f-lab-edu/premium-fashion-items-trading/assets/110794550/f1a011c9-89e4-4928-ad84-24f4eac9f257)
 
 ## **사용기술**
 - Java 17

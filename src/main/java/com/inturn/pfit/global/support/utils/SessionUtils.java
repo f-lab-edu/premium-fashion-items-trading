@@ -17,8 +17,14 @@ public class SessionUtils {
 	public static UserSession getUserSession() {
 		HttpSession session = getSession();
 		var userSesseion = session.getAttribute(SessionConsts.LOGIN_USER);
-		if(ObjectUtils.isEmpty(userSesseion))   throw new NotFoundSessionException();
+		if(ObjectUtils.isEmpty(userSesseion)) {
+			throw new NotFoundSessionException();
+		}
 		return (UserSession) session.getAttribute(SessionConsts.LOGIN_USER);
+	}
+
+	public static Long getUserId() {
+		return getUserSession().getUserId();
 	}
 
 	public static void setUserSession(UserEntity user) {

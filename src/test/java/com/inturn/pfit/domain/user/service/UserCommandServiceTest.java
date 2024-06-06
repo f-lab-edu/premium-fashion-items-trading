@@ -85,7 +85,7 @@ class UserCommandServiceTest {
 		when(userRepository.save(any(UserEntity.class))).thenReturn(userParam);
 
 		//when
-		UserEntity result = userCommandService.signUp(req, role);
+		UserEntity result = userCommandService.signUp(req);
 
 		//then
 		assertEquals(result.getEmail(), userParam.getEmail());
@@ -108,7 +108,7 @@ class UserCommandServiceTest {
 		when(userRepository.findByEmail(req.email())).thenReturn(Optional.of(userParam));
 
 		//when
-		final ExistUserException result = assertThrows(ExistUserException.class, () -> userCommandService.signUp(req, role));
+		final ExistUserException result = assertThrows(ExistUserException.class, () -> userCommandService.signUp(req));
 
 		//then
 		assertNotNull(result);
@@ -129,7 +129,7 @@ class UserCommandServiceTest {
 		when(userRepository.findByEmail(req.email())).thenReturn(Optional.empty());
 
 		//when
-		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.signUp(req, role));
+		final PasswordMismatchException result = assertThrows(PasswordMismatchException.class, () -> userCommandService.signUp(req));
 
 		//then
 		assertNotNull(result);

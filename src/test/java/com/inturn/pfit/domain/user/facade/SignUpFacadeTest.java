@@ -14,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -40,8 +42,8 @@ class SignUpFacadeTest {
 		UserEntity user = getUser(userId, req);
 
 		UserRole role = createUserRole();
-		when(userRoleQueryService.getUserRoleByRoleCode(RoleConsts.ROLE_USER)).thenReturn(role);
-		when(userCommandService.signUp(req, role)).thenReturn(user);
+		when(userRoleQueryService.getUserRoleByRoleCode(RoleConsts.ROLE_USER)).thenReturn(Optional.of(role));
+		when(userCommandService.signUp(req)).thenReturn(user);
 
 		//when
 		SignUpResponseDTO res = signUpFacade.signUp(req);
@@ -49,7 +51,7 @@ class SignUpFacadeTest {
 		//then
 		assertEquals(res.userId(), userId);
 
-		verify(userCommandService, times(1)).signUp(req, role);
+		verify(userCommandService, times(1)).signUp(req);
 		verify(userRoleQueryService, times(1)).getUserRoleByRoleCode(RoleConsts.ROLE_USER);
 	}
 

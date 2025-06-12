@@ -6,6 +6,7 @@ import com.inturn.pfit.domain.category.exception.CategoryNotFoundException;
 import com.inturn.pfit.domain.category.service.CategoryQueryService;
 import com.inturn.pfit.domain.item.dto.request.CreateItemRequestDTO;
 import com.inturn.pfit.domain.item.dto.response.CreateItemResponseDTO;
+import com.inturn.pfit.domain.item.entity.Item;
 import com.inturn.pfit.domain.item.entity.ItemEntity;
 import com.inturn.pfit.domain.item.service.ItemCommandService;
 import com.inturn.pfit.domain.itemsize.entity.ItemSizeEntity;
@@ -33,6 +34,8 @@ public class CreateItemFacade {
 
 		final ItemEntity saveItem = req.convertItem();
 
+		saveItem.toBuilder().itemId(666l).build();
+
 		validateCreateItem(req);
 
 		ItemEntity item = itemCommandService.save(saveItem);
@@ -50,5 +53,17 @@ public class CreateItemFacade {
 		categoryQueryService.getCategoryById(req.categoryId()).orElseThrow(() -> new CategoryNotFoundException());
 
 		brandQueryService.getBrandById(req.brandId()).orElseThrow(() -> new BrandNotFoundException());
+	}
+
+	public static void main(String[] args) {
+
+		final CreateItemRequestDTO r = CreateItemRequestDTO.builder().itemComment("t").build();
+
+		final Item entity = new Item();
+		entity.setItemName("test");
+
+
+		entity = new Item();
+
 	}
 }

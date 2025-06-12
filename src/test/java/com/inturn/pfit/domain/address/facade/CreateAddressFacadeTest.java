@@ -118,7 +118,7 @@ class CreateAddressFacadeTest {
 		UserEntity user = SessionFixture.getUserEntity(userId);
 		SessionFixture.setMockSession(new UserSession(user));
 
-		//when
+				//when
 		final UserNotFoundException result = assertThrows(UserNotFoundException.class, () -> createAddressFacade.createAddress(req));
 
 		//then

@@ -27,6 +27,8 @@ public class BrandQueryService {
 		System.out.printf("main3");
 		System.out.printf("main3");
 		System.out.printf("main3");
+		System.out.printf("main3");
+		System.out.printf("main3");
 		return brandRepository.getPagingList(req, page);
 	}
 

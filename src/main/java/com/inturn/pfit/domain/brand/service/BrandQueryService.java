@@ -23,6 +23,7 @@ public class BrandQueryService {
 	public Page<BrandPagingResponseDTO> getBrandPagingList(BrandPagingRequestDTO req, Pageable page) {
 		System.out.printf("main");
 		System.out.printf("main2");
+		System.out.printf("mainmain");
 		return brandRepository.getPagingList(req, page);
 	}
 

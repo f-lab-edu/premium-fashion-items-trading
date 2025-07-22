@@ -23,7 +23,9 @@ public class BrandCommandService {
 	//브랜드 등록
 	@Transactional
 	public CreateBrandResponseDTO createBrand(CreateBrandRequestDTO req) {
-
+		System.out.printf("t");
+		System.out.printf("t");
+		System.out.printf("t");
 		Brand brand = req.createBrand();
 
 		return CreateBrandResponseDTO.from(this.save(brand));

@@ -32,6 +32,7 @@ public class BrandCommandService {
 
 	@Transactional
 	public BrandResponseDTO modifyBrand(ModifyBrandRequestDTO req) {
+		System.out.printf("s");
 
 		//해당 브랜드가 존재하는지 조회
 		Brand brand = brandQueryService.getBrandById(req.brandId()).orElseThrow(() -> new BrandNotFoundException());

@@ -25,7 +25,7 @@ public class BrandCommandService {
 	public CreateBrandResponseDTO createBrand(CreateBrandRequestDTO req) {
 		System.out.printf("t");
 		System.out.printf("t");
-		System.out.printf("t");
+		System.out.printf("t11");
 		Brand brand = req.createBrand();
 
 		return CreateBrandResponseDTO.from(this.save(brand));
